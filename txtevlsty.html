@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+
+<head>
+<title>Explainable Machine Learning (XAI)</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" href="./benchmark/styles/style.css">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+
+  
+</br>
+  <!-- <div id="nextbutton3"  href="./exptxt.html" > <button onclick="location.reload();location.href='./cnsnt.html'">Continue</button> </div> -->
+  <div id="nextbutton3"> <button onclick=read_radio() >Continue</button> </div>   
+  </br>  
+
+  <div id="cnsntDiv" >
+    <b>
+      Project Title: Human grounded evaluation of interpretable machine learning
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+      Please choose from one of the following categories:
+    </br>
+    </br>
+  </b>
+ 
+  <form id="category" action="">
+    <input type="radio" name="category" value="comp.graphics"> comp.graphics<br>
+    <input type="radio" name="category" value="comp.os.ms-windows.misc"> comp.os.ms-windows.misc<br>
+    <input type="radio" name="category" value="comp.sys.ibm.pc.hardware"> comp.sys.ibm.pc.hardware <br>
+    <input type="radio" name="category" value="comp.windows.x"> comp.windows.x<br>
+    <input type="radio" name="category" value="rec.autos"> rec.autos <br>
+    <input type="radio" name="category" value="rec.sport.baseball"> rec.sport.baseball<br>
+    <input type="radio" name="category" value="rec.sport.hockey"> rec.sport.hockey<br>
+    <input type="radio" name="category" value="sci.crypt"> sci.crypt<br>
+    <input type="radio" name="category" value="sci.electronics"> sci.electronics<br>
+    <input type="radio" name="category" value="sci.med"> sci.med<br>
+    <input type="radio" name="category" value="sci.space"> sci.space<br>
+    <input type="radio" name="category" value="misc.forsale"> misc.forsale<br>
+    <input type="radio" name="category" value="talk.politics.misc"> talk.politics.misc<br>
+    <input type="radio" name="category" value="talk.politics.guns"> talk.politics.guns<br>
+    <input type="radio" name="category" value="talk.politics.mideast"> talk.politics.mideast<br>
+    <input type="radio" name="category" value="talk.religion.misc"> talk.religion.misc<br>
+    <input type="radio" name="category" value="alt.atheism"> alt.atheism<br>
+    <input type="radio" name="category" value="soc.religion.christian"> soc.religion.christian<br>
+  </form>
+  </br>
+  </br>
+  </br>
+    <b> Participant's Task: </b>
+  </div>
+
+  <script type="text/javascript"> 
+    
+    var user_select = "sci.electronics"
+    
+    function read_radio(){
+      var radios = document.getElementsByName('category');
+      
+      for (var i = 0, length = radios.length; i < length; i++){
+         if (radios[i].checked){
+          user_select = radios[i].value
+          break;
+         }
+      }
+
+      setCookie("user_selection", user_select)
+      location.href='./cnsnt.html'
+    }
+    function setCookie(cname, cvalue) {
+      // var d = new Date();
+      // d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+      // var expires = "expires="+d.toUTCString();
+      // expires = "s"
+      document.cookie = cname + "=" + cvalue + ";path=/";  // document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    
+
+  </script>
+  </br>
+  <div id="nextbutton3"> <button onclick=read_radio() >Continue</button> </div>   
+  </br>  
+
+</body>
+</html>

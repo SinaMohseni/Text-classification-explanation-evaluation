@@ -45,13 +45,20 @@ width: 40%;
 
 #exit_button {
 	display: inline-block;
+  float: left;
+  /*margin-left: 10%;*/
 }
-
 
 #backbutton {
 	display: inline-block;
 	margin-left: 4%
 }
+
+#category {
+  display: inline-block;
+  margin-left: 5%
+}
+
 #nextbutton {
   display: inline-block;
   float:right;
@@ -73,6 +80,14 @@ p{
   margin-right: 10%;
   margin-bottom: 2%;
 }
+
+#nextbutton3 {
+  display: inline-block;
+  float:right;
+  margin-right: 30%;
+  margin-bottom: 2%;
+}
+
 #endbutton {
   display: inline-block;
   float:right;

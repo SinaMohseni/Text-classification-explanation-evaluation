@@ -32,54 +32,98 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 
 var txtfiles = []
 var readfiles = []
+var articleName;
 
 function txtfilename(){
+	
+	// console.log("cookie  ", getCookie("user_selection"))
+	folder_name = getCookie("user_selection")
 
-	var folder = "data/sci.electronics/";
+	var folder = "benchmark/data/20news-bydate-test/"+ folder_name +"/";
 	var txtdoc = []
 	call_once = 0;
 	$.ajax({
 	    url : folder,
 	    success: function (data) {
 	        $(data).find("a").attr("href", function (i, val) {
-	            // if( val.match(/\.()$/) ){
+	            // if ( val.match(/\.(gif)$/) == 0){
 	            	this_file = val.split("");
-	            	if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){
-	            		txtfiles.push(val)
+	            	if (( !isNaN(parseInt(this_file.pop(), 10)) )){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){
+	            		txtfiles.push(val) // txtfiles.push(folder+val)
 	            		if (call_once == 0 ){
-	            		getText();
-	            		call_once = 1	
+	            		nextArticle();
+	            		call_once = 1;
 	            		} 
 	            	}
-	            // } 
+	            // }
 	        });
 	    }
 	});
 }
 
-
-
-function getText() {
-		// console.log(txtfiles)
+function nextArticle() {
 	for (var i = 0; i < txtfiles.length ; i ++){
 	  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
 			readfiles.push(txtfiles[i])
-			jQuery.get('.'+txtfiles[i], function(data) {
+			
+			jQuery.get(txtfiles[i], function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
 					output = data
 				 	showText(0);
+				 	articleName = txtfiles[i].split("/").pop()
+				 	console.log(txtfiles[i])
 			});
 			break;
 		}
 	}
+}
 
+function lastArticle() {
+
+	  		readfiles.pop()
+	  		this_article = readfiles.pop()
+	  		readfiles.push(this_article)
+	  		console.log("file ", this_article)
+	  		this_file = this_article.split("");
+			if (( !isNaN(parseInt(this_file.pop(), 10)) )){
+				jQuery.get(this_article, function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
+						output = data
+					 	showText(0);
+					 	articleName = this_article.split("/").pop()
+				});
+			}
 }
 
 var words_hash = []; 
 var words_array = [];
+var results_json = [];
 
+function WriteFile(){
+
+	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	var a = document.createElement('a');
+	a.href = 'data:' + jsonContent;
+	a.download = 'results.json';
+	a.innerHTML = 'End Study';
+	a.click();
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+	}
 
 function showText(update_txt) {
-
+	
 	var myElement = document.createElement('chartDiv');
 	myElement.style.userSelect = 'none';
 	
@@ -117,7 +161,7 @@ function showText(update_txt) {
 		}
 	}
 
-				var letter_length = getWidthOfText(" ", "sans-serif", "12px"); // 13 
+				var letter_length = getWidthOfText(" ", "sans-serif", "12px"); 
 				var box_height = 20;
 				var x_pos = explanation_x; //  + clearance;
 				var y_pos = explanation_y + box_height + clearance/3;
@@ -252,6 +296,8 @@ function showText(update_txt) {
 								svg.selectAll(".boxes-" + this_sample.toString())
 									.attr("fill","yellow")
 									.attr("opacity", 1);
+								console.log({article: articleName, word: d.word, action: "add"})
+								results_json.push({article: articleName, word: d.word, action: "add"})
 							}
 							 window.getSelection().removeAllRanges();
 							 last_sample = this_sample 
@@ -273,6 +319,8 @@ function showText(update_txt) {
 									.attr("opacity", 0);
 								d.highlight = 0;
 								dragall = 0;
+								console.log({article: articleName, word: d.word, action: "remove"})
+								results_json.push({article: articleName, word: d.word, action: "remove"})
 
 							}else if (d.highlight == 2){
 								// svg.selectAll(".boxes-" + this_sample.toString())
@@ -285,6 +333,8 @@ function showText(update_txt) {
 								svg.selectAll(".boxes-" + this_sample.toString())
 									.attr("fill","yellow")
 									.attr("opacity", 1);
+									console.log({article: articleName, word: d.word, action: "add"})
+									results_json.push({article: articleName, word: d.word, action: "add"})
 							}
 							 window.getSelection().removeAllRanges();
 						// }else{
@@ -461,7 +511,7 @@ var y_scale = d3.scaleLinear()
 	var explanation_title = svg.append("g").append("text").attr("class","explanation_title")
 			  .style("font-weight", "bold")
 			  .style("font-size", "15px")
-			  .text("Please highlight any words and phrases related to Electronic topic in this Article:")
+			  .text("Please highlight any words related to Electronic topic in this Article:")
 			  .attr('dy','0.35em')
 			  .attr("x", explanation_x)
 			  .attr("y", explanation_y);
@@ -480,7 +530,7 @@ var y_scale = d3.scaleLinear()
 
 
 txtfilename();
-getText();
+nextArticle();
 updateWindow();
 
 function updateWindow(){
