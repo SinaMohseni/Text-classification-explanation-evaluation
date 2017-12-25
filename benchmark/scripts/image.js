@@ -33,15 +33,18 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 var txtfiles = []
 var readfiles = []
 var articleName;
+var folder_name = "sci.electronics"
+var call_once = 0;
+var total_doc
+var doc_num
 
 function txtfilename(){
 	
-	// console.log("cookie  ", getCookie("user_selection"))
 	folder_name = getCookie("user_selection")
-
+// if ((folder_name == "ImageNet") | (folder_name == "VisualGenome") | (folder_name == "COCO")) {
 	var folder = "benchmark/data/20news-bydate-test/"+ folder_name +"/";
 	var txtdoc = []
-	call_once = 0;
+	
 	$.ajax({
 	    url : folder,
 	    success: function (data) {
@@ -50,15 +53,14 @@ function txtfilename(){
 	            	this_file = val.split("");
 	            	if (( !isNaN(parseInt(this_file.pop(), 10)) )){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){
 	            		txtfiles.push(val) // txtfiles.push(folder+val)
-	            		if (call_once == 0 ){
-	            		nextArticle();
-	            		call_once = 1;
-	            		} 
 	            	}
 	            // }
 	        });
+	        total_doc = txtfiles.length;
+			nextArticle();
 	    }
 	});
+
 }
 
 function nextArticle() {
@@ -72,6 +74,8 @@ function nextArticle() {
 				 	articleName = txtfiles[i].split("/").pop()
 				 	console.log(txtfiles[i])
 			});
+				doc_num =i + 1;
+				article_title();
 			break;
 		}
 	}
@@ -91,6 +95,9 @@ function lastArticle() {
 					 	articleName = this_article.split("/").pop()
 				});
 			}
+	 		doc_num -= 1;
+			article_title();
+
 }
 
 var words_hash = []; 
@@ -120,7 +127,14 @@ function getCookie(cname) {
         }
     }
     return "";
-	}
+
+}
+
+
+function article_title(){
+
+	explanation_title.text("Please highlight any words related to \""+folder_name.toString()+"\" topic in this Article: ( "+ doc_num+" / "+total_doc+ " )")
+}
 
 function showText(update_txt) {
 	
@@ -352,17 +366,10 @@ function showText(update_txt) {
 								.attr("opacity", 0);
 						}
 					});
-
-				
-
-				height =y_pos; //  3*next_line + line_counter * next_line;
-				svg.selectAll(".explanation_frame").attr("height", height); //(3*next_line + line_counter * next_line));
-				svg.attr("height", height + 100); //y_pos
-
-				// if ( line_counter > 10){ 
-				// 	svg.attr("height", ((line_counter-10) * next_line + height) );
-				// }
-
+			
+				height =y_pos; 
+				svg.selectAll(".explanation_frame").attr("height", height); 
+				svg.attr("height", height + 100); 
 }
 
 function getWidthOfText(txt, fontname, fontsize){
@@ -506,12 +513,11 @@ var y_scale = d3.scaleLinear()
 	var explanation_width = 580
 	var frame_height = height - 100
 	var result_height = 100
-
-
+	
 	var explanation_title = svg.append("g").append("text").attr("class","explanation_title")
 			  .style("font-weight", "bold")
 			  .style("font-size", "15px")
-			  .text("Please highlight any words related to Electronic topic in this Article:")
+			  .text("Please highlight any words related to \""+folder_name.toString()+"\" topic in this Article:")
 			  .attr('dy','0.35em')
 			  .attr("x", explanation_x)
 			  .attr("y", explanation_y);
@@ -530,7 +536,7 @@ var y_scale = d3.scaleLinear()
 
 
 txtfilename();
-nextArticle();
+// nextArticle();
 updateWindow();
 
 function updateWindow(){
