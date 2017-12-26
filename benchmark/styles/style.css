@@ -24,10 +24,10 @@ h3{
 }
 #title{
   float: left;
-  /*position: absolute;*/
   position: absolute;
-  /*top: 10px;*/
-  left: 30%;
+  left: 10%;
+  padding-left: 20px;
+
 }
 
 a{
@@ -75,7 +75,6 @@ a{
   width: 80%
   /*margin-right: 10%;*/
   /*display: inline-block;*/
-
 }
 
 #cnsnttextbox {
@@ -127,7 +126,7 @@ p{
 }
 #backbutton2 {
 	display: inline-block;
-	margin-left: 10%;
+	margin-left: 4%;
 	margin-bottom: 2%;
 }
 #nextbutton2 {
@@ -230,4 +229,33 @@ div.absolute {
 
 .tooltip {
 	background: #D791E8;
+}
+
+#chartDiv{
+  /*display: table;*/
+  margin: 0 auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  background: white;
+     /*margin-top:2%;
+     margin-right: 10%;*/
+}
+#panel{
+  /*display: table-cell;*/
+  /*display: block*/
+  margin: 0 auto;
+  padding: 2%;
+
+  /*width: 100% ;*/
+}
+#img_box {
+  /*display: table-cell;*/
+  display: block;
+  margin: 0 auto;
+  max-width: 100% ;
+  /*margin-left: 40%;*/
+  /*margin-top: 5%;*/
+/*  padding: 20px;*/
+  margin-bottom: 5%;
+  margin-top: 5%;
 }

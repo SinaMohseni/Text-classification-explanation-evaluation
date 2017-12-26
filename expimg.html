@@ -17,19 +17,44 @@
 
 
 <body>
-   <div id="nextbutton" > <button onclick="nextArticle()">Next Article</button> </div>
-   <div id="backbutton" > <button onclick="lastArticle()">Previous Article</button> </div>
-   <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
+   <div id="nextbutton" > <button onclick="nextImage()">Next Image</button> </div>
+   <div id="backbutton" > <button onclick="lastImage()">Previous Image</button> </div>
+   <div id="exit_button" > <button onclick="saveIt()">End study</button> </div>
 
   </br>
 
-  <div id="chartDiv" ></div>
+  <div id="chartDiv">
 
-  </br>
-  <div id="nextbutton2" > <button onclick="nextArticle()">Next Image</button> </div>
-  <div id="backbutton2" > <button onclick="lastArticle()">Previous Image</button> </div>
-  <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
-  </br>
+    <!-- <div id="panel">  -->
+        <table>
+            <tr>
+              <div id=panel style = "padding-top: 2%"></div>     
+            </tr>
+            <tr>
+                <div id='palette' style = "margin-top: 0%">
+
+                  <label>
+                    <input type="color" style="margin-left: 5%" onChange="changeColor(this)"> Palette
+                  </label>
+                  <label style="margin: 2%"> 
+                    <input type="checkbox" autocomplete="off" id="fillarea" name="fillarea">Fill
+                    </label>
+                  <button id='undo' style="">Undo</button>   
+                  <button id='clear' style="margin: 2%">Clear</button>
+                </div>    
+            </tr>
+            <tr>              
+                <svg id="img_box" class="img_box">
+                    <image id= "img_exp" class="img_exp" xlink:href=""/> 
+                </svg>  
+            </tr>
+
+
+        </table>
+    <!-- </div> -->
+
+  </div>
+  
   <script id= maincode src="./benchmark/scripts/image.js"></script> 
 </body>
 </html>

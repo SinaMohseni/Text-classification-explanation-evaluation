@@ -1,3 +1,27 @@
+highligh_data = []
+var inkColor = "red" // "#1f77b4"
+var imgIndex = '';
+var fill_checkbox = 1
+
+  fill_area = d3.selectAll("input[name=fillarea]")          // Check box for cutting the tails
+      .style("margin", "0px 10px 0px 10px")
+      .style("padding", "0px 0px")
+      .attr("position", "relative")
+      .attr("checked", true)
+      .on("change", function() {
+                        if (this.checked) {
+                          fill_checkbox = 1;
+                        }else{
+                          fill_checkbox = 0;
+                        }
+                    }
+                       );
+
+
+var path;
+var color = "lightblue"
+x_old = 0
+y_old = 0
 
 var div1 = d3.select("body").append("talkbubble")   // Tooltip
 		.attr("class", "tooltip")
@@ -14,7 +38,6 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 		.style("pointer-events", "none");
 
    var output;
-   // var height = 500;
     d3.selection.prototype.moveToBack = function() {
         return this.each(function() {
             var firstChild = this.parentNode.firstChild;
@@ -33,7 +56,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 var txtfiles = []
 var readfiles = []
 var articleName;
-var folder_name = "sci.electronics"
+var folder_name = "ImageNet"
 var call_once = 0;
 var total_doc
 var doc_num
@@ -41,62 +64,58 @@ var doc_num
 function txtfilename(){
 	
 	folder_name = getCookie("user_selection")
-// if ((folder_name == "ImageNet") | (folder_name == "VisualGenome") | (folder_name == "COCO")) {
-	var folder = "benchmark/data/20news-bydate-test/"+ folder_name +"/";
+	var folder = "benchmark/data/"+ folder_name +"/";
 	var txtdoc = []
 	
 	$.ajax({
 	    url : folder,
 	    success: function (data) {
 	        $(data).find("a").attr("href", function (i, val) {
-	            // if ( val.match(/\.(gif)$/) == 0){
 	            	this_file = val.split("");
-	            	if (( !isNaN(parseInt(this_file.pop(), 10)) )){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){
+	            	// if ( (this_file.pop() == "g") & (this_file.pop() == "n") & (this_file.pop() == "p") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
 	            		txtfiles.push(val) // txtfiles.push(folder+val)
-	            	}
-	            // }
+	            	// }
 	        });
+	        console.log(txtfiles)
 	        total_doc = txtfiles.length;
-			nextArticle();
+			nextImage();
 	    }
 	});
 
 }
 
-function nextArticle() {
+function nextImage() {
 	for (var i = 0; i < txtfiles.length ; i ++){
 	  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
 			readfiles.push(txtfiles[i])
 			
-			jQuery.get(txtfiles[i], function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
-					output = data
-				 	showText(0);
-				 	articleName = txtfiles[i].split("/").pop()
-				 	console.log(txtfiles[i])
-			});
-				doc_num =i + 1;
-				article_title();
+			showImage(txtfiles[i], 0);
+
+			doc_num =i + 1;
+			image_title();
+			
+			d3.selectAll('path.line').remove();
+  			ct =0;
+
 			break;
 		}
 	}
 }
 
-function lastArticle() {
+function lastImage() {
 
 	  		readfiles.pop()
 	  		this_article = readfiles.pop()
 	  		readfiles.push(this_article)
-	  		console.log("file ", this_article)
-	  		this_file = this_article.split("");
-			if (( !isNaN(parseInt(this_file.pop(), 10)) )){
-				jQuery.get(this_article, function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
-						output = data
-					 	showText(0);
-					 	articleName = this_article.split("/").pop()
-				});
-			}
+	  		console.log(this_article)
+
+	  		showImage(this_article, 0);
+
+	  		d3.selectAll('path.line').remove();
+  			ct =0;
+
 	 		doc_num -= 1;
-			article_title();
+			image_title();
 
 }
 
@@ -131,245 +150,118 @@ function getCookie(cname) {
 }
 
 
-function article_title(){
+function image_title(){
 
 	explanation_title.text("Please highlight any words related to \""+folder_name.toString()+"\" topic in this Article: ( "+ doc_num+" / "+total_doc+ " )")
 }
 
-function showText(update_txt) {
-	
-	var myElement = document.createElement('chartDiv');
-	myElement.style.userSelect = 'none';
-	
-	d3.dragDisable(window)
+function showImage(image_name, update_txt) {
 
-	for (var i = 0; i < 3000; i++) {
-	    svg.selectAll(".explanation-"+i.toString()).remove(); 
-	    svg.selectAll(".boxes-"+i.toString()).remove(); 
-    }
+  var this_img = new Image();  
 
-    // var output = document.getElementById("TextArea").value;
-    // var output = sample_txt;
-	
-	if (update_txt == 0){
-		words_hash = []; 
-		words_array = [];
-		var line_array = output.split("\n");
-		
-		for (var i = 0; i < line_array.length; i++) {
-			this_line = line_array[i].split(" ");
-			words_array.push("nextline");
+  this_img.src = image_name
+  $(".img_exp").attr("xlink:href",image_name);
 
-			for (var j = 0; j < this_line.length; j++) {
-				words_array.push(this_line[j])
-			}
-		}
-		
+  this_img.onload = function(){
+
+			  	var img_width = this_img.height;//clientWidth;
+				var img_height = this_img.width;//clientHeight;
+			console.log(img_width, img_height)
+            $(".img_box").attr("height",this_img.height); //"100%");
+            $(".img_box").attr("width",this_img.width); //"100%");  
+            $(".img_box").attr("margin","0 auto");
+            }
+}
 
 
-		for (var i = 0; i < words_array.length; i++){
-			words_hash.push({word : words_array[i],
-							x : 0,
-							y : 0,
-							w : 0})
-		}
-	}
+var ct = 0;
+var str = "line"
+var first_point;
 
-				var letter_length = getWidthOfText(" ", "sans-serif", "12px"); 
-				var box_height = 20;
-				var x_pos = explanation_x; //  + clearance;
-				var y_pos = explanation_y + box_height + clearance/3;
-				var next_line = 25;
-				var line_counter = 0;
-				var box_words_alignment = 11;
-				var exp_margin = 20;
+function dragstarted() {
 
-				words_box = svg.selectAll(".boxes")
-									.data(words_hash).enter().append("g").attr("class", "words");		
+  xy0 = d3.mouse(this);                     
+  first_point = xy0;
+  
+  path = highlighter.append("path").datum([xy0, xy0])
+  		  .attr("id", str.concat(ct) )
+  		  .attr("class","line")
+  		  .style("stroke", inkColor)
+          .style("opacity", 1)
+          .style("stroke-width", 2 + "px")
+          .style("stroke-linejoin", "round")
+          .style("fill", function(){if (fill_checkbox == 1) return inkColor; else return "none"; })
+          .style("fill-opacity",0.3);
+          ct++;
+}
 
-				words_box.append("rect")
-					.attr("class",function(d,i){return "boxes-"+i.toString()})
-					.each(function (d,i) {
-						letters = d.word.split("")
+function dragged() {
 
-						if (d.word == "nextline") {
-							line_counter += 1;
-							x_pos = explanation_x + clearance;
-							y_pos = explanation_y + box_height + clearance/3 + line_counter*next_line;
+  console.log(first_point, d3.mouse(this))
+  path.datum().push(d3.mouse(this));
+  path.attr("d", area); 
+}
 
-							// d.word = ""
+function dragended() {
+  path.datum().push(first_point);
+  path.attr("d", area); 
+  path = null;
+}
+    
+d3.select('#undo').on('click', function(){
+  ct--;
+  d3.select('path#'+str.concat(ct)).remove();
+});
 
-							d.x = x_pos;
-							d.y = y_pos;
-							d.w = getWidthOfText("", "sans-serif", "12px")
-							x_pos = x_pos + d.w + letter_length;
+d3.select('#clear').on('click', function(){
+  d3.selectAll('path.line').remove();
+  ct =0;
+});
+    
+var colorScale = d3.schemeCategory10; 
+    colorAr = [0,1];
 
-						// }else if ( $.inArray("\n", letters) > -1 ) {
-						// 	line_counter += 1;
-						// 	x_pos = explanation_x + clearance/3;
-						// 	y_pos = explanation_y + box_height + clearance/3 + line_counter*next_line;
+d3.select('#palette')
+    .select('g')
+  .selectAll('rect')
+    .data(colorAr)
+  .enter().append('rect')
+    .attr('width', 10)
+    .attr('height',10)
+    .attr('x', function(d,i){
+      return 22 * i;
+    })
+    .attr('fill', function(d){
+      return colorScale(d);
+    })
+    .style('cursor','pointer')
+    .on('click',function(d){
+      changeColor(colorScale(d));
+    });
 
-						// 	d.word = ""
+  function changeColor(c){
+    color = c.value;
+    inkColor = color
+  }
 
-						}else if ((x_pos + (letters.length * letter_length)) > (explanation_x + explanation_width - exp_margin)){
-							line_counter += 1;
-							x_pos = explanation_x + clearance/3;
-							y_pos = explanation_y + box_height + clearance/3 + line_counter*next_line;
 
-							d.x = x_pos;
-							d.y = y_pos;
-							d.w = getWidthOfText(d.word, "sans-serif", "12px")
-							x_pos = x_pos + d.w + letter_length;
+function saveIt(){  
+    
+    var csvContent = "data:text/csv;charset=utf-8,";
+    highligh_data.forEach(function(infoArray, index){   
+         dataString = infoArray.join(",");
+         csvContent += index < highligh_data.length ? dataString+ "\n" : dataString;
+    });
+    
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "Retraining_data.csv");
+    document.body.appendChild(link);  
 
-						}else{
+    link.click(); 
+    highligh_data = []
 
-							d.x = x_pos;
-							d.y = y_pos;
-							d.w = getWidthOfText(d.word, "sans-serif", "12px")
-							x_pos = x_pos + d.w + letter_length;
-						}
-
-					})
-					.attr("x", function(d,i){
-						return d.x;})  
-					.attr("y", function(d,i){
-						return d.y - box_words_alignment;})  // + d.count*clearance + clearance })
-					.attr("width", function(d){
-						return d.w;})
-					.attr("height", box_height)
-					.attr("fill", function(d,i){ 
-			       		if (update_txt == 0) d.highlight = 0;
-			       		if (d.highlight == 1) return "yellow"; 
-			       		if (d.highlight == 2) return "lightgreen"; 
-						return "white";
-					})
-					.attr("opacity", function(d,i) { 
-						if (d.highlight == 1){
-							return 1;	
-						}else if (d.highlight == 2) {
-							return 1;	
-						}else{
-							return 0;
-						}
-					});
-			    
-
-				var dragall = 0;
-				var last_sample = 0;
-				
-				svg.on("mouseup", function(d){ dragall = 0})
-
-				words_box.append("text")
-					.attr("class","explanation")
-					.attr("class",function(d,i){return "explanation-"+ i.toString()})
-					.style("font-size", "12px")
-				    .attr("x", function(d,i){
-								return d.x})  
-				    .attr("y", function(d,i){
-								return d.y;})  // + d.count*clearance + clearance })
-				    .attr("dy", ".35em")
-				    .text(function(d) {
-				    	if (d.word == "nextline") {
-				    	return "";	
-				    	}else{
-				    	return d.word; 	
-				    	}
-				    	
-				    })
-				    .on("mouseover", function(d){
-						var this_sample = d3.select(this).attr('class').split("-")[1]
-						if (d.highlight == 0){
-							svg.selectAll(".boxes-" + this_sample.toString())
-								.attr("fill","yellow")
-								.attr("opacity", 0.3);
-						}
-						svg.selectAll(".boxes-" + this_sample.toString()).moveToBack();
-						
-					})
-					.on("mousemove", function(d){
-						var this_sample = d3.select(this).attr('class').split("-")[1]
-						if ((dragall == 1) & (this_sample != last_sample)){							
-
-							if (d.highlight == 1){
-								// svg.selectAll(".boxes-" + this_sample.toString())
-								// 	.attr("fill","lightgreen");
-
-								// d.highlight = 2;
-
-								// svg.selectAll(".boxes-" + this_sample.toString())
-								// 	.attr("opacity", 0);
-								
-								// d.highlight = 0;
-
-							}else if (d.highlight == 2){
-								// svg.selectAll(".boxes-" + this_sample.toString())
-								// 	.attr("opacity", 0);
-								// d.highlight = 0;
-							}else{
-								d.highlight = 1;
-								svg.selectAll(".boxes-" + this_sample.toString())
-									.attr("fill","yellow")
-									.attr("opacity", 1);
-								console.log({article: articleName, word: d.word, action: "add"})
-								results_json.push({article: articleName, word: d.word, action: "add"})
-							}
-							 window.getSelection().removeAllRanges();
-							 last_sample = this_sample 
-						}
-					})
-					.on("mousedown", function(d){ 
-
-						dragall = 1;
-						var this_sample = d3.select(this).attr('class').split("-")[1]
-						// if (this_sample == last_sample){
-						
-							if (d.highlight == 1){
-								// svg.selectAll(".boxes-" + this_sample.toString())
-								// 	.attr("fill","lightgreen");
-
-								// d.highlight = 2;
-
-								svg.selectAll(".boxes-" + this_sample.toString())
-									.attr("opacity", 0);
-								d.highlight = 0;
-								dragall = 0;
-								console.log({article: articleName, word: d.word, action: "remove"})
-								results_json.push({article: articleName, word: d.word, action: "remove"})
-
-							}else if (d.highlight == 2){
-								// svg.selectAll(".boxes-" + this_sample.toString())
-								// 	.attr("opacity", 0);
-								
-								// d.highlight = 0;
-
-							}else{
-								d.highlight = 1;
-								svg.selectAll(".boxes-" + this_sample.toString())
-									.attr("fill","yellow")
-									.attr("opacity", 1);
-									console.log({article: articleName, word: d.word, action: "add"})
-									results_json.push({article: articleName, word: d.word, action: "add"})
-							}
-							 window.getSelection().removeAllRanges();
-						// }else{
-						// dragall = 1;	
-						// }
-						
-					})
-					.on("mouseup", function(d){ dragall = 0})
-					.on("mouseout", function(d){
-						var this_sample = d3.select(this).attr('class').split("-")[1]
-						if (d.highlight > 0){
-							svg.selectAll(".boxes-" + this_sample.toString())
-						}else{
-							svg.selectAll(".boxes-" + this_sample.toString())
-								.attr("opacity", 0);
-						}
-					});
-			
-				height =y_pos; 
-				svg.selectAll(".explanation_frame").attr("height", height); 
-				svg.attr("height", height + 100); 
 }
 
 function getWidthOfText(txt, fontname, fontsize){
@@ -379,6 +271,37 @@ function getWidthOfText(txt, fontname, fontsize){
     }
     getWidthOfText.ctx.font = fontsize + ' ' + fontname;
     return getWidthOfText.ctx.measureText(txt).width;
+}
+
+function draw(selection){
+    var xy0, 
+        path, 
+        keep = false, 
+        line = d3.line()
+                 .x(function(d){ return d[0]; })
+                 .y(function(d){ return d[1]; });
+
+    selection
+        .on('mousedown', function(){ 
+            keep = true;
+            xy0 = d3.mouse(this);
+            path = d3.select('svg')
+                     .append('path')
+                     .attr('d', line([xy0, xy0]))
+                     .style({'stroke': 'black', 'stroke-width': '1px'});
+        })
+        .on('mouseup', function(){ 
+            keep = false; 
+        })
+        .on('mousemove', function(){ 
+            if (keep) {
+                Line = line([xy0, d3.mouse(this).map(function(x){ return x - 1; })]);
+                console.log(Line);
+                path.attr("d", Line);
+  //               path.datum().push(d3.mouse(this));
+  // path.attr("d", area); 
+            }
+        });
 }
 
 function tooltip(d){
@@ -425,26 +348,6 @@ function tooltip(d){
 
 }
 
-
-function clearText() {
-    document.getElementById("TextArea").value = ""
-    for (var i = 0; i < 300; i++) {
-	    svg.selectAll(".explanation-"+i.toString()).remove(); 
-	    svg.selectAll(".boxes-"+i.toString()).remove(); 
-    }
-    
-    svg.selectAll(".result_bar").remove(); 
-	svg.selectAll(".result_frame").remove(); 
-	svg.selectAll(".class_label").remove(); 
-		
-}
-
-
-var hidRect;
-var time_weight = 100, topic_weight = 0, action_weight = 400, cluster_weight = 20;
-var max_y = 100;
-var each_time_sec;
-// var topic_distance;
 var colors = d3.scaleOrdinal(d3.schemeCategory10); 
 
 var w_size = window,
@@ -453,54 +356,10 @@ var w_size = window,
     g_size = d_size.getElementsByTagName('body')[0];
 	
 	d3.select(window).on('resize.updatesvg', updateWindow);
-		var chart_x = w_size.innerWidth || e_size.clientWidth || g_size.clientWidth;  
-		var chart_y = w_size.innerHeight || e_size.clientHeight || g_size.clientHeight; //
+		var width = w_size.innerWidth || e_size.clientWidth || g_size.clientWidth;  
+		var height = w_size.innerHeight || e_size.clientHeight || g_size.clientHeight; //
 
-var svg = d3.select("#chartDiv").append("svg"),
     margin = {top: 20, right: 50, bottom: 20, left: 50};
-
-
-	svg.attr("width", (0.6*chart_x - margin.right - margin.left));
-	svg.attr("height", 500)
-
- var width = svg.attr("width");
- var height = 500; //svg.attr("height");   
-
-var points_size = 10;
-var Axis_room = 50;
-
-
-var dataXRange = {min: 0, max: 6000};
-var dataYRange = {min: 0, max: max_y};
-
-
-var x_scale = d3.scaleLinear()
-    .domain([dataXRange.min, dataXRange.max])
-    .range([margin.left + points_size, width - points_size]);
-
-var y_scale = d3.scaleLinear()
-	.domain([dataYRange.min, dataYRange.max])
-    .range([height - dataYRange.max, 0 + points_size]);
-
-
-
-    d3.selection.prototype.moveToBack = function() {
-        return this.each(function() {
-            var firstChild = this.parentNode.firstChild;
-            if (firstChild) {
-                this.parentNode.insertBefore(this, firstChild);
-            }
-        });
-    };
-  
-  d3.selection.prototype.moveToFront = function() {
-    return this.each(function(){
-      this.parentNode.appendChild(this);
-    });
-  };
-  
-
-
 
 	var list_x = 50
 	var list_y = 100
@@ -513,8 +372,39 @@ var y_scale = d3.scaleLinear()
 	var explanation_width = 580
 	var frame_height = height - 100
 	var result_height = 100
-	
-	var explanation_title = svg.append("g").append("text").attr("class","explanation_title")
+
+	var area = d3.line()
+	  .x(function(d) {
+	      if ( (Math.abs(d[0] - x_old) > 1) | (Math.abs(d[1] - y_old) > 1) ){
+	        x_old = d[0];
+	        y_old = d[1];
+	        if (inkColor == "#1f77b4"){
+	          highligh_data.push([d[0],d[1],0,0]);
+	        } else{
+	          highligh_data.push([0,0,d[0],d[1]]);
+	        }
+	      }
+	      return d[0]; })
+	  .y(function(d) { return d[1];});
+
+
+	var highlighter = d3.select("#img_box") // Pixel highlighter
+		.call(d3.drag()
+			.on("start", dragstarted)
+		    .on("drag", dragged)
+		    .on("end", dragended));
+
+	// var highlighter = d3.select("#img_box")
+	// 						.append('rect')
+	// 					    .attr('x', 0)
+	// 					    .attr('y', 0)
+	// 					    .attr('width', 224)
+	// 					    .attr('height', 224)
+	// 					    .style('fill', 'white')
+	// 					    .call(draw)   // Line highlighter
+
+
+	var explanation_title = d3.select("#panel").append("g").append("text").attr("class","explanation_title")
 			  .style("font-weight", "bold")
 			  .style("font-size", "15px")
 			  .text("Please highlight any words related to \""+folder_name.toString()+"\" topic in this Article:")
@@ -522,22 +412,21 @@ var y_scale = d3.scaleLinear()
 			  .attr("x", explanation_x)
 			  .attr("y", explanation_y);
 
-	var explanation_frame = svg.append("g").append("rect").attr("class","explanation_frame")
-					.attr("x", explanation_x)
-					.attr("y", explanation_y)
-					.attr("rx", 5)
-					.attr("ry", 5)
-					.attr("width", explanation_width)
-					.attr("height", explanation_height)
-					.attr("fill", "white")
-					.style("fill-opacity",1)
-					.style("stroke","gray")
-					.style("stroke-opacity",0.5);
+	// var explanation_frame = svg.append("g").append("rect").attr("class","explanation_frame")
+	// 				.attr("x", explanation_x)
+	// 				.attr("y", explanation_y)
+	// 				.attr("rx", 5)
+	// 				.attr("ry", 5)
+	// 				.attr("width", explanation_width)
+	// 				.attr("height", explanation_height)
+	// 				.attr("fill", "white")
+	// 				.style("fill-opacity",0.8)
+	// 				.style("stroke","gray")
+	// 				.style("stroke-opacity",0.5);
 
 
 txtfilename();
-// nextArticle();
-updateWindow();
+// updateWindow();
 
 function updateWindow(){
 							 
@@ -550,18 +439,18 @@ function updateWindow(){
 		explanation_width = width * 0.8;
 		explanation_x = width * 0.09;
 	
-		svg.attr("width", width);
-		svg.attr("height", height).attr("x", explanation_x);
+		// svg.attr("width", width);
+		// svg.attr("height", height).attr("x", explanation_x);
 
-		explanation_frame.attr("width", explanation_width)
-						.attr("x", explanation_x)
-						.attr("y", explanation_y);
+		// explanation_frame.attr("width", explanation_width)
+		// 				.attr("x", explanation_x)
+		// 				.attr("y", explanation_y);
 
-		explanation_title.attr("x", explanation_x)
-						.attr("y", explanation_y - 20);
+		// explanation_title.attr("x", explanation_x)
+		// 				.attr("y", explanation_y - 20);
 		
-		svg.selectAll(".explanation_frame").attr("height", height); //(3*next_line + line_counter * next_line));
-		svg.attr("height", height + 100); //y_pos
-		showText(1);
+		// svg.selectAll(".explanation_frame").attr("height", height); //(3*next_line + line_counter * next_line));
+		// svg.attr("height", height + 100); //y_pos
+		// showText(1);
 	}
 	

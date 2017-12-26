@@ -38,24 +38,24 @@
       </b>
      
       <form id="category" action="">
-        <input type="radio" name="category" value="comp.graphics"> comp.graphics<br>
-        <input type="radio" name="category" value="comp.os.ms-windows.misc"> comp.os.ms-windows.misc<br>
-        <input type="radio" name="category" value="comp.sys.ibm.pc.hardware"> comp.sys.ibm.pc.hardware <br>
-        <input type="radio" name="category" value="comp.windows.x"> comp.windows.x<br>
-        <input type="radio" name="category" value="rec.autos"> rec.autos <br>
-        <input type="radio" name="category" value="rec.sport.baseball"> rec.sport.baseball<br>
-        <input type="radio" name="category" value="rec.sport.hockey"> rec.sport.hockey<br>
-        <input type="radio" name="category" value="sci.crypt"> sci.crypt<br>
+        <input type="radio" name="category" value="comp.graphics" disabled> comp.graphics<br>
+        <input type="radio" name="category" value="comp.os.ms-windows.misc" disabled> comp.os.ms-windows.misc<br>
+        <input type="radio" name="category" value="comp.sys.ibm.pc.hardware" disabled> comp.sys.ibm.pc.hardware <br>
+        <input type="radio" name="category" value="comp.windows.x" disabled> comp.windows.x<br>
+        <input type="radio" name="category" value="rec.autos" disabled> rec.autos <br>
+        <input type="radio" name="category" value="rec.sport.baseball" disabled> rec.sport.baseball<br>
+        <input type="radio" name="category" value="rec.sport.hockey" disabled> rec.sport.hockey<br>
+        <input type="radio" name="category" value="sci.crypt" disabled> sci.crypt<br>
         <input type="radio" name="category" value="sci.electronics"> sci.electronics<br>
         <input type="radio" name="category" value="sci.med"> sci.med<br>
-        <input type="radio" name="category" value="sci.space"> sci.space<br>
-        <input type="radio" name="category" value="misc.forsale"> misc.forsale<br>
-        <input type="radio" name="category" value="talk.politics.misc"> talk.politics.misc<br>
-        <input type="radio" name="category" value="talk.politics.guns"> talk.politics.guns<br>
-        <input type="radio" name="category" value="talk.politics.mideast"> talk.politics.mideast<br>
-        <input type="radio" name="category" value="talk.religion.misc"> talk.religion.misc<br>
-        <input type="radio" name="category" value="alt.atheism"> alt.atheism<br>
-        <input type="radio" name="category" value="soc.religion.christian"> soc.religion.christian<br>
+        <input type="radio" name="category" value="sci.space" disabled> sci.space<br>
+        <input type="radio" name="category" value="misc.forsale" disabled> misc.forsale<br>
+        <input type="radio" name="category" value="talk.politics.misc" disabled> talk.politics.misc<br>
+        <input type="radio" name="category" value="talk.politics.guns" disabled> talk.politics.guns<br>
+        <input type="radio" name="category" value="talk.politics.mideast" disabled> talk.politics.mideast<br>
+        <input type="radio" name="category" value="talk.religion.misc" disabled> talk.religion.misc<br>
+        <input type="radio" name="category" value="alt.atheism" disabled> alt.atheism<br>
+        <input type="radio" name="category" value="soc.religion.christian" disabled> soc.religion.christian<br>
       <!-- </form> -->
       </br>
       </br>
@@ -67,8 +67,8 @@
         </br>
       <!-- <form id="category" action=""> -->
         <input type="radio" id=img1 name="category" value="ImageNet"> ImageNet<br>
-        <input type="radio" id=img2 name="category" value="COCO"> COCO<br>
-        <input type="radio" id=img3 name="category" value="VisualGenome"> Visual Genome<br>
+        <input type="radio" id=img2 name="category" value="COCO" disabled> COCO<br>
+        <input type="radio" id=img3 name="category" value="VisualGenome" disabled> Visual Genome<br>
       </form>
       </br>
       </br>
@@ -88,7 +88,8 @@
     // document.getElementById("img1").disabled = true;
 
 
-    var user_select = "sci.electronics"
+    // var user_select = "sci.electronics"
+    var user_select = "ImageNet"
 
     function read_radio(){
       var radios = document.getElementsByName('category');
