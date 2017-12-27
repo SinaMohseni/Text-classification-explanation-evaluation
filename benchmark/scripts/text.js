@@ -52,7 +52,7 @@ function txtfilename(){
 	            // if ( val.match(/\.(gif)$/) == 0){
 	            	this_file = val.split("");
 	            	if (( !isNaN(parseInt(this_file.pop(), 10)) )){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){
-	            		txtfiles.push(val) // txtfiles.push(folder+val)
+	            		txtfiles.push(val)//txtfiles.push(val) // txtfiles.push(folder+val)
 	            	}
 	            // }
 	        });

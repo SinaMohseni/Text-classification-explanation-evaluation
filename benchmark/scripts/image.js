@@ -72,9 +72,11 @@ function txtfilename(){
 	    success: function (data) {
 	        $(data).find("a").attr("href", function (i, val) {
 	            	this_file = val.split("");
-	            	// if ( (this_file.pop() == "g") & (this_file.pop() == "n") & (this_file.pop() == "p") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
+	            	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
+	            	// this_file.pop()
+	            	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
 	            		txtfiles.push(val) // txtfiles.push(folder+val)
-	            	// }
+	            	}
 	        });
 	        console.log(txtfiles)
 	        total_doc = txtfiles.length;
@@ -95,11 +97,15 @@ function nextImage() {
 			image_title();
 			
 			d3.selectAll('path.line').remove();
+			highligh_data = []
   			ct =0;
 
 			break;
 		}
 	}
+
+	
+
 }
 
 function lastImage() {
@@ -112,10 +118,13 @@ function lastImage() {
 	  		showImage(this_article, 0);
 
 	  		d3.selectAll('path.line').remove();
+	  		highligh_data = []
   			ct =0;
 
 	 		doc_num -= 1;
 			image_title();
+
+
 
 }
 
@@ -178,43 +187,130 @@ var ct = 0;
 var str = "line"
 var first_point;
 
+	// var area = d3.line()
+	//   .curve(d3.curveBasis)
+	//   .x(function(d) {
+	//       if ( (Math.abs(d[0] - x_old) > 1) | (Math.abs(d[1] - y_old) > 1) ){
+	//         x_old = d[0];
+	//         y_old = d[1];
+	//         if (inkColor == "#1f77b4"){
+	//           highligh_data.push([d[0],d[1],0,0]);
+	//         } else{
+	//           highligh_data.push([0,0,d[0],d[1]]);
+	//         }
+	//       }
+	//       return d[0]; })
+	//   .y(function(d) { return d[1];});
+
+
+	// var highlighter = d3.select("#img_box") // Pixel highlighter
+	// 	.call(d3.drag()
+	// 		.on("start", dragstarted)
+	// 	    .on("drag", dragged)
+	// 	    .on("end", dragended));
+
+// function dragstarted() {
+
+//   xy0 = d3.mouse(this);                     
+//   first_point = xy0;
+  
+//   path = highlighter.append("path").datum([xy0, xy0])
+//   		  .attr("id", str.concat(ct) )
+//   		  .attr("class","line")
+//   		  .style("stroke", inkColor)
+//           .style("opacity", 1)
+//           .style("stroke-width", 2 + "px")
+//           .style("stroke-linejoin", "round")
+//           .style("fill", function(){if (fill_checkbox == 1) return inkColor; else return "none"; })
+//           .style("fill-opacity",0.3);
+//           ct++;
+// }
+
+// function dragged() {
+//   d = d3.mouse(this)
+
+//   path.datum().push(d3.mouse(this));
+//   path.attr("d", area);
+// }
+
+// function dragended() {
+//   path.datum().push(first_point);
+//   path.attr("d", area); 
+//   path = null;
+// }
+
+
+
+var line = d3.line()
+    .curve(d3.curveBasis);
+
+var svg = d3.select("#img_box")
+    .call(d3.drag()
+        .container(function() { return this; })
+        .subject(function() { var p = [d3.event.x, d3.event.y]; return [p, p]; })
+        .on("start", dragstarted));
+
 function dragstarted() {
 
-  xy0 = d3.mouse(this);                     
-  first_point = xy0;
-  
-  path = highlighter.append("path").datum([xy0, xy0])
-  		  .attr("id", str.concat(ct) )
-  		  .attr("class","line")
-  		  .style("stroke", inkColor)
-          .style("opacity", 1)
-          .style("stroke-width", 2 + "px")
-          .style("stroke-linejoin", "round")
-          .style("fill", function(){if (fill_checkbox == 1) return inkColor; else return "none"; })
-          .style("fill-opacity",0.3);
-          ct++;
+	xy0 = d3.mouse(this);                     
+    first_point = xy0;
+
+  var d = d3.event.subject,
+      active = svg.append("path").datum(d)
+      .attr("id", str.concat(ct) )
+	  .attr("class","line")
+      .style("stroke", inkColor)
+      .style("opacity", 1)
+      .style("stroke-width", 2 + "px")
+      .style("stroke-linejoin", "round")
+      .style("fill", function(){if (fill_checkbox == 1) return inkColor; else return "none"; })
+      .style("fill-opacity",0.3),
+      x0 = d3.event.x,
+      y0 = d3.event.y;
+
+      ct++;
+
+  d3.event.on("drag", function() {
+    var x1 = d3.event.x,
+        y1 = d3.event.y,
+        dx = x1 - x0,
+        dy = y1 - y0;
+
+    if (dx * dx + dy * dy > 50){
+		d.push([x0 = x1, y0 = y1]);
+
+    	if (inkColor == "#1f77b4"){
+          highligh_data.push([d[0],d[1],0,0]);
+        } else{
+          highligh_data.push([0,0,d[0],d[1]]);
+        }
+    } 
+    else d[d.length - 1] = [x1, y1];
+    active.attr("d", line);
+  });
+
+	d3.event.on("end", function(){
+		d.push(first_point);
+		if (inkColor == "#1f77b4"){
+          highligh_data.push([d[0],d[1],0,0]);
+        } else {
+          highligh_data.push([0,0,d[0],d[1]]);
+        }
+        active.attr("d", line);
+	});
+
 }
 
-function dragged() {
 
-  console.log(first_point, d3.mouse(this))
-  path.datum().push(d3.mouse(this));
-  path.attr("d", area); 
-}
-
-function dragended() {
-  path.datum().push(first_point);
-  path.attr("d", area); 
-  path = null;
-}
     
-d3.select('#undo').on('click', function(){
-  ct--;
-  d3.select('path#'+str.concat(ct)).remove();
-});
+// d3.select('#undo').on('click', function(){
+//   ct--;
+//   d3.select('path#'+str.concat(ct)).remove();
+// });
 
 d3.select('#clear').on('click', function(){
   d3.selectAll('path.line').remove();
+  highligh_data = []
   ct =0;
 });
     
@@ -252,7 +348,7 @@ function saveIt(){
          dataString = infoArray.join(",");
          csvContent += index < highligh_data.length ? dataString+ "\n" : dataString;
     });
-    
+    console.log(csvContent)
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -260,7 +356,15 @@ function saveIt(){
     document.body.appendChild(link);  
 
     link.click(); 
-    highligh_data = []
+    
+
+
+ //    var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	// var a = document.createElement('a');
+	// a.href = 'data:' + jsonContent;
+	// a.download = 'results.json';
+	// a.innerHTML = 'End Study';
+	// a.click();
 
 }
 
@@ -271,37 +375,6 @@ function getWidthOfText(txt, fontname, fontsize){
     }
     getWidthOfText.ctx.font = fontsize + ' ' + fontname;
     return getWidthOfText.ctx.measureText(txt).width;
-}
-
-function draw(selection){
-    var xy0, 
-        path, 
-        keep = false, 
-        line = d3.line()
-                 .x(function(d){ return d[0]; })
-                 .y(function(d){ return d[1]; });
-
-    selection
-        .on('mousedown', function(){ 
-            keep = true;
-            xy0 = d3.mouse(this);
-            path = d3.select('svg')
-                     .append('path')
-                     .attr('d', line([xy0, xy0]))
-                     .style({'stroke': 'black', 'stroke-width': '1px'});
-        })
-        .on('mouseup', function(){ 
-            keep = false; 
-        })
-        .on('mousemove', function(){ 
-            if (keep) {
-                Line = line([xy0, d3.mouse(this).map(function(x){ return x - 1; })]);
-                console.log(Line);
-                path.attr("d", Line);
-  //               path.datum().push(d3.mouse(this));
-  // path.attr("d", area); 
-            }
-        });
 }
 
 function tooltip(d){
@@ -373,26 +446,6 @@ var w_size = window,
 	var frame_height = height - 100
 	var result_height = 100
 
-	var area = d3.line()
-	  .x(function(d) {
-	      if ( (Math.abs(d[0] - x_old) > 1) | (Math.abs(d[1] - y_old) > 1) ){
-	        x_old = d[0];
-	        y_old = d[1];
-	        if (inkColor == "#1f77b4"){
-	          highligh_data.push([d[0],d[1],0,0]);
-	        } else{
-	          highligh_data.push([0,0,d[0],d[1]]);
-	        }
-	      }
-	      return d[0]; })
-	  .y(function(d) { return d[1];});
-
-
-	var highlighter = d3.select("#img_box") // Pixel highlighter
-		.call(d3.drag()
-			.on("start", dragstarted)
-		    .on("drag", dragged)
-		    .on("end", dragended));
 
 	// var highlighter = d3.select("#img_box")
 	// 						.append('rect')
