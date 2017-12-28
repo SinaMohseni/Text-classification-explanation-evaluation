@@ -1,4 +1,4 @@
-highligh_data = []
+highlight_data = []
 var inkColor = "red" // "#1f77b4"
 var imgIndex = '';
 var fill_checkbox = 1
@@ -55,7 +55,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 
 var txtfiles = []
 var readfiles = []
-var articleName;
+var imageName;
 var folder_name = "ImageNet"
 var call_once = 0;
 var total_doc
@@ -75,10 +75,10 @@ function txtfilename(){
 	            	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
 	            	// this_file.pop()
 	            	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
-	            		txtfiles.push(val) // txtfiles.push(folder+val)
+	            		txtfiles.push(folder+val) // txtfiles.push(folder+val)
 	            	}
 	        });
-	        console.log(txtfiles)
+	        // console.log(txtfiles)
 	        total_doc = txtfiles.length;
 			nextImage();
 	    }
@@ -87,17 +87,21 @@ function txtfilename(){
 }
 
 function nextImage() {
+
+	if ((ct > 0) & (saved == 0)) save_json();
+
 	for (var i = 0; i < txtfiles.length ; i ++){
 	  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
 			readfiles.push(txtfiles[i])
 			
 			showImage(txtfiles[i], 0);
 
+			imageName = txtfiles[i].split("/").pop();
 			doc_num =i + 1;
 			image_title();
 			
 			d3.selectAll('path.line').remove();
-			highligh_data = []
+			highlight_data = []
   			ct =0;
 
 			break;
@@ -109,16 +113,19 @@ function nextImage() {
 }
 
 function lastImage() {
+			
+			if ((ct > 0) & (saved == 0)) save_json();
 
 	  		readfiles.pop()
 	  		this_article = readfiles.pop()
 	  		readfiles.push(this_article)
-	  		console.log(this_article)
+	  		// console.log(this_article)
 
 	  		showImage(this_article, 0);
+	  		imageName = this_article.split("/").pop();
 
 	  		d3.selectAll('path.line').remove();
-	  		highligh_data = []
+	  		highlight_data = []
   			ct =0;
 
 	 		doc_num -= 1;
@@ -131,16 +138,6 @@ function lastImage() {
 var words_hash = []; 
 var words_array = [];
 var results_json = [];
-
-function WriteFile(){
-
-	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
-	var a = document.createElement('a');
-	a.href = 'data:' + jsonContent;
-	a.download = 'results.json';
-	a.innerHTML = 'End Study';
-	a.click();
-}
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -160,86 +157,34 @@ function getCookie(cname) {
 
 
 function image_title(){
-
-	explanation_title.text("Please highlight any words related to \""+folder_name.toString()+"\" topic in this Article: ( "+ doc_num+" / "+total_doc+ " )")
+	obj = imageName.toString().split(".")[0].slice(0,-1)
+	explanation_title.text("Please highlight the area related to \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
 }
 
 function showImage(image_name, update_txt) {
 
   var this_img = new Image();  
 
-  this_img.src = image_name
+  this_img.src = image_name;
   $(".img_exp").attr("xlink:href",image_name);
 
   this_img.onload = function(){
 
-			  	var img_width = this_img.height;//clientWidth;
-				var img_height = this_img.width;//clientHeight;
-			console.log(img_width, img_height)
-            $(".img_box").attr("height",this_img.height); //"100%");
-            $(".img_box").attr("width",this_img.width); //"100%");  
+			  	var img_width = this_img.height;
+				var img_height = this_img.width;
+			console.log("image size ",img_width, img_height);
+            $(".img_box").attr("height",this_img.height);
+            $(".img_box").attr("width",this_img.width);
             $(".img_box").attr("margin","0 auto");
             }
+
 }
 
 
 var ct = 0;
 var str = "line"
 var first_point;
-
-	// var area = d3.line()
-	//   .curve(d3.curveBasis)
-	//   .x(function(d) {
-	//       if ( (Math.abs(d[0] - x_old) > 1) | (Math.abs(d[1] - y_old) > 1) ){
-	//         x_old = d[0];
-	//         y_old = d[1];
-	//         if (inkColor == "#1f77b4"){
-	//           highligh_data.push([d[0],d[1],0,0]);
-	//         } else{
-	//           highligh_data.push([0,0,d[0],d[1]]);
-	//         }
-	//       }
-	//       return d[0]; })
-	//   .y(function(d) { return d[1];});
-
-
-	// var highlighter = d3.select("#img_box") // Pixel highlighter
-	// 	.call(d3.drag()
-	// 		.on("start", dragstarted)
-	// 	    .on("drag", dragged)
-	// 	    .on("end", dragended));
-
-// function dragstarted() {
-
-//   xy0 = d3.mouse(this);                     
-//   first_point = xy0;
-  
-//   path = highlighter.append("path").datum([xy0, xy0])
-//   		  .attr("id", str.concat(ct) )
-//   		  .attr("class","line")
-//   		  .style("stroke", inkColor)
-//           .style("opacity", 1)
-//           .style("stroke-width", 2 + "px")
-//           .style("stroke-linejoin", "round")
-//           .style("fill", function(){if (fill_checkbox == 1) return inkColor; else return "none"; })
-//           .style("fill-opacity",0.3);
-//           ct++;
-// }
-
-// function dragged() {
-//   d = d3.mouse(this)
-
-//   path.datum().push(d3.mouse(this));
-//   path.attr("d", area);
-// }
-
-// function dragended() {
-//   path.datum().push(first_point);
-//   path.attr("d", area); 
-//   path = null;
-// }
-
-
+var saved = 1;
 
 var line = d3.line()
     .curve(d3.curveBasis);
@@ -251,6 +196,10 @@ var svg = d3.select("#img_box")
         .on("start", dragstarted));
 
 function dragstarted() {
+
+	saved = 0;
+	ct++;
+	highlight_data.push([])
 
 	xy0 = d3.mouse(this);                     
     first_point = xy0;
@@ -268,22 +217,15 @@ function dragstarted() {
       x0 = d3.event.x,
       y0 = d3.event.y;
 
-      ct++;
-
   d3.event.on("drag", function() {
     var x1 = d3.event.x,
         y1 = d3.event.y,
         dx = x1 - x0,
         dy = y1 - y0;
 
-    if (dx * dx + dy * dy > 50){
+    if (dx * dx + dy * dy > 20){
 		d.push([x0 = x1, y0 = y1]);
-
-    	if (inkColor == "#1f77b4"){
-          highligh_data.push([d[0],d[1],0,0]);
-        } else{
-          highligh_data.push([0,0,d[0],d[1]]);
-        }
+        highlight_data[ct-1].push([x1,y1]);
     } 
     else d[d.length - 1] = [x1, y1];
     active.attr("d", line);
@@ -291,11 +233,8 @@ function dragstarted() {
 
 	d3.event.on("end", function(){
 		d.push(first_point);
-		if (inkColor == "#1f77b4"){
-          highligh_data.push([d[0],d[1],0,0]);
-        } else {
-          highligh_data.push([0,0,d[0],d[1]]);
-        }
+        highlight_data[ct-1].push([first_point[0],first_point[1]]);
+        // console.log(highlight_data)
         active.attr("d", line);
 	});
 
@@ -310,7 +249,7 @@ function dragstarted() {
 
 d3.select('#clear').on('click', function(){
   d3.selectAll('path.line').remove();
-  highligh_data = []
+  highlight_data = []
   ct =0;
 });
     
@@ -341,32 +280,45 @@ d3.select('#palette')
   }
 
 
-function saveIt(){  
-    
-    var csvContent = "data:text/csv;charset=utf-8,";
-    highligh_data.forEach(function(infoArray, index){   
-         dataString = infoArray.join(",");
-         csvContent += index < highligh_data.length ? dataString+ "\n" : dataString;
-    });
-    console.log(csvContent)
-    var encodedUri = encodeURI(csvContent);
-    var link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "Retraining_data.csv");
-    document.body.appendChild(link);  
+function save_json(){  
 
-    link.click(); 
-    
-
-
- //    var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
-	// var a = document.createElement('a');
-	// a.href = 'data:' + jsonContent;
-	// a.download = 'results.json';
-	// a.innerHTML = 'End Study';
-	// a.click();
-
+	
+	for (var i=0;i<highlight_data.length;i++){
+		results_json.push({image: imageName, contour: i+1, points: highlight_data[i]})
+		// console.log(results_json)
+	}
+	saved = 1;
 }
+
+function WriteFile(){
+
+	if (saved == 0) save_json();
+
+	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	var a = document.createElement('a');
+	a.href = 'data:' + jsonContent;
+	a.download = 'results.json';
+	a.innerHTML = 'End Study';
+	a.click();
+}
+
+// function saveIt(){  
+    
+//     var csvContent = "data:text/csv;charset=utf-8,";
+//     highlight_data.forEach(function(infoArray, index){   
+//          dataString = infoArray.join(",");
+//          csvContent += index < highlight_data.length ? dataString+ "\n" : dataString;
+//     });
+//     console.log(csvContent)
+//     var encodedUri = encodeURI(csvContent);
+//     var link = document.createElement("a");
+//     link.setAttribute("href", encodedUri);
+//     link.setAttribute("download", "Retraining_data.csv");
+//     document.body.appendChild(link);  
+
+//     link.click(); 
+//     saved = 1;
+// }
 
 function getWidthOfText(txt, fontname, fontsize){
     if(getWidthOfText.c === undefined){

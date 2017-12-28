@@ -19,7 +19,7 @@
 <body>
    <div id="nextbutton" > <button onclick="nextImage()">Next Image</button> </div>
    <div id="backbutton" > <button onclick="lastImage()">Previous Image</button> </div>
-   <div id="exit_button" > <button onclick="saveIt()">End study</button> </div>
+   <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
 
   </br>
 
@@ -33,15 +33,15 @@
             <tr>
                 <div id='palette' style = "margin-top: 0%">
 
-                  <label>
+                  <!-- <label>
                     <input type="color" style="margin-left: 5%" onChange="changeColor(this)"> Palette
-                  </label>
-                  <label style="margin: 2%"> 
+                  </label> -->
+                  <!-- <label style="margin: 2%"> 
                     <input type="checkbox" autocomplete="off" id="fillarea" name="fillarea">Fill
-                    </label>
+                  </label> -->
                   <!-- <button id='undo' style="">Undo</button>    -->
-                  <button id='clear' style="margin: 2%">Clear</button>
-                  <button onclick="saveIt()">Download</button>
+                  <button id='clear' style="float:right; margin-right: 10%" >Clear</button>
+                  <!-- <button  onclick="saveIt()"  style="margin: 2%;">Download</button> -->
                 </div>    
             </tr>
             <tr>              
@@ -55,6 +55,10 @@
     <!-- </div> -->
 
   </div>
+
+  <div id="nextbutton" > <button onclick="nextImage()">Next Image</button> </div>
+   <div id="backbutton" > <button onclick="lastImage()">Previous Image</button> </div>
+   <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
   
   <script id= maincode src="./benchmark/scripts/image.js"></script> 
 </body>

@@ -52,7 +52,7 @@ function txtfilename(){
 	            // if ( val.match(/\.(gif)$/) == 0){
 	            	this_file = val.split("");
 	            	if (( !isNaN(parseInt(this_file.pop(), 10)) )){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){
-	            		txtfiles.push(val)//txtfiles.push(val) // txtfiles.push(folder+val)
+	            		txtfiles.push(folder+val)//txtfiles.push(val) // txtfiles.push(folder+val)
 	            	}
 	            // }
 	        });
@@ -79,9 +79,15 @@ function nextArticle() {
 			break;
 		}
 	}
+
+	if (saved == 0) save_json();
+	exp_data = [];
 }
 
 function lastArticle() {
+
+			if (saved == 0) save_json();
+			exp_data = [];
 
 	  		readfiles.pop()
 	  		this_article = readfiles.pop()
@@ -103,6 +109,17 @@ function lastArticle() {
 var words_hash = []; 
 var words_array = [];
 var results_json = [];
+var exp_data = []
+var saved = 1;
+
+function save_json(){  
+
+	// for (var i=0;i<exp_data.length;i++){
+		results_json.push({article: articleName, word: exp_data})
+		console.log(results_json)
+	// }
+	saved = 1;
+}
 
 function WriteFile(){
 
@@ -309,8 +326,10 @@ function showText(update_txt) {
 								svg.selectAll(".boxes-" + this_sample.toString())
 									.attr("fill","yellow")
 									.attr("opacity", 1);
-								console.log({article: articleName, word: d.word, action: "add"})
-								results_json.push({article: articleName, word: d.word, action: "add"})
+								// console.log({article: articleName, word: d.word, action: "add"})
+								// results_json.push({article: articleName, word: d.word, action: "add"})
+								saved = 0;
+								exp_data.push(d.word)
 							}
 							 window.getSelection().removeAllRanges();
 							 last_sample = this_sample 
@@ -332,8 +351,14 @@ function showText(update_txt) {
 									.attr("opacity", 0);
 								d.highlight = 0;
 								dragall = 0;
-								console.log({article: articleName, word: d.word, action: "remove"})
-								results_json.push({article: articleName, word: d.word, action: "remove"})
+								// console.log({article: articleName, word: d.word, action: "remove"})
+								// results_json.push({article: articleName, word: d.word, action: "remove"})
+								index = exp_data.indexOf(d.word);
+								if (index > -1) {
+								    exp_data.splice(index, 1);
+								}
+								// exp_data.push(d.word)
+								saved = 0
 
 							}else if (d.highlight == 2){
 								// svg.selectAll(".boxes-" + this_sample.toString())
@@ -346,8 +371,10 @@ function showText(update_txt) {
 								svg.selectAll(".boxes-" + this_sample.toString())
 									.attr("fill","yellow")
 									.attr("opacity", 1);
-									console.log({article: articleName, word: d.word, action: "add"})
-									results_json.push({article: articleName, word: d.word, action: "add"})
+									// console.log({article: articleName, word: d.word, action: "add"})
+									// results_json.push({article: articleName, word: d.word, action: "add"})
+									exp_data.push(d.word)
+									saved = 0
 							}
 							 window.getSelection().removeAllRanges();
 						// }else{
