@@ -64,7 +64,7 @@ var doc_num
 function txtfilename(){
 	
 	folder_name = getCookie("user_selection")
-	var folder = "data/"+ folder_name +"/";
+	var folder = "data/"+ folder_name +"_exp/";
 	var txtdoc = []
 	
 	$.ajax({
@@ -173,7 +173,7 @@ function getCookie(cname) {
 
 function image_title(){
 	obj = imageName.toString().split(".")[0].slice(0,-1)
-	explanation_title.text("Please highlight the area related to \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
+	explanation_title.text("Please rate how fine is the highlighted area of this image to explain \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
 }
 
 function showImage(image_name, update_txt) {
@@ -428,7 +428,7 @@ var w_size = window,
 	var explanation_title = d3.select("#panel").append("g").append("text").attr("class","explanation_title")
 			  .style("font-weight", "bold")
 			  .style("font-size", "15px")
-			  .text("Please highlight any words related to \""+folder_name.toString()+"\" topic in this Article:")
+			  .text("Please rate how fine is the highlighted area of this image to explain the object in this image:")
 			  .attr('dy','0.35em')
 			  .attr("x", explanation_x)
 			  .attr("y", explanation_y);

@@ -42,7 +42,7 @@ function txtfilename(){
 	
 	folder_name = getCookie("user_selection")
 
-	var folder = "benchmark/data/20news-bydate-test/"+ folder_name +"/";
+	var folder = "data/20news-bydate-test/"+ folder_name +"/";
 	var txtdoc = []
 	
 	$.ajax({
@@ -52,7 +52,7 @@ function txtfilename(){
 	            // if ( val.match(/\.(gif)$/) == 0){
 	            	this_file = val.split("");
 	            	if (( !isNaN(parseInt(this_file.pop(), 10)) )){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){
-	            		txtfiles.push(folder+val)//txtfiles.push(val) // txtfiles.push(folder+val)
+	            		txtfiles.push(val)//txtfiles.push(val) // txtfiles.push(folder+val)
 	            	}
 	            // }
 	        });
@@ -62,6 +62,22 @@ function txtfilename(){
 	});
 
 }
+
+
+
+function start_over(){
+
+    if (confirm("Are you sure you want to start over?") == true) {
+	    results_json  = []
+		exp_data = []
+		txtfiles = []
+		saved = 1;
+		readfiles = []
+		txtfilename();
+		location.href="../expevl.html"
+	}
+}
+
 
 function nextArticle() {
 	for (var i = 0; i < txtfiles.length ; i ++){
@@ -122,6 +138,8 @@ function save_json(){
 }
 
 function WriteFile(){
+
+	if (saved == 0) save_json()
 
 	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
 	var a = document.createElement('a');
