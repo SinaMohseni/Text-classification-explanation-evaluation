@@ -75,7 +75,7 @@ function txtfilename(){
 	            	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
 	            	// this_file.pop()
 	            	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
-	            		txtfiles.push(val) // txtfiles.push(folder+val)
+	            		txtfiles.push(folder+val) // txtfiles.push(folder+val)
 	            	}
 	        });
 	        console.log(txtfiles)

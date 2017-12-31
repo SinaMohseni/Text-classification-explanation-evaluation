@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+
+<head>
+<title>Explainable Machine Learning (XAI)</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" href="./benchmark/styles/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+ 
+</head>
+
+
+
+
+
+<body>
+   <div id="nextbutton" > <button onclick="nextArticle()">Next Article</button> </div>
+   <div id="backbutton" > <button onclick="lastArticle()">Previous Article</button> </div>
+   <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
+
+  </br>
+
+  <div id="chartDiv" ></div>
+
+  <div>
+        <p> Comment box: </p>
+        <textarea id="TextArea" name="S1" rows="4"></textarea>   <!-- cols="95"  -->
+  </div>
+
+  </br>
+  <div id="nextbutton2" > <button onclick="nextArticle()">Next Article</button> </div>
+  <div id="backbutton2" > <button onclick="lastArticle()">Previous Article</button> </div>
+  <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
+  </br>
+  <script id= maincode src="./benchmark/scripts/text.js"></script>   
+</body>
+</html>

@@ -260,14 +260,36 @@ div.absolute {
   /*display: table-cell;*/
   display: block;
   margin: 0 auto;
-  max-width: 100% ;
+  max-width: 100%;
   /*margin-left: 40%;*/
   /*margin-top: 5%;*/
 /*  padding: 20px;*/
   margin-bottom: 5%;
   margin-top: 5%;
 }
+/*
+#image{
+  width: 50%;
+}*/
+img {
+    width: 80%;
+    margin-left: 10%;
+    height: auto;
+}
 
+#test_img{
+  display: inline-block;
+  /*margin-left: 20%;*/
+  /*padding-left: 200px;*/
+}
+
+#img_exp{
+  display: inline-block;
+  margin-left: 20%;
+  max-width: 400px;
+  /*width: 400px;*/
+  padding-left: 200px;
+}
 
 
 div.stars {
