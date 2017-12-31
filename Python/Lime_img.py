@@ -117,7 +117,6 @@ def read_data(img_folder, json_file):
     return img_exp
         
 
-
 def evaluate(img_folder,res_folder):
 
     img_number = 1
