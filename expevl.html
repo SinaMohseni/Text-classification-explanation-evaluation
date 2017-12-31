@@ -80,6 +80,7 @@
       <!-- <form id="category" action=""> -->
         <input type="radio" name="category" value="weak"> Group 1<br>
         <input type="radio" name="category" value="robust"> Group 2<br>
+        <input type="radio" name="category" value="quiz"> Quiz<br>
       </form>
       </br></br></br></br></br></br>
         <h1> Participant's Task: </h1>
@@ -103,8 +104,8 @@
 	            task_txt = "In this study you will see 100 images from different objects and you need to highlight the area of the image which explains the the topic in the title"
 	            document.getElementById("task").innerHTML = task_txt;
 	        }
-	        else if ((this.value == 'weak') | (this.value == 'robust')) {
-	            task_txt = "In this study you will see 100 images from two topics. The images are highlighted where different objects and you need to highlight the area of the image which explains the the topic in the title" 
+	        else if ((this.value == 'weak') | (this.value == 'robust') | (this.value == 'quiz')) {
+	            task_txt = "---" 
 	            document.getElementById("task").innerHTML = task_txt;
 	        }else{
 	        	task_txt = "In this study you will see 100 articles all from one topic and you need to highlight the words in the article which explains the article is related to that topic"

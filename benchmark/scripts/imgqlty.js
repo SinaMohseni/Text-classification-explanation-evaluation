@@ -78,7 +78,7 @@ function txtfilename(){
 	            		txtfiles.push(val) // txtfiles.push(folder+val)
 	            	}
 	        });
-	        console.log(txtfiles)
+	        // console.log(txtfiles)
 	        total_doc = txtfiles.length;
 			nextImage();
 	    }
@@ -103,13 +103,16 @@ function start_over(){
 
 function nextImage() {
 
-	if ((ct > 0) & (saved == 0)) save_json();
+	save_json();     // if ((ct > 0) & (saved == 0)) save_json();
+
+    $('input[name=star]').prop('checked', false);
 
 	for (var i = 0; i < txtfiles.length ; i ++){
 	  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
 			readfiles.push(txtfiles[i])
 			
 			showImage(txtfiles[i], 0);
+            rating = 0; 
 
 			imageName = txtfiles[i].split("/").pop();
 			doc_num =i + 1;
@@ -129,7 +132,10 @@ function nextImage() {
 
 function lastImage() {
 			
-			if ((ct > 0) & (saved == 0)) save_json();
+			save_json();       // if ((ct > 0) & (saved == 0)) save_json();
+
+            $('input[name=star]').prop('checked', false);
+            rating = 0;
 
 	  		readfiles.pop()
 	  		this_article = readfiles.pop()
@@ -172,26 +178,39 @@ function getCookie(cname) {
 
 
 function image_title(){
-	obj = imageName.toString().split(".")[0].slice(0,-1)
-	explanation_title.text("Please rate how fine is the highlighted area of this image to explain \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
+    obj = imageName.toString().split(".")[0].slice(0,-1)
+    explanation_title.text("Please rate how accurate the machine learning algorithm can identify the object in this image: ( "+ doc_num+" / "+total_doc+ " )");
 }
 
 function showImage(image_name, update_txt) {
 
-  var this_img = new Image();  
+  // var this_img = new Image();  
 
-  this_img.src = image_name;
-  $(".img_exp").attr("xlink:href",image_name);
+  // this_img.src = image_name;
+  // $(".img_exp1").attr("xlink:href",image_name);
 
-  this_img.onload = function(){
+  // this_img.onload = function(){
 
-			  	var img_width = this_img.height;
-				var img_height = this_img.width;
-			// console.log("image size ",img_width, img_height);
-            $(".img_box").attr("height",this_img.height);
-            $(".img_box").attr("width",this_img.width);
-            $(".img_box").attr("margin","0 auto");
-            }
+		// 	  	var img_width = this_img.height;
+		// 		var img_height = this_img.width;
+
+  //           $(".img_box1").attr("height",this_img.height);
+  //           $(".img_box1").attr("width","800px"); //this_img.width);
+  //           $(".img_exp1").attr("margin-left","10%");
+  //           $(".img_box1").attr("margin","100px");
+  //           $(".img_box1").attr("padding-left","200px");
+  //           $(".img_exp1").attr("padding-left","200px");
+  //           $(".img_exp1").attr("display","block");
+  //           $(".img_exp1").attr("width","400px");
+  //           $(".img_exp1").attr("margin-left","10%");
+
+            
+  //           }
+  
+            var folder = "data/"+ folder_name +"_exp/";
+            // document.getElementById("test_img").src= folder+image_name;
+            document.getElementById("test_img").src= ".."+image_name;
+
 
 }
 
@@ -294,21 +313,30 @@ d3.select('#palette')
     inkColor = color
   }
 
+var rating = 0;
+
+$(document).ready(function() {
+  $('input[type=radio][name=star]').change(function() {
+     // confirm(this.value)
+     rating = this.value
+     // console.log(rating)
+  });
+});
 
 
 function save_json(){  
 
 	
-	for (var i=0;i<highlight_data.length;i++){
-		results_json.push({image: imageName, contour: i+1, points: highlight_data[i]})
-		// console.log(results_json)
-	}
+	// for (var i=0;i<highlight_data.length;i++){
+	if (rating > 0) results_json.push({image: imageName, rating: rating})// contour: i+1, points: highlight_data[i]})
+	// console.log("rate", rating)
+	// }
 	saved = 1;
 }
 
 function WriteFile(){
-
-	if (saved == 0) save_json();
+    
+	save_json();
 
 	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
 	var a = document.createElement('a');
