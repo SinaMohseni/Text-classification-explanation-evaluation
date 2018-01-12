@@ -28,6 +28,10 @@ import numpy as np
 # import numpy
 from matplotlib import pyplot as plt
 
+from skimage.io import imread
+from skimage.segmentation import mark_boundaries
+import scipy.misc
+
 
 def read_data(img_folder, json_file):
 
@@ -41,10 +45,15 @@ def read_data(img_folder, json_file):
         usr_img =  an_img["points"]
 
         img_exp = img_process(jpg_file,usr_img)
+
+        write_user_exp(img_exp, an_img["image"])
         
         result.append({"image": 0,"recall": 0,"precision": 0,"accuracy": 0})
 
     return result
+
+def write_user_exp(img_exp, jpg_file):
+    scipy.misc.imsave('./exp_user/exp_'+jpg_file+ '.jpg', img_exp)
 
 def img_process(jpg_file,usr_img):
     
@@ -77,20 +86,19 @@ def img_process(jpg_file,usr_img):
 
     contours = [np.array([usr_img], dtype=np.int32)]
     
-    cv2.drawContours(exp_img, [contours[0]], 0, (255),-1)
-    cv2.drawContours(blank_image, [contours[0]], 0, (255),-1)
-
+    cv2.drawContours(exp_img, [contours[0]], 0, (255),3)    # 1: Line thinckness 
+    cv2.drawContours(blank_image, [contours[0]], 0, (255),-1)   # -1: Fill the controur 
     
     # kernel = np.ones((2,2),np.uint8)
     # dilation = cv2.dilate(blank_image,kernel,iterations = 1)
     # kernel = np.ones((20,20),np.uint8)
     # closing = cv2.morphologyEx(blank_image, cv2.MORPH_CLOSE, kernel)
 
-    cv2.imshow('image',blank_image)   
-    cv2.waitKey(0)                
-    cv2.destroyAllWindows()
+    # cv2.imshow('image',exp_img)   
+    # cv2.waitKey(0)                
+    # cv2.destroyAllWindows()
 
-    return 0
+    return exp_img
 
 def contour_img(jpg_file):
     
