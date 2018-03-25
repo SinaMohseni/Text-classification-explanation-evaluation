@@ -137,15 +137,13 @@
 
         function link_address(){
           folder_name = getCookie("user_selection")  
-          
-          
 
           if ((folder_name == "ImageNet") | (folder_name == "VisualGenome") | (folder_name == "COCO")) {
             location.reload();
             location.href='./expimg.html';   // feed-forward
-          }else if ((folder_name == "boston") | (folder_name == "rcvd") | (folder_name == "adult")) {
+          }else if ((folder_name == "recidivism") | (folder_name == "lendingclub") | (folder_name == "housing")) {
             location.reload();
-            location.href='./evltabular.html';   // feed-forward
+            location.href='./exptab.html';   // feed-forward
           }else if ((folder_name == 'quiz')) {
             location.reload();
             location.href='./expqlty.html';    
@@ -163,7 +161,6 @@
             location.href='./exptxt.html';   // feed-forward
           }
         }
-        
 
         function getCookie(cname) {
           var name = cname + "=";
