@@ -112,15 +112,16 @@ from sklearn.datasets import fetch_20newsgroups
 def org_20_newsgroup():
     # newsgroups_train = fetch_20newsgroups(subset='train')
     # newsgroups_test = fetch_20newsgroups(subset='test')
-    newsgroups_train = fetch_20newsgroups(subset='train', remove=('headers', 'footers', 'quotes'))
-    newsgroups_test = fetch_20newsgroups(subset='test',remove=('headers', 'footers', 'quotes'))
+    categories = ['sci.med', 'sci.electronics', 'talk.politics.guns', 'rec.autos' , 'sci.space']
+    newsgroups_train = fetch_20newsgroups(subset='train', categories = categories)# , remove=('headers', 'footers', 'quotes'))
+    newsgroups_test = fetch_20newsgroups(subset='test', categories = categories)#, remove=('headers', 'footers', 'quotes'))
     # making class names shorter
     print (newsgroups_train.target_names)
     class_names = [x.split('.')[-1] if 'misc' not in x else '.'.join(x.split('.')[-2:]) for x in newsgroups_train.target_names]
-    class_names[2] = 'ms-windows'
-    class_names[3] = 'pc.hardware'
-    class_names[4] = 'mac.hardware'
-    class_names[5] = 'computer.windows'
+    # class_names[2] = 'ms.windows'
+    # class_names[3] = 'pc.hardware'
+    # class_names[4] = 'mac.hardware'
+    # class_names[5] = 'computer.windows'
 
     print(','.join(class_names))
 
@@ -164,10 +165,11 @@ def org_20_newsgroup():
     ii = 0;
     jj = 0;
     idx_list = [];
-    my_targets = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    while (jj < 100):
-        if (my_targets[newsgroups_test.target[ii]] < 5):
-            text_file = open("./20news_test/no_header/"+str(jj)+"-"+class_names[newsgroups_test.target[ii]]+".txt", "w")
+    my_targets = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+    while (jj < 50):
+        if (my_targets[newsgroups_test.target[ii]] < 10):
+            text_file = open("./20news_test/org/"+str(jj)+" ("+str(ii)+")-"+class_names[newsgroups_test.target[ii]]+".txt", "w")
             text_file.write(newsgroups_test.data[ii])
             text_file.close();
             my_targets[newsgroups_test.target[ii]] += 1
@@ -177,22 +179,24 @@ def org_20_newsgroup():
         # print (ii, my_targets)
         pass
         
-    idx = 1
-    print('True class: %s' % class_names[newsgroups_test.target[idx]])
-    print('True class: %s' % newsgroups_test.filenames[idx])
-    idx = 2
-    print('True class: %s' % class_names[newsgroups_test.target[idx]])
-    print('True class: %s' % newsgroups_test.filenames[idx])
-    idx = 3
-    print('True class: %s' % class_names[newsgroups_test.target[idx]])
-    print('True class: %s' % newsgroups_test.filenames[idx])
-    idx = 4
-    print('True class: %s' % class_names[newsgroups_test.target[idx]])
-    print('True class: %s' % newsgroups_test.filenames[idx])
     idx = 5
-    print('True class: %s' % class_names[newsgroups_test.target[idx]])
-    print('True class: %s' % newsgroups_test.filenames[idx])
-    print('True class: %s' % newsgroups_test.target[idx])
+    # print ("target: ", newsgroups_test.target[idx])
+    # print ("file: ",newsgroups_test.filenames[idx])
+    # print('True class: %s' % class_names[newsgroups_test.target[idx]])
+    # print('True class: %s' % newsgroups_test.filenames[idx])
+    # idx = 2
+    # print('True class: %s' % class_names[newsgroups_test.target[idx]])
+    # print('True class: %s' % newsgroups_test.filenames[idx])
+    # idx = 3
+    # print('True class: %s' % class_names[newsgroups_test.target[idx]])
+    # print('True class: %s' % newsgroups_test.filenames[idx])
+    # idx = 4
+    # print('True class: %s' % class_names[newsgroups_test.target[idx]])
+    # print('True class: %s' % newsgroups_test.filenames[idx])
+    # idx = 5
+    # print('True class: %s' % class_names[newsgroups_test.target[idx]])
+    # print('True class: %s' % newsgroups_test.filenames[idx])
+    # print('True class: %s' % newsgroups_test.target[idx])
     # print('True class: %s' % newsgroups_test.data[idx])
 
     exp = explainer.explain_instance(newsgroups_test.data[idx], c.predict_proba, num_features=6, labels=[0])

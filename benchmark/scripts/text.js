@@ -89,12 +89,11 @@ function nextArticle() {
 	for (var i = 0; i < txtfiles.length ; i ++){
 	  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
 			readfiles.push(txtfiles[i])
-			
+			articleName = txtfiles[i].split("-")[1].split(".txt")[0]
+			// console.log(txtfiles[i])
 			jQuery.get(txtfiles[i], function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
 					output = data
 				 	showText(0);
-				 	articleName = txtfiles[i].split("/").pop().split(".")[0].split("-")[1]
-				 	// console.log(articleName)
 				 	// console.log(output)
 			});
 				doc_num =i + 1;
@@ -115,13 +114,13 @@ function lastArticle() {
 	  		readfiles.pop()
 	  		this_article = readfiles.pop()
 	  		readfiles.push(this_article)
-	  		// console.log("file ", this_article)
+	  		articleName = this_article.split("/").pop().split("-")[1].split(".txt")[0]
+			// console.log(this_article)
 	  		this_file = this_article.split("");
 			if (this_file.pop() == "t"){
 				jQuery.get(this_article, function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
 						output = data
 					 	showText(0);
-					 	articleName = this_article.split("/").pop().split(".")[0].split("-")[1]
 				});
 			}
 	 		doc_num -= 1;
