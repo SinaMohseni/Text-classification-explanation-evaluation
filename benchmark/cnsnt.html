@@ -7,9 +7,6 @@
 <title>Explainable Machine Learning (XAI)</title>
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <link rel="stylesheet" href="./styles/style.css">
-<!--   <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-
 </head>
 
 
@@ -131,27 +128,39 @@
   </div>
 
   </br>
-  <!-- <div id="nextbutton2"  href="./exptxt.html" > <button onclick="location.reload();location.href='./exptxt.html'">Accept and Sign</button> </div>
-   -->
   <div id="nextbutton2"  href="./exptxt.html" > <button onclick="link_address()">Accept and Sign</button> </div>
   </br>  
   <script type="text/javascript">
 
-        function link_address(){
           folder_name = getCookie("user_selection")  
           console.log(folder_name)
+
+        function link_address(){
+          folder_name = getCookie("user_selection")  
+          
+          
+
           if ((folder_name == "ImageNet") | (folder_name == "VisualGenome") | (folder_name == "COCO")) {
             location.reload();
-            location.href='./expimg.html';
+            location.href='./expimg.html';   // feed-forward
+          }else if ((folder_name == "boston") | (folder_name == "rcvd") | (folder_name == "adult")) {
+            location.reload();
+            location.href='./evltabular.html';   // feed-forward
           }else if ((folder_name == 'quiz')) {
             location.reload();
-            location.href='./expqlty.html';
+            location.href='./expqlty.html';    
           }else if ((folder_name == "weak") | (folder_name == "robust")) {
             location.reload();
             location.href='./qlty_show.html';
+          }else if ((folder_name == 'ImageNet-feedback')) {
+            location.reload(); 
+            location.href='./evlimg.html';   // feed-back
+          }else if ((folder_name == '20news-feedback')) {
+            location.reload();
+            location.href='./evltxt.html';   // feed-back
           }else{
             location.reload();
-            location.href='./exptxt.html';
+            location.href='./exptxt.html';   // feed-forward
           }
         }
         

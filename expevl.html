@@ -7,7 +7,6 @@
 <title>Explainable Machine Learning (XAI)</title>
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <link rel="stylesheet" href="./benchmark/styles/style.css">
-  <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </head>
@@ -24,21 +23,23 @@
     
     <div id="cnsnttextbox">
         <b>
-          <h1> Project Title: <br> Human grounded evaluation of interpretable machine learning </h1>
+          <h1> Project Title:  Human grounded evaluation of interpretable machine learning </h1>
         </br>
         </br>
         </br>
         </br>
         </br>
         </br>
+            <h1> User Feedforward: </h1>
         </br>
-          <h2> Please choose from one of the 20 Newsgroup dataset topics: </h2>
+          <h3> Please choose the 20 Newsgroup dataset articles: </h3>
         </br>
         </br>
       </b>
      
       <form id="category" action="">
-        <input type="radio" name="category" value="comp.graphics" disabled> comp.graphics<br>
+        <input type="radio" name="category" value="20news"> 20 News Group Dataset
+        <!-- <input type="radio" name="category" value="comp.graphics" disabled> comp.graphics<br>
         <input type="radio" name="category" value="comp.os.ms-windows.misc" disabled> comp.os.ms-windows.misc<br>
         <input type="radio" name="category" value="comp.sys.ibm.pc.hardware" disabled> comp.sys.ibm.pc.hardware <br>
         <input type="radio" name="category" value="comp.windows.x" disabled> comp.windows.x<br>
@@ -55,36 +56,51 @@
         <input type="radio" name="category" value="talk.politics.mideast" disabled> talk.politics.mideast<br>
         <input type="radio" name="category" value="talk.religion.misc" disabled> talk.religion.misc<br>
         <input type="radio" name="category" value="alt.atheism" disabled> alt.atheism<br>
-        <input type="radio" name="category" value="soc.religion.christian" disabled> soc.religion.christian<br>
-      <!-- </form> -->
-      </br>
-      </br>
+        <input type="radio" name="category" value="soc.religion.christian" disabled> soc.religion.christian<br> -->
       </br>
       </br>
         </br>
          <div id= title><h3>or Choose from one the following image datasets: </h3> </div>
         </br>
         </br>
-      <!-- <form id="category" action=""> -->
         <input type="radio" id=img1 name="category" value="ImageNet"> ImageNet<br>
-        <input type="radio" id=img2 name="category" value="COCO" disabled> COCO<br>
-        <input type="radio" id=img3 name="category" value="VisualGenome" disabled> Visual Genome<br>
+        <input type="radio" id=img2 name="category" value="udacity" > UdaCity Self Driving Car<br>
       </br>
       </br>
+      </br>
+         <div id= title><h3>or Choose from one the following misc. datasets: </h3> </div>
+        </br>
+        </br>
+        <input type="radio" id=tab1 name="category" value="adult"> Loan Application Approval<br>
+        <input type="radio" id=tab2 name="category" value="rcvd" > Crimianal Records<br>
+        <input type="radio" id=tab3 name="category" value="boston" > Apartment Pricing<br>
+      </br>
+      </br>
+      </br>
+      </br>
+          <div id= title><h1> User Feedback: </h1> </div>
+          </br>
+          </br>
+          <div id= title><h3>Evaluate quality of machine generated explanations for text articles: </h3> </div>
+          </br>
+          </br>
+      <input type="radio" name="category" value="20news-feedback" disabled> 20 News Group Dataset
+
       </br>
       </br>
         </br>
-         <div id= title><h3>or Evaluate quality of machine generated explanations for image data: </h3> </div>
+         <div id= title><h3>or Choose from one the following image datasets: </h3> </div>
         </br>
         </br>
-      <!-- <form id="category" action=""> -->
-        <input type="radio" name="category" value="weak"> Group 1<br>
-        <input type="radio" name="category" value="robust"> Group 2<br>
-        <input type="radio" name="category" value="quiz"> Quiz<br>
+        <input type="radio" id=img1 name="category" value="ImageNet-feedback" disabled> ImageNet<br>
+        <input type="radio" id=img2 name="category" value="COCO-feedback" disabled> COCO<br>
+        <input type="radio" id=img3 name="category" value="VisualGenome-feedback" disabled> Visual Genome<br>
+      </br>
+      </br>
       </form>
-      </br></br></br></br></br></br>
-        <h1> Participant's Task: </h1>
-        <h4 id="task"> </h4>
+      <!-- </br></br></br></br></br></br> -->
+        <!-- <h1> Participant's Task: </h1>
+        <h4 id="task"> </h4> -->
     </div>
 
   </div>
@@ -93,26 +109,25 @@
 
   <script type="text/javascript"> 
 
-    // var user_select = "sci.electronics"
     var user_select = "ImageNet"
-    var task_txt = "Please choose a category to find out about your task"
-    document.getElementById("task").innerHTML = task_txt;
+    // var task_txt = "Please choose a category to find out about your task"
+    // document.getElementById("task").innerHTML = task_txt;
 
-    $(document).ready(function() {
-	    $('input[type=radio][name=category]').change(function() {
-	        if ((this.value == 'ImageNet') | (this.value == 'VisualGenome') | (this.value == 'COCO')) {
-	            task_txt = "In this study you will see 100 images from different objects and you need to highlight the area of the image which explains the the topic in the title"
-	            document.getElementById("task").innerHTML = task_txt;
-	        }
-	        else if ((this.value == 'weak') | (this.value == 'robust') | (this.value == 'quiz')) {
-	            task_txt = "---" 
-	            document.getElementById("task").innerHTML = task_txt;
-	        }else{
-	        	task_txt = "In this study you will see 100 articles all from one topic and you need to highlight the words in the article which explains the article is related to that topic"
-	        	document.getElementById("task").innerHTML = task_txt;
-	        }
-	    });
-	});
+    //  $(document).ready(function() {
+	//     $('input[type=radio][name=category]').change(function() {
+	//         if ((this.value == 'ImageNet') | (this.value == 'VisualGenome') | (this.value == 'COCO')) {
+	//             task_txt = "In this study you will see 100 images from different objects and you need to highlight the area of the image which explains the the topic in the title"
+	//             document.getElementById("task").innerHTML = task_txt;
+	//         }
+	//         else if ((this.value == 'weak') | (this.value == 'robust') | (this.value == 'quiz')) {
+	//             task_txt = "---" 
+	//             document.getElementById("task").innerHTML = task_txt;
+	//         }else{
+	//         	task_txt = "In this study you will see 100 articles all from one topic and you need to highlight the words in the article which explains the article is related to that topic"
+	//         	document.getElementById("task").innerHTML = task_txt;
+	//         }
+	//     });
+	// });
 
 
     function read_radio(){
@@ -129,11 +144,7 @@
       location.href='./benchmark/cnsnt.html'
     }
     function setCookie(cname, cvalue) {
-      // var d = new Date();
-      // d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-      // var expires = "expires="+d.toUTCString();
-      // expires = "s"
-      document.cookie = cname + "=" + cvalue + ";path=/";  // document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      document.cookie = cname + "=" + cvalue + ";path=/";
     }
 
     

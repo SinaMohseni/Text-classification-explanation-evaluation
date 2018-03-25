@@ -52,7 +52,7 @@ from lime.lime_text import LimeTextExplainer
 explainer = LimeTextExplainer(class_names=class_names)
 
 
-def find_explanation(txt_file):
+def find_explanation(): #txt_file):
     idx = 1
     print ("\n \n", newsgroups_test.keys())
 
@@ -105,11 +105,11 @@ def read_data(img_folder, json_file):
 
     for a_txt in all_txts:
 
-        txt_file = a_txt["image"];
+        # txt_file = a_txt["image"];
 
-        txt_exp = find_explanation(txt_file)
+        txt_exp = find_explanation() #txt_file)
 
-        write_exp(txt_exp, txt_file)
+        # write_exp(txt_exp, txt_file)
 
     return img_exp
         
@@ -118,12 +118,12 @@ def evaluate(img_folder,res_folder):
 
     img_number = 1
     for i in range(0,1):   # users loop 
-        img_exp = read_data(txt_exp, res_folder+"mohsen.json")
+        img_exp = read_data(txt_exp, res_folder+"P1.json")
 
 
 # tmp_total = time.time()
 txt_exp = "./txt/"
-res_folder = "./res/"
+res_folder = "./txt/"
 evaluate(txt_exp,res_folder);
 # print ("\n Total time: ", time.time() - tmp_total)
 

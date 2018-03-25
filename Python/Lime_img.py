@@ -1,6 +1,6 @@
 import os,sys
 import time
-print('\n \n Loading Tensorflow and Keras:')
+print('\n \n Loading Inception and Keras:')
 import tensorflow
 import keras
 from keras.applications import inception_v3 as inc_net
@@ -46,13 +46,14 @@ def transform_img_fn(path_list):
 
 
 
-def find_explanation(jpg_file):
+def find_explanation(img_folder, jpg_file):
     print('\n \n Predictions:')
-    images = transform_img_fn([os.path.join('img',jpg_file)])
+    images = transform_img_fn([os.path.join(img_folder,jpg_file)])  #'img'
+    # print('\n \n ', images)
     # plt.imshow(images[0])
     # plt.show()
     # I'm dividing by 2 and adding 0.5 because of how this Inception represents images
-    plt.imshow(images[0] / 2 + 0.5)
+    # plt.imshow(images[0] / 2 + 0.5)
     # plt.show()
 
     preds = inet_model.predict(images)
@@ -67,7 +68,7 @@ def find_explanation(jpg_file):
     print('\n \n Generating explanation:')
     tmp = time.time()
     explainer = lime_image.LimeImageExplainer()
-    explanation, labels = explainer.explain_instance(images[0], inet_model.predict, top_labels=1, hide_color=0, num_samples=1000)
+    explanation, labels = explainer.explain_instance(images[0], inet_model.predict, top_labels=2, hide_color=0, num_samples=1000)
     print ("\n Processing time: ", time.time() - tmp)
 
 
@@ -86,14 +87,21 @@ def find_explanation(jpg_file):
         # self.local_pred = None
 
 
-    temp, mask = explanation.get_image_and_mask(labels[0], positive_only=True, num_features=5, hide_rest=True)
-    # plt.imshow(mark_boundaries(temp / 2 + 0.5, mask))
-    # plt.show()
+    temp, mask = explanation.get_image_and_mask(labels[0], positive_only=False, num_features=5, hide_rest=False)
+    plt.imshow(mark_boundaries(temp / 2 + 0.5, mask))
+    plt.show()
 
 
-    print ("\n Mask: ", mask)
-    num1 = 0
-    scipy.misc.imsave('./exp_mask/exp_'+jpg_file+'.jpg', temp)
+    temp, mask = explanation.get_image_and_mask(labels[1], positive_only=False, num_features=5, hide_rest=False)
+    plt.imshow(mark_boundaries(temp / 2 + 0.5, mask))
+    plt.show()
+    
+
+
+
+    # print ("\n Mask: ", mask)
+    # num1 = 0
+    # scipy.misc.imsave('./exp_mask/exp_'+jpg_file+'.jpg', temp)
 
     return mask
 
@@ -110,7 +118,7 @@ def read_data(img_folder, json_file):
 
         jpg_file = an_img["image"];
 
-        img_exp = find_explanation(jpg_file)
+        img_exp = find_explanation(img_folder, jpg_file)
 
         write_exp(img_exp, jpg_file)
 
@@ -121,14 +129,22 @@ def evaluate(img_folder,res_folder):
 
     img_number = 1
     for i in range(0,1):   # users loop 
-        img_exp = read_data(img_folder, res_folder+"mohsen.json")
+        img_exp = read_data(img_folder, res_folder+"P1.json")
         
+
+def quick_explanations(test_folder):
+    jpg_file = "22.jpg"
+    img_exp = find_explanation(test_folder, jpg_file)
+    # write_exp(img_exp, jpg_file)
+
 
 
 tmp_total = time.time()
-img_folder = "./img/"
-res_folder = "./res/"
-evaluate(img_folder,res_folder);
+img_folder = "Image/org_img/"
+res_folder = "Image/json_res/"
+test_folder = "Datasets/self-driving-car-croped/"
+# evaluate(img_folder,res_folder);
+quick_explanations(test_folder)
 print ("\n Total time: ", time.time() - tmp_total)
 
 

@@ -42,7 +42,9 @@ function txtfilename(){
 	
 	folder_name = getCookie("user_selection")
 
-	var folder = "data/20news-bydate-test/"+ folder_name +"/";
+	// var folder = "data/20news_test/no_header/"+ folder_name +"/";
+	var folder = "data/20news_test/no_header/";
+	// var folder = "data/20news_test/org/";
 	var txtdoc = []
 	
 	$.ajax({
@@ -51,12 +53,15 @@ function txtfilename(){
 	        $(data).find("a").attr("href", function (i, val) {
 	            // if ( val.match(/\.(gif)$/) == 0){
 	            	this_file = val.split("");
-	            	if (( !isNaN(parseInt(this_file.pop(), 10)) )){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){
-	            		txtfiles.push(folder+val)//txtfiles.push(val) // txtfiles.push(folder+val)
+					// console.log(this_file.pop())	            	
+	            	// txtfiles.push(val)
+	            	if (this_file.pop() == "t"){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){  ( !isNaN(parseInt(this_file.pop(), 10)) )
+	            		txtfiles.push(val)//txtfiles.push(val) // txtfiles.push(folder+val)
 	            	}
 	            // }
 	        });
 	        total_doc = txtfiles.length;
+	        console.log(txtfiles)
 			nextArticle();
 	    }
 	});
@@ -80,6 +85,7 @@ function start_over(){
 
 
 function nextArticle() {
+
 	for (var i = 0; i < txtfiles.length ; i ++){
 	  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
 			readfiles.push(txtfiles[i])
@@ -87,11 +93,12 @@ function nextArticle() {
 			jQuery.get(txtfiles[i], function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
 					output = data
 				 	showText(0);
-				 	articleName = txtfiles[i].split("/").pop()
-				 	console.log(txtfiles[i])
+				 	articleName = txtfiles[i].split("/").pop().split(".")[0].split("-")[1]
+				 	// console.log(articleName)
+				 	// console.log(output)
 			});
 				doc_num =i + 1;
-				article_title();
+				article_title(articleName);
 			break;
 		}
 	}
@@ -108,17 +115,17 @@ function lastArticle() {
 	  		readfiles.pop()
 	  		this_article = readfiles.pop()
 	  		readfiles.push(this_article)
-	  		console.log("file ", this_article)
+	  		// console.log("file ", this_article)
 	  		this_file = this_article.split("");
-			if (( !isNaN(parseInt(this_file.pop(), 10)) )){
+			if (this_file.pop() == "t"){
 				jQuery.get(this_article, function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
 						output = data
 					 	showText(0);
-					 	articleName = this_article.split("/").pop()
+					 	articleName = this_article.split("/").pop().split(".")[0].split("-")[1]
 				});
 			}
 	 		doc_num -= 1;
-			article_title();
+			article_title(articleName);
 
 }
 
@@ -165,9 +172,9 @@ function getCookie(cname) {
 	}
 
 
-function article_title(){
+function article_title(articleName){
 
-	explanation_title.text("Please highlight any words related to \""+folder_name.toString()+"\" topic in this Article: ( "+ doc_num+" / "+total_doc+ " )")
+	explanation_title.text("Please highlight any words related to \""+articleName+"\" topic in this Article: ( "+ doc_num+" / "+total_doc+ " )")
 }
 
 function showText(update_txt) {
@@ -177,11 +184,11 @@ function showText(update_txt) {
 	
 	d3.dragDisable(window)
 
-	for (var i = 0; i < 3000; i++) {
+	for (var i = 0; i < 500; i++) {
 	    svg.selectAll(".explanation-"+i.toString()).remove(); 
 	    svg.selectAll(".boxes-"+i.toString()).remove(); 
     }
-
+	svg.selectAll(".words").remove(); 
     // var output = document.getElementById("TextArea").value;
     // var output = sample_txt;
 	
@@ -476,7 +483,7 @@ function clearText() {
 	    svg.selectAll(".explanation-"+i.toString()).remove(); 
 	    svg.selectAll(".boxes-"+i.toString()).remove(); 
     }
-    
+    // svg.selectAll(".words").remove(); 
     svg.selectAll(".result_bar").remove(); 
 	svg.selectAll(".result_frame").remove(); 
 	svg.selectAll(".class_label").remove(); 
