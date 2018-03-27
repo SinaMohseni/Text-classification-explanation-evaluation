@@ -57,6 +57,7 @@ var txtfiles = []
 var readfiles = []
 var imageName;
 var folder_name = "ImageNet"
+// var folder_name = "udacity"
 var call_once = 0;
 var total_doc
 var doc_num
