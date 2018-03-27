@@ -33,6 +33,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 var txtfiles = []
 var readfiles = []
 var articleName;
+var sampleName;
 var tabular_data;
 var data_pointer = -1;
 var dataset_name = "housing"
@@ -48,6 +49,7 @@ function load_dataset(){
 
 	dataset_name = getCookie("user_selection")
 	console.log("dataset ", dataset_name)
+	articleName = dataset_name;
 	var file_path = "data/"+dataset_name+"/"+dataset_name+".csv";
 
 	d3.csv(file_path, function(data) {
@@ -102,7 +104,7 @@ function start_over(){
 
 function nextData() {
 	data_pointer +=1;
-	if (data_pointer > 9) data_pointer = 9
+	if (data_pointer > 19) data_pointer = 19
 	showTable(0);
 	article_title(dataset_name)
 
@@ -118,6 +120,7 @@ function lastData() {
 			data_pointer -=1;
 			if (data_pointer < 0) data_pointer = 0
  			showTable(0);
+ 			article_title(dataset_name)
 }
 
 var words_hash = []; 
@@ -128,7 +131,7 @@ var saved = 1;
 
 function save_json(){  
 
-		results_json.push({article: articleName, word: exp_data})
+		results_json.push({article: (dataset_name+"-"+data_pointer), word: exp_data})
 		console.log(results_json)
 		saved = 1;
 }
@@ -163,11 +166,11 @@ function getCookie(cname) {
 
 function article_title(articleName){
 	if (articleName == "lendingclub"){
-	explanation_title.text("Please highlight any reasons that this loan application has been: "+tabular_data[data_pointer].loan_status+" ( "+ (data_pointer + 1)+" / "+ total_data + " )")
+	explanation_title.text("Please highlight any reasons that this loan application has been: \""+tabular_data[data_pointer].loan_status+"\" ( "+ (data_pointer + 1)+" / "+ total_data + " )")
 	} else if (articleName == "housing"){
-	explanation_title.text("Please highlight any words related to \""+tabular_data[data_pointer].MEDV*1000+"\" topic in this Article: ( "+ (data_pointer + 1)+" / "+total_data+ " )")
+	explanation_title.text("Please highlight any reasons causing this apartment's price to be $"+tabular_data[data_pointer].MEDV*1000+": ( "+ (data_pointer + 1)+" / "+total_data+ " )")
 	} else {
-	explanation_title.text("Please highlight any words related to \""+tabular_data[data_pointer].RECID+"\" topic in this Article: ( "+ (data_pointer + 1)+" / "+total_data+ " )")
+	explanation_title.text("Please highlight any reasons related to this prisoner to \""+(tabular_data[data_pointer].RECID == 0 ? "No More Crime" : "Re-arrested")+"\": ( "+ (data_pointer + 1)+" / "+total_data+ " )")
 	}
 }
 

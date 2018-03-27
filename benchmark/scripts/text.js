@@ -33,6 +33,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 var txtfiles = []
 var readfiles = []
 var articleName;
+var fileName;
 var folder_name = "sci.electronics"
 var call_once = 0;
 var total_doc
@@ -90,6 +91,7 @@ function nextArticle() {
 	  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
 			readfiles.push(txtfiles[i])
 			articleName = txtfiles[i].split("-")[1].split(".txt")[0]
+			fileName = txtfiles[i].split("%")[1].split(".txt")[0]
 			// console.log(txtfiles[i])
 			jQuery.get(txtfiles[i], function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
 					output = data
@@ -115,6 +117,7 @@ function lastArticle() {
 	  		this_article = readfiles.pop()
 	  		readfiles.push(this_article)
 	  		articleName = this_article.split("/").pop().split("-")[1].split(".txt")[0]
+	  		fileName = this_article.split(".txt")[0]
 			// console.log(this_article)
 	  		this_file = this_article.split("");
 			if (this_file.pop() == "t"){
@@ -137,7 +140,7 @@ var saved = 1;
 function save_json(){  
 
 	// for (var i=0;i<exp_data.length;i++){
-		results_json.push({article: articleName, word: exp_data})
+		results_json.push({article: fileName, word: exp_data})
 		console.log(results_json)
 	// }
 	saved = 1;
