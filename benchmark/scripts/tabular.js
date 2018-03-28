@@ -166,11 +166,11 @@ function getCookie(cname) {
 
 function article_title(articleName){
 	if (articleName == "lendingclub"){
-	explanation_title.text("Please highlight any reasons that this loan application has been: \""+tabular_data[data_pointer].loan_status+"\" ( "+ (data_pointer + 1)+" / "+ total_data + " )")
+	explanation_title.text("Please highlight any reasons associated with the applicant that could relate to this loan application being: \""+tabular_data[data_pointer].loan_status+"\" ( "+ (data_pointer + 1)+" / "+ total_data + " )")
 	} else if (articleName == "housing"){
 	explanation_title.text("Please highlight any reasons causing this apartment's price to be $"+tabular_data[data_pointer].MEDV*1000+": ( "+ (data_pointer + 1)+" / "+total_data+ " )")
 	} else {
-	explanation_title.text("Please highlight any reasons related to this prisoner to \""+(tabular_data[data_pointer].RECID == 0 ? "No More Crime" : "Re-arrested")+"\": ( "+ (data_pointer + 1)+" / "+total_data+ " )")
+	explanation_title.text("Please highlight any reasons associated with this prisoner's background that could relate to this prisoner "+(tabular_data[data_pointer].RECID == 0 ? "having \"No More Crime" : "being \"Re-arrested")+"\": ( "+ (data_pointer + 1)+" / "+total_data+ " )") 
 	}
 }
 
@@ -178,7 +178,7 @@ function showTable(update_content) {
 	
 	var myElement = document.createElement('chartDiv');
 	myElement.style.userSelect = 'none';
-	
+
 	d3.dragDisable(window)
 
 	for (var i = 0; i < 500; i++) {
@@ -197,8 +197,8 @@ function showTable(update_content) {
 		if (dataset_name == "lendingclub"){
 			words_array.push("nextline");
 			words_array.push("Loan Status = " + tabular_data[data_pointer].loan_status)
-			words_array.push("nextline"); 
-			words_array.push("nextline"); 
+			words_array.push("nextline");
+			words_array.push("nextline");
 
 			words_array.push("Loan Amount = " + tabular_data[data_pointer].loan_amnt)
 			words_array.push("nextline");
@@ -210,7 +210,9 @@ function showTable(update_content) {
 			words_array.push("nextline");
 			words_array.push("Loan Purpose = " + tabular_data[data_pointer].purpose)
 			words_array.push("nextline");
-			words_array.push("nextline"); 
+			words_array.push("Application Type = " + tabular_data[data_pointer].application_type)
+			words_array.push("nextline");
+			words_array.push("nextline");
 			
 			words_array.push("Annual Income = " + tabular_data[data_pointer].annual_inc)
 			words_array.push("nextline");
@@ -220,23 +222,39 @@ function showTable(update_content) {
 			words_array.push("nextline");
 			words_array.push("Home Ownership = " + tabular_data[data_pointer].home_ownership)
 			words_array.push("nextline");
-			words_array.push("Application Type = " + tabular_data[data_pointer].application_type)
+			words_array.push("State = " + tabular_data[data_pointer].addr_state)
+			words_array.push("nextline"); 
 			words_array.push("nextline");
+			
 			words_array.push("Earliest Credit Line = " + tabular_data[data_pointer].earliest_cr_line)
 			words_array.push("nextline");
 			words_array.push("FICO Score High = " + tabular_data[data_pointer].fico_range_high)
 			words_array.push("nextline");
 			words_array.push("FICO Score Low = " + tabular_data[data_pointer].fico_range_low)
 			words_array.push("nextline");
+			words_array.push("Credit Inquiry in the last 6 months = " + tabular_data[data_pointer].inq_last_6mths)
+			words_array.push("nextline");
 			words_array.push("Number of Open Accounts = " + tabular_data[data_pointer].open_acc)
 			words_array.push("nextline");
 			words_array.push("Account Balance = " + tabular_data[data_pointer].revol_bal)
 			words_array.push("nextline"); 
+			words_array.push("Debt to Income Ratio (DTI) = " + tabular_data[data_pointer].dti)
+			words_array.push("nextline"); 			
 
 		}else if (dataset_name == "housing"){
 
 			words_array.push("nextline");
 			words_array.push("Home Value = $" + (tabular_data[data_pointer].MEDV*1000))
+			words_array.push("nextline");
+			words_array.push("nextline");
+
+			words_array.push("Number of Rooms = " + tabular_data[data_pointer].RM)
+			words_array.push("nextline");
+			words_array.push("Weighted Distances to Five Boston Employment Centres = " + tabular_data[data_pointer].DIS)
+			words_array.push("nextline");
+			words_array.push("Index of Accessibility to Radial Highways = " + tabular_data[data_pointer].RAD)
+			words_array.push("nextline");
+			words_array.push("Full-value Property-tax Rate per $10,000 = " + tabular_data[data_pointer].TAX)
 			words_array.push("nextline");
 			words_array.push("nextline");
 
@@ -248,17 +266,9 @@ function showTable(update_content) {
 			words_array.push("nextline");
 			words_array.push("River= " + tabular_data[data_pointer].CHAS)
 			words_array.push("nextline");
-			words_array.push(" Nitric Oxides Concentration = " + tabular_data[data_pointer].NOX)
-			words_array.push("nextline");
-			words_array.push("Number of Rooms = " + tabular_data[data_pointer].RM)
+			words_array.push("Nitric Oxides Concentration = " + tabular_data[data_pointer].NOX)
 			words_array.push("nextline");
 			words_array.push("Proportion of Owner-occupied Units Built = " + tabular_data[data_pointer].AGE)
-			words_array.push("nextline");
-			words_array.push("Weighted Distances to Five Boston Employment Centres = " + tabular_data[data_pointer].DIS)
-			words_array.push("nextline");
-			words_array.push("Index of Accessibility to Radial Highways = " + tabular_data[data_pointer].RAD)
-			words_array.push("nextline");
-			words_array.push("Full-value Property-tax Rate per $10,000 = " + tabular_data[data_pointer].TAX)
 			words_array.push("nextline");
 			words_array.push("Pupil-teacher Ratio by Town = " + tabular_data[data_pointer].PTRATIO)
 			words_array.push("nextline");
@@ -267,6 +277,9 @@ function showTable(update_content) {
 			words_array.push("Percentage Lower Status of the Population = " + tabular_data[data_pointer].LSTAT)
 			words_array.push("nextline");
 
+			
+			
+
 		}else{
 
 			words_array.push("nextline");
@@ -274,32 +287,36 @@ function showTable(update_content) {
 			words_array.push("nextline");
 			words_array.push("nextline");
 			// index < data2.length ? dataString+ "\n" : dataString;
+			
+			words_array.push("Married = " + (tabular_data[data_pointer].MARRIED == 0 ? "No" : "Yes"))
+			words_array.push("nextline");
+			words_array.push("Age = " + Math.round(tabular_data[data_pointer].AGE/12))
+			words_array.push("nextline");
+			words_array.push("Years School = " + tabular_data[data_pointer].SCHOOL)
+			words_array.push("nextline");			
 			words_array.push("Race = " + (tabular_data[data_pointer].WHITE == 0 ? "African-American" : "White"))
 			words_array.push("nextline");
 			words_array.push("Alcohol = " + (tabular_data[data_pointer].ALCHY == 0 ? "No" : "Yes"))
 			words_array.push("nextline");
 			words_array.push("Junky = " + (tabular_data[data_pointer].JUNKY == 0 ? "No" : "Yes"))
 			words_array.push("nextline");
+			words_array.push("nextline");
+
+			
 			words_array.push("Supervised Release = " + (tabular_data[data_pointer].SUPER == 0 ? "No" : "Yes"))
-			words_array.push("nextline");
-			words_array.push("Married = " + (tabular_data[data_pointer].MARRIED == 0 ? "No" : "Yes"))
-			words_array.push("nextline");
-			words_array.push("Felony = " + (tabular_data[data_pointer].FELON == 0 ? "No" : "Yes"))
-			words_array.push("nextline");
+			words_array.push("nextline");			
 			words_array.push("Work Release = " + (tabular_data[data_pointer].WORKREL == 0 ? "No" : "Yes"))
 			words_array.push("nextline");
+			words_array.push("Felony = " + (tabular_data[data_pointer].FELON == 0 ? "No" : "Yes"))
+			words_array.push("nextline");			
 			words_array.push("Crime Against Property = " + (tabular_data[data_pointer].PROPTY == 0 ? "No" : "Yes"))
 			words_array.push("nextline");
 			words_array.push("Crime against Person = " + (tabular_data[data_pointer].PERSON == 0 ? "No" : "Yes"))
 			words_array.push("nextline");
-			words_array.push("Number Prior Arrests = " + (tabular_data[data_pointer].PRIORS == 0 ? "No" : Math.abs(tabular_data[data_pointer].PRIORS)))
-			words_array.push("nextline");
-			words_array.push("Years School = " + tabular_data[data_pointer].SCHOOL)
+			words_array.push("Number Prior Arrests = " + (tabular_data[data_pointer].PRIORS == 0 ? "None" : Math.abs(tabular_data[data_pointer].PRIORS)))
 			words_array.push("nextline");
 			words_array.push("Prison Violations = " + (tabular_data[data_pointer].RULE == 0 ? "No" : "Yes"))
-			words_array.push("nextline");
-			words_array.push("Age = " + Math.round(tabular_data[data_pointer].AGE/12))
-			words_array.push("nextline");
+			words_array.push("nextline");			
 			words_array.push("Time Served in Prison = " + tabular_data[data_pointer].TSERVD + " months")
 			words_array.push("nextline");
 		}

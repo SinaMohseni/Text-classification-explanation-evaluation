@@ -167,13 +167,15 @@ function getCookie(cname) {
         }
     }
     return "";
-
 }
-
 
 function image_title(){
 	obj = imageName.toString().split(".")[0].slice(0,-1)
-	explanation_title.text("Please highlight the area related to \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
+    if (obj.length < 3){
+      explanation_title.text("Please highlight any reasons that the driver should be cautious in this scene: ( "+ doc_num+" / "+total_doc+ " )");
+    }else{
+      explanation_title.text("Please highlight the area related to \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
+    } 
 }
 
 function showImage(image_name, update_txt) {

@@ -175,7 +175,12 @@ function getCookie(cname) {
 
 
 function article_title(articleName){
-
+	if (articleName == "guns") articleName = "Guns and Politics";
+	if (articleName == "med") articleName = "Medical";
+	if (articleName == "space") articleName = "Space and Astronomy";
+	if (articleName == "electronics") articleName = "Electronics and Computers";
+	if (articleName == "autos") articleName = "Cars and Truck";
+	
 	explanation_title.text("Please highlight any words related to \""+articleName+"\" topic in this Article: ( "+ doc_num+" / "+total_doc+ " )")
 }
 
