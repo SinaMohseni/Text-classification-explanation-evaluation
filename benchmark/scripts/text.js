@@ -57,7 +57,7 @@ function txtfilename(){
 					// console.log(this_file.pop())	            	
 	            	// txtfiles.push(val)
 	            	if (this_file.pop() == "t"){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){  ( !isNaN(parseInt(this_file.pop(), 10)) )
-	            		txtfiles.push(val)//txtfiles.push(val) // txtfiles.push(folder+val)
+	            		txtfiles.push(folder+val)//txtfiles.push(val) // txtfiles.push(folder+val)
 	            	}
 	            // }
 	        });

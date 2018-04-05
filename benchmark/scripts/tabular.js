@@ -166,7 +166,7 @@ function getCookie(cname) {
 
 function article_title(articleName){
 	if (articleName == "lendingclub"){
-	explanation_title.text("Please highlight any reasons associated with the applicant that could relate to this loan application being: \""+tabular_data[data_pointer].loan_status+"\" ( "+ (data_pointer + 1)+" / "+ total_data + " )")
+	explanation_title.text("Please highlight any reasons associated with this applicant that could relate to this loan application being: \""+tabular_data[data_pointer].loan_status+"\" ( "+ (data_pointer + 1)+" / "+ total_data + " )")
 	} else if (articleName == "housing"){
 	explanation_title.text("Please highlight any reasons causing this apartment's price to be $"+tabular_data[data_pointer].MEDV*1000+": ( "+ (data_pointer + 1)+" / "+total_data+ " )")
 	} else {

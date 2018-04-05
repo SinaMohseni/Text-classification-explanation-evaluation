@@ -1,0 +1,10 @@
+criminal,loan,apartment,text
+P1-crime,P1-loan,P1-apartment,P1-text
+P3-crime,P3-loan,P3-apartment,P2-text
+P4-crime,P4-loan,P4-apartment,P3-text
+P5-crime,P5-loan,P5-apartment,P4-text
+P6-crime,P6-loan,P6-apartment,P5-text
+P7-crime,P7-loan,P7-apartment,P6-text
+P8-crime,P8-loan,P8-apartment,P7-text
+P9-crime,P9-loan,P9-apartment,P8-text
+P1-crime,P1-loan,P1-apartment,P9-text
