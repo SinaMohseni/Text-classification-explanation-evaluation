@@ -1,15 +1,5 @@
-From: fairfiel@helios.usq.EDU.AU (raymond fairfield)
-Subject: Re: Surviving Large Accelerations?
-Organization: University of Southern Queensland
-Lines: 27
-
-lpham@eis.calstate.edu (Lan Pham) writes:
 (in answer to Amruth Laxman
->are you sure 45g is the right number? as far as i know, pilots are
->blackout in dives that exceed 8g - 9g. 45g seems to be out of human
->tolerance. would anybody clarify this please.
 
->lan
 
 Apart from the fact that you get G in the pull-out, not the dive, that
 figure is about right for sustained G, no protection.
@@ -26,7 +16,3 @@ good G-suit can keep a pilot functioning at around 12G.
 
 A flotation tank should be a good bet, since you can treat the body as a
 fluid, and high-pressure situations are not new. Anyone have any figures?
-
-Ray Fairfield
-fairfiel@zeus.usq.edu.au
-

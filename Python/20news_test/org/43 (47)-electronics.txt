@@ -1,11 +1,3 @@
-From: cfb@fc.hp.com (Charlie Brett)
-Subject: Re: Lead Acid batteries & Concrete?
-Nntp-Posting-Host: hpfcmgw.fc.hp.com
-Organization: Hewlett-Packard Fort Collins Site
-X-Newsreader: TIN [version 1.1 PL8.5]
-Lines: 15
-
-Michael Covington (mcovingt@aisun3.ai.uga.edu) wrote:
 
 : This topic was beaten to death a year or so ago.
 
@@ -18,5 +10,3 @@ Michael Covington (mcovingt@aisun3.ai.uga.edu) wrote:
 Ditto. The only remote, and I do say remote, possibility is that if the
 ground was REAL cold (< -30F) the battery might freeze an split. But then
 it would probably freeze anyway :-)
-
-        Charlie Brett - Ft. Collins, CO

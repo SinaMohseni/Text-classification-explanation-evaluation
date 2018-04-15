@@ -23,9 +23,8 @@ import sklearn.metrics
 from lime import lime_text
 from sklearn.pipeline import make_pipeline
 
-
-
 from sklearn.datasets import fetch_20newsgroups
+
 categories = ['sci.med', 'sci.electronics']
 newsgroups_train = fetch_20newsgroups(subset='train', categories=categories)
 newsgroups_test = fetch_20newsgroups(subset='test', categories=categories)

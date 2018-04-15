@@ -1,8 +1,3 @@
-From: David.Anderman@ofa123.fidonet.org
-Subject: $1bil space race ideas/moon base on the cheap.
-X-Sender: newtout 0.08 Feb 23 1993
-Lines: 19
-
 Although the $1 billion scheme is a fantasy (it's an old canard in the space
 business called "trolling for billionaires"), there is a good chance that a
 much smaller program ($65 million) will pass the 103rd Congress. This is the
@@ -20,5 +15,3 @@ Moon bill.
  
 For more information, please send E-mail with your U.S. postal service
 address.
-
---- Maximus 2.01wb
