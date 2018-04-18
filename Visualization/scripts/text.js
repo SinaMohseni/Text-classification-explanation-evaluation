@@ -42,9 +42,6 @@
         
         for (ii = 0; ii < user.length;ii++){     // all participants
             jsonfile = "data/user_study/"+user[ii].text+".json"
-            // console.log("user :",user)
-            // jsonfile = "data/user_study/"+user.text+".json"
-            // console.log("file :",jsonfile)
             d3.json(jsonfile,function(d){  // This users
          
                 for (var i = 1; i < d.length;i++){  // all articles
@@ -112,9 +109,7 @@
                         }
                     }
                 }
-                
-                console.log("number of items: ",dataR_elec.length, dataR_med.length,dataR_space.length,dataR_guns.length,dataR_cars.length)
-                
+
                 d3.json(jsonfile,function(d) {
                     
                     dataL_elec = dataR_elec;
@@ -122,8 +117,6 @@
                     dataL_space = dataR_space;
                     dataL_guns = dataR_guns;
                     dataL_cars = dataR_cars;
-
-                   console.log(total_weights_elec, total_weights_guns, total_weights_space, total_weights_cars, total_weights_med)
 
                d3.selectAll(".svg4").remove();
                svg4 = d3.select('#electronics')
@@ -134,9 +127,10 @@
 
                 dataR_elec_top = getTopN(dataR_elec, "value", 20);
                 dataL_elec_top = dataR_elec_top;
-                console.log("elec: ", total_weights_elec, (dataR_elec_top[0].value)/total_weights_elec)
-                rightwing(svg4,dataR_elec_top,total_weights_elec)
-                leftwing(svg4,dataL_elec_top);
+                total_weights_elec_lime = 1;
+                parallelwings(svg4,dataR_elec_top,dataL_elec_top,total_weights_elec,total_weights_elec_lime)
+                
+                // leftwing(svg4,dataL_elec_top, total_weights_lime);
 
                d3.selectAll(".svg5").remove();
                svg5 = d3.select('#medical')
@@ -148,7 +142,8 @@
                 dataR_med_top = getTopN(dataR_med, "value", 20);
                 dataL_med_top = dataR_med_top
                 rightwing(svg5,dataR_med_top,total_weights_med)
-                leftwing(svg5,dataL_med_top);
+                total_weights_lime =1;
+                // leftwing(svg5,dataL_med_top, total_weights_lime);
 
                d3.selectAll(".svg6").remove();
                svg6 = d3.select('#space')
@@ -160,7 +155,8 @@
                 dataR_space_top = getTopN(dataR_space, "value", 20);
                 dataL_space_top = dataR_space_top
                 rightwing(svg6,dataR_space_top,total_weights_space)
-                leftwing(svg6,dataL_space_top);
+                total_weights_lime = 1
+                // leftwing(svg6,dataL_space_top,total_weights_lime);
 
                 d3.selectAll(".svg7").remove();
                svg7 = d3.select('#cars')
@@ -172,7 +168,8 @@
                 dataR_cars_top = getTopN(dataR_cars, "value", 18);
                 dataL_cars_top = dataR_cars_top
                 rightwing(svg7,dataR_cars_top,total_weights_cars)
-                leftwing(svg7,dataL_cars_top);
+                total_weights_lime = 1
+                // leftwing(svg7,dataL_cars_top, total_weights_lime);
 
                 d3.selectAll(".svg8").remove();
                svg8 = d3.select('#guns')
@@ -184,7 +181,8 @@
                 dataR_guns_top = getTopN(dataR_guns, "value", 20);
                 dataL_guns_top = dataR_guns_top
                 rightwing(svg8,dataR_guns_top,total_weights_guns)
-                leftwing(svg8,dataL_guns_top);
+                total_weights_lime = 1
+                // leftwing(svg8,dataL_guns_top,total_weights_lime);
 
 
                 });  // End of Machine results (left)
