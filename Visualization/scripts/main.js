@@ -28,6 +28,7 @@
 
         labelWidth_array = []
         max = d3.max(dataR, function(d) { return d.value/total_weights; });
+        console.log(max)
 
         barR = svg.selectAll("barR")
                 .data(dataR)

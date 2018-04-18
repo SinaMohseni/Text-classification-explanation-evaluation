@@ -329,7 +329,6 @@
                         }
                     }
                 }
-             
 
                 jsonfile = "data/P1-apartment.json"
                 d3.json(jsonfile,function(d) {

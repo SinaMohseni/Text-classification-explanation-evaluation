@@ -15,6 +15,29 @@
         dataR_guns = [];
         dataR_cars = [];
 
+    function getMax(arr, prop) {
+        var max;
+        for (var i=0 ; i<arr.length ; i++) {
+            if (!max || parseInt(arr[i][prop]) > parseInt(max[prop]))
+                max = arr[i];
+        }
+        return max;
+    }
+
+    function getTopN(arr, prop, n) {
+    // clone before sorting, to preserve the original array
+    var clone = arr.slice(0); 
+
+    // sort descending
+    clone.sort(function(x, y) {
+        if (x[prop] == y[prop]) return 0;
+        else if (parseInt(x[prop]) < parseInt(y[prop])) return 1;
+        else return -1;
+    });
+
+    return clone.slice(0, n || 1);
+    }
+
     d3.csv(users_list,function(user) {
         
         
@@ -99,24 +122,67 @@
                     dataL_cars = dataR_cars;
 
                    console.log(total_weights_elec, total_weights_guns, total_weights_space, total_weights_cars, total_weights_med)
-                   d3.selectAll(".svg4").remove();
-                   svg = d3.select('#electronics')
-                        .append("svg")
-                        .attr("class", "svg4")
-                        .attr("width", width)
-                        .attr("height", height);
-                    rightwing(svg,dataR_elec,total_weights_elec)
-                    leftwing(svg,dataL_elec);
 
-                d3.selectAll(".svg5").remove();
-               svg = d3.select('#medical')
+               d3.selectAll(".svg4").remove();
+               svg4 = d3.select('#electronics')
+                    .append("svg")
+                    .attr("class", "svg4")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                dataR_elec_top = getTopN(dataR_elec, "value", 20);
+                dataL_elec_top = dataR_elec_top;
+                console.log("elec: ", total_weights_elec, (dataR_elec_top[0].value)/total_weights_elec)
+                rightwing(svg4,dataR_elec_top,total_weights_elec)
+                leftwing(svg4,dataL_elec_top);
+
+               d3.selectAll(".svg5").remove();
+               svg5 = d3.select('#medical')
                     .append("svg")
                     .attr("class", "svg5")
                     .attr("width", width)
                     .attr("height", height);
 
-                rightwing(svg,dataR_med,total_weights_med)
-                leftwing(svg,dataL_med);
+                dataR_med_top = getTopN(dataR_med, "value", 20);
+                dataL_med_top = dataR_med_top
+                rightwing(svg5,dataR_med_top,total_weights_med)
+                leftwing(svg5,dataL_med_top);
+
+               d3.selectAll(".svg6").remove();
+               svg6 = d3.select('#space')
+                    .append("svg")
+                    .attr("class", "svg6")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                dataR_space_top = getTopN(dataR_space, "value", 20);
+                dataL_space_top = dataR_space_top
+                rightwing(svg6,dataR_space_top,total_weights_space)
+                leftwing(svg6,dataL_space_top);
+
+                d3.selectAll(".svg7").remove();
+               svg7 = d3.select('#cars')
+                    .append("svg")
+                    .attr("class", "svg7")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                dataR_cars_top = getTopN(dataR_cars, "value", 18);
+                dataL_cars_top = dataR_cars_top
+                rightwing(svg7,dataR_cars_top,total_weights_cars)
+                leftwing(svg7,dataL_cars_top);
+
+                d3.selectAll(".svg8").remove();
+               svg8 = d3.select('#guns')
+                    .append("svg")
+                    .attr("class", "svg8")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                dataR_guns_top = getTopN(dataR_guns, "value", 20);
+                dataL_guns_top = dataR_guns_top
+                rightwing(svg8,dataR_guns_top,total_weights_guns)
+                leftwing(svg8,dataL_guns_top);
 
 
                 });  // End of Machine results (left)
