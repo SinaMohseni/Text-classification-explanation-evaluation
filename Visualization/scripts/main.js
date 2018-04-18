@@ -21,7 +21,6 @@
     loanApplication();
     apartmentpricing();
     text();
-
     
     // ----------------------- Machine results 
     function rightwing(svg,dataR,total_weights){

@@ -1,22 +1,3 @@
-From: Wingert@vnet.IBM.COM (Bret Wingert)
-Subject: Re: Level 5?
-Organization: IBM, Federal Systems Co. Software Services
-Lines: 33
-Disclaimer: This posting represents the poster's views, not those of IBM
-News-Software: UReply 3.1
-
->  From: harrisd@ll.mit.edu ( David Harris)
->  Message-Id: <9304271045.AA00468@LL.MIT.EDU>
->  To: Wingert@VNET.IBM.COM
->  Subject: RE: Level 5 Shuttle Software Work
->
->  Bret,
->
->  If you are familiar with the software work that received the Level 5
->  rating, could you post a description of it and/or some references?  I
->  think many people would be interested to know just what the IBM team
->  on that effort is doing differently from most other organizations/projects
->  that earned them that rating.
 
 I am familiar with the project.  It is the Onboard Shuttle Flight
 Software Project.  This software controls the Space Shuttle During
@@ -35,6 +16,3 @@ to those who are interested.
 
 Bret Wingert
 Wingert@VNET.IBM.COM
-
-(713)-282-7534
-FAX: (713)-282-8077

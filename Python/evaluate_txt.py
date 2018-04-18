@@ -101,7 +101,6 @@ def txt_process(article_exp, all_docs,tot_user):
                                             this_bag[1] += float(1)/tot_user;
                                 else:
                                     this_["words"].append([signle_word, float(1)/tot_user])
-
         else:
             # tokenized = [[word for word in WordPunctTokenizer().tokenize(str(document).lower()) if (word not in English_stop_words)] for document in a_doc["words"]]
             tokenized = [[word for word in tokenizer.tokenize(str(document).lower()) if (word not in English_stop_words)] for document in a_doc["words"]]

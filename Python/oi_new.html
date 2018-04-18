@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divC42G7JYHDNLPNHR"></div>
+        <div class="lime top_div" id="top_divCWMITU5GXYFGA2X"></div>
         
         <script>
-        var top_div = d3.select('#top_divC42G7JYHDNLPNHR').classed('lime top_div', true);
+        var top_div = d3.select('#top_divCWMITU5GXYFGA2X').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["autos", "electronics", "med", "space", "guns"], [3.7367614999590926e-07, 7.953083742571348e-05, 2.200687510292621e-07, 0.9999197311184578, 1.442992118114102e-07]);
+            var pp = new lime.PredictProba(pp_svg, ["autos", "electronics", "med", "space", "guns"], [0.0007358370701572501, 0.00022335610542955015, 0.005366880317102176, 0.010409228148350063, 0.9832646983589602]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["autos", "electronics", "med", "space", "guns"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["henry", -0.0007411945788815872], ["Zoology", -0.0006689959658509162], ["zoo", -0.0006252597721359383], ["utzoo", -0.0005735734657914044], ["nuclear", -0.0005653875282179149], ["particles", -0.0005517380208449177]], 0, exp_div);
+                exp.show([["Hitler", 0.11142674438577958], ["Nazi", 0.07079579194950528], ["documentary", 0.06529553265401988], ["Prescod", 0.045989088330003265], ["defend", 0.041686126643674284], ["Along", -0.03361980147689185]], 4, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["henry", 6, -0.0007411945788815872], ["henry", 903, -0.0007411945788815872], ["henry", 932, -0.0007411945788815872], ["Zoology", 97, -0.0006689959658509162], ["Zoology", 852, -0.0006689959658509162], ["zoo", 12, -0.0006252597721359383], ["zoo", 909, -0.0006252597721359383], ["utzoo", 926, -0.0005735734657914044], ["nuclear", 288, -0.0005653875282179149], ["nuclear", 521, -0.0005653875282179149], ["particles", 297, -0.0005517380208449177]], 0, "From: henry@zoo.toronto.edu (Henry Spencer)\nSubject: Re: Rocket Types\nOrganization: U of Toronto Zoology\nLines: 14\n\nIn article |1rpv9o$k00@wraith.cs.uow.edu.au| u9152083@wraith.cs.uow.edu.au (Glen Justin Balmer) writes:\n|It said that in the 60's they developed a rocket that used ions or nuclear\n|particles for propolsion.\n|The government however, didn't give them $1billion for the developement...\n\nI'd guess this was a garbled report of the NERVA effort to develop a\nsolid-core fission rocket (the most mundane type of nuclear rocket).\nThat was the only advanced-propulsion project that was done on a large\nenough scale to be likely to attract news attention.  It *could* be any\nnumber of things -- the description given is awfully vague -- but I'd\nput a small bet on NERVA.\n-- \nSVR4 resembles a high-speed collision   | Henry Spencer @ U of Toronto Zoology\nbetween SVR3 and SunOS.    - Dick Dunn  |  henry@zoo.toronto.edu  utzoo!henry\n", raw_div, true);
+            exp.show_raw_text([["Hitler", 472, 0.11142674438577958], ["Hitler", 621, 0.11142674438577958], ["Nazi", 392, 0.07079579194950528], ["documentary", 364, 0.06529553265401988], ["Prescod", 293, 0.045989088330003265], ["defend", 220, 0.041686126643674284], ["Along", 335, -0.03361980147689185]], 4, "==========================================================================\n  Yes, we do have a beautiful country. And I enjoy it.  Most of all, I\n  enjoy the thought that I have the means and can exercise my rights\n  to defend me and mine. \n \n  And I want to thank all of you good folks, like Prescod, who remind me\n  of what I have.  Along this line, I watched a documentary on one of the\n  Nazi concentration camps.  Stacks and stacks of bodies.  There were scenes\n  of Hitler speechifying, and what struck me, was the reverence and adoration\n  on the faces of the people in the crowds.  I guess they were happy that\n  Hitler had implemented full gun control and was taking care of the Jewish\n  problem all at the same time.", raw_div, true);
             
         </script>
         </body></html>

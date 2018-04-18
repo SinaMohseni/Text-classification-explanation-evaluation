@@ -102,7 +102,7 @@
 
                 rightwing(svg,dataR,total_weights)
 
-                    leftwing(svg,dataL);
+                leftwing(svg,dataL);
 
                 });  // End of Machine results (left)
 

@@ -1,9 +1,3 @@
-From: ashwin@gatech.edu (Ashwin Ram)
-Subject: How often do kids fall sick? etc.
-Reply-To: ashwin@cc.gatech.edu (Ashwin Ram)
-Organization: Georgia Institute of Technology, College of Computing
-Lines: 35
-
 Our 20-month son has started falling sick quite often every since he
 started going to day care.  He was at home for the first year and he did
 not fall sick even once.  Now it seems like he has some sort of cold or
@@ -37,5 +31,3 @@ normal, and what does one do about it?
 
 Any data, information or advice relating to this would be much
 appreciated.  Thanks a lot.
-
-Ashwin.
