@@ -6,8 +6,8 @@
     total_weights_guns = 0;
     total_weights_med = 0;
     total_weights_cars = 0;
-    jsonfile = "data/P1-text.json"
-    users_list = "data/list.csv"
+    jsonfile = "data/user_study/P1-text.json"
+    users_list = "data/user_study/list.csv"
 
         dataR_elec = [];
         dataR_med = [];
@@ -15,11 +15,13 @@
         dataR_guns = [];
         dataR_cars = [];
 
-    d3.csv(users_list,function(user) {
+    d3.csv(users_list,function(user) {        
         
-        
-        for (ii = 0; ii < user.length;ii++){  // all participants
-            jsonfile = "data/"+user[ii].text+".json"
+        for (ii = 0; ii < user.length;ii++){     // all participants
+            jsonfile = "data/user_study/"+user[ii].text+".json"
+            // console.log("user :",user)
+            // jsonfile = "data/user_study/"+user.text+".json"
+            // console.log("file :",jsonfile)
             d3.json(jsonfile,function(d){  // This users
          
                 for (var i = 1; i < d.length;i++){  // all articles
@@ -38,7 +40,7 @@
                                 dataR_elec.push({label:this_word, value:1})
                             }else{
                                 $.grep(dataR_elec, function(obj){return obj.label === this_word;})[0].value +=1
-                            }   
+                            }
                         }else if (this_topic == "space"){
                             total_weights_space +=1;
                             this_exist = 0
@@ -88,7 +90,7 @@
                     }
                 }
                 
-             
+                console.log("number of items: ",dataR_elec.length, dataR_med.length,dataR_space.length,dataR_guns.length,dataR_cars.length)
                 
                 d3.json(jsonfile,function(d) {
                     

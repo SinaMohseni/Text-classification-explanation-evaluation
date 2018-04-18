@@ -3,8 +3,8 @@
 
      
     total_weights = 0
-    jsonfile = "data/P1-crime.json"
-    criminal_list = "data/list.csv"
+    jsonfile = "data/user_study/P1-crime.json"
+    criminal_list = "data/user_study/list.csv"
 
         dataR = [
         {label:"Age", value:0},
@@ -30,7 +30,7 @@
         for (ii = 0; ii < user.length;ii++){  // all participants
             console.log(user[ii].criminal)
             // console.log(user)
-            jsonfile = "data/"+user[ii].criminal+".json"
+            jsonfile = "data/user_study/"+user[ii].criminal+".json"
             d3.json(jsonfile,function(d) {
          
                 for (var i = 0; i < d.length;i++){  // all articles
@@ -126,8 +126,8 @@
 
      
     total_weights_loan = 0
-    jsonfile = "data/P1-laon.json"
-    criminal_list = "data/list.csv"
+    jsonfile = "data/user_study/P1-laon.json"
+    criminal_list = "data/user_study/list.csv"
 
         dataR_loan = [
         {label:"Amount", value:0},
@@ -157,7 +157,7 @@
         for (ii = 0; ii < user.length;ii++){  // all participants
             console.log(user[ii].loan)
             // console.log(user)
-            jsonfile = "data/"+user[ii].loan+".json"
+            jsonfile = "data/user_study/"+user[ii].loan+".json"
             d3.json(jsonfile,function(d) {
          
                 for (var i = 0; i < d.length;i++){  // all articles
@@ -209,7 +209,7 @@
                 }
              
 
-                jsonfile = "data/P1-crime.json"
+                jsonfile = "data/user_study/P1-crime.json"
                 d3.json(jsonfile,function(d) {
                     
                     dataL_loan = [
@@ -267,8 +267,8 @@
 
      
     total_weights_apartment = 0
-    jsonfile = "data/P1-apartment.json"
-    criminal_list = "data/list.csv"
+    jsonfile = "data/user_study/P1-apartment.json"
+    criminal_list = "data/user_study/list.csv"
 
         dataR_apartment = [
         {label:"Rooms", value:0},
@@ -292,7 +292,7 @@
         for (ii = 0; ii < user.length;ii++){  // all participants
             console.log(user[ii].apartment)
             // console.log(user)
-            jsonfile = "data/"+user[ii].apartment+".json"
+            jsonfile = "data/user_study/"+user[ii].apartment+".json"
             d3.json(jsonfile,function(d) {
          
                 for (var i = 0; i < d.length;i++){  // all articles
@@ -331,7 +331,7 @@
                 }
              
 
-                jsonfile = "data/P1-apartment.json"
+                jsonfile = "data/user_study/P1-apartment.json"
                 d3.json(jsonfile,function(d) {
                     
                        dataL_apartment = [

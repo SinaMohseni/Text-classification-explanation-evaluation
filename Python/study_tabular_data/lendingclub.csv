@@ -1,0 +1,21 @@
+loan_amnt,term,int_rate,installment,emp_title,emp_length,home_ownership,annual_inc,purpose,addr_state,dti,earliest_cr_line,fico_range_low,fico_range_high,inq_last_6mths,open_acc,revol_bal,application_type,loan_status
+5000, 36 months, 10.65%,162.87,,10+ years,RENT,24000,credit_card,AZ,27.65,Jan-1985,735,739,1,3,13648,INDIVIDUAL,Fully Paid
+2500, 60 months, 15.27%,59.83,Ryder,< 1 year,RENT,30000,car,GA,1,Apr-1999,740,744,5,3,1687,INDIVIDUAL,Charged Off
+2400, 36 months, 15.96%,84.33,,10+ years,RENT,12252,small_business,IL,8.72,Nov-2001,735,739,2,2,2956,INDIVIDUAL,Fully Paid
+10000, 36 months, 13.49%,339.31,AIR RESOURCES BOARD,10+ years,RENT,49200,other,CA,20,Feb-1996,690,694,1,10,5598,INDIVIDUAL,Fully Paid
+3000, 60 months, 12.69%,67.79,University Medical Group,1 year,RENT,80000,other,OR,17.94,Jan-1996,695,699,0,15,27783,INDIVIDUAL,Fully Paid
+5000, 36 months,  7.90%,156.46,Veolia Transportaton,3 years,RENT,36000,wedding,AZ,11.2,Nov-2004,730,734,3,9,7963,INDIVIDUAL,Fully Paid
+7000, 60 months, 15.96%,170.08,Southern Star Photography,8 years,RENT,47004,debt_consolidation,NC,23.51,Jul-2005,690,694,1,7,17726,INDIVIDUAL,Fully Paid
+3000, 36 months, 18.64%,109.43,MKC Accounting ,9 years,RENT,48000,car,CA,5.35,Jan-2007,660,664,2,4,8221,INDIVIDUAL,Fully Paid
+5600, 60 months, 21.28%,152.39,,4 years,OWN,40000,small_business,CA,5.55,Apr-2004,675,679,2,11,5210,INDIVIDUAL,Charged Off
+5375, 60 months, 12.69%,121.45,Starbucks,< 1 year,RENT,15000,other,TX,18.08,Sep-2004,725,729,0,2,9279,INDIVIDUAL,Charged Off
+6500, 60 months, 14.65%,153.45,Southwest Rural metro,5 years,OWN,72000,debt_consolidation,AZ,16.12,Jan-1998,695,699,2,14,4032,INDIVIDUAL,Fully Paid
+12000, 36 months, 12.69%,402.54,UCLA,10+ years,OWN,75000,debt_consolidation,CA,10.78,Oct-1989,675,679,0,12,23336,INDIVIDUAL,Fully Paid
+9000, 36 months, 13.49%,305.38,Va. Dept of Conservation/Recreation,< 1 year,RENT,30000,debt_consolidation,VA,10.08,Apr-2004,710,714,1,4,10452,INDIVIDUAL,Charged Off
+3000, 36 months,  9.91%,96.68,Target,3 years,RENT,15000,credit_card,IL,12.56,Jul-2003,705,709,2,11,7323,INDIVIDUAL,Fully Paid
+10000, 36 months, 10.65%,325.74,SFMTA,3 years,RENT,100000,other,CA,7.06,May-1991,720,724,2,14,11997,INDIVIDUAL,Charged Off
+1000, 36 months, 16.29%,35.31,Internal revenue Service,< 1 year,RENT,28000,debt_consolidation,MO,20.31,Sep-2007,665,669,1,11,6524,INDIVIDUAL,Fully Paid
+10000, 36 months, 15.27%,347.98,Chin's Restaurant,4 years,RENT,42000,home_improvement,CA,18.6,Oct-1998,670,674,2,14,24043,INDIVIDUAL,Fully Paid
+3600, 36 months,  6.03%,109.57,Duracell,10+ years,MORTGAGE,110000,major_purchase,CT,10.52,Aug-1993,760,764,0,20,22836,INDIVIDUAL,Fully Paid
+6000, 36 months, 11.71%,198.46,Connection Inspection,1 year,MORTGAGE,84000,medical,UT,18.44,Oct-2003,685,689,0,4,0,INDIVIDUAL,Fully Paid
+9200, 36 months,  6.03%,280.01,Network Interpreting Service,6 years,RENT,77385.19,debt_consolidation,CA,9.86,Jan-2001,755,759,0,8,7314,INDIVIDUAL,Fully Paid

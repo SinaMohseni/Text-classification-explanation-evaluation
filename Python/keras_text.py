@@ -77,7 +77,6 @@ tokenizer = Tokenizer(num_words=MAX_NUM_WORDS)
 tokenizer.fit_on_texts(texts)
 sequences = tokenizer.texts_to_sequences(texts)
 
-
 word_index = tokenizer.word_index
 print('Found %s unique tokens.' % len(word_index))
 
