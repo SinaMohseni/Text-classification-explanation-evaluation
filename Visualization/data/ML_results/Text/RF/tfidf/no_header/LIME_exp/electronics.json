@@ -54,8 +54,8 @@
     0.010267729421411147
    ]
   ]
- },
- {
+ },   
+ {  
   "model_accuracy": 0.729,
   "predicted_class": "electronics",
   "true_class": "electronics",

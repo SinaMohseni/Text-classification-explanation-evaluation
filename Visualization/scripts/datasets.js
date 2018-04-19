@@ -143,8 +143,8 @@
                    svg = d3.select('#crime')
                         .append("svg")
                         .attr("class", "svg1")
-                        .attr("width", width)
-                        .attr("height", height);
+                        // .attr("width", width)
+                        .attr("height", svg_height);
 
                     rightwing(svg,dataR,total_weights)
                     console.log("total ", total_weights_crime_lime)
@@ -195,7 +195,6 @@
          
                 for (var i = 0; i < d.length;i++){  // all articles
                     for (var j = 0; j < d[i].word.length;j++){  // check decisions
-                        
 
                         this_record = d[i].word[j];
                         // $.grep(dataR, function(obj){return obj.label === "Total";})[0].value +=1
@@ -272,8 +271,8 @@
                    svg2 = d3.select('#loan')
                         .append("svg")
                         .attr("class", "svg2")
-                        .attr("width", width)
-                        .attr("height", height);
+                        // .attr("width", width)
+                        .attr("height", svg_height);
 
                     rightwing(svg2, dataR_loan,total_weights_loan)
                     total_weights_lime = 1;
@@ -345,7 +344,6 @@ function apartmentpricing() {
          
                 for (var i = 0; i < d.length;i++){  // all articles
                     for (var j = 0; j < d[i].word.length;j++){  // check decisions
-                        
 
                         this_record = d[i].word[j];
                         // $.grep(dataR, function(obj){return obj.label === "Total";})[0].value +=1
@@ -380,7 +378,6 @@ function apartmentpricing() {
 
                 apartment_users+=1
                 if (apartment_users == (user.length)) apapartment_ML();
-                
 
             });  // End of User results (right)
 
@@ -436,8 +433,8 @@ function apapartment_ML(){
     svg3 = d3.select('#apartment')
         .append("svg")
         .attr("class", "svg3")
-        .attr("width", width)
-        .attr("height", height);
+        // .attr("width", width)
+        .attr("height", svg_height);
 
     rightwing(svg3, dataR_apartment,total_weights_apartment)
     console.log("total ", total_weights_apartment_lime)

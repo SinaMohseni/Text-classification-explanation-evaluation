@@ -4,17 +4,21 @@
 
     body {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        width: 500;
-        height: 1500px;
-        position: relative;
+        /*width: 500;*/
+        /*height: 1500px;*/
+        /*position: relative;*/
+        margin-left: 5%;
     }
 
     svg {
         width: 100%;
-        height: 20%;
+        height: 100%;
+        margin-top: 2%;
         position: center;
     }
-
+    .charts{
+        margin-top: 2%
+    }
     .toolTip {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         position: absolute;
@@ -65,14 +69,14 @@
     <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 <body>
- <div id=crime> Crimianl Records</div>
- <div id=loan>Loan Applications</div>
- <div id=apartment>Apartment Pricing</div>
- <div id=electronics>Electronics and Computer</div>
- <div id=space>Space</div>
- <div id=medical>Medical</div>
- <div id=cars>Cars and Trucks</div>
- <div id=guns>Guns and Politics</div>
+ <div class="charts" id=crime> Crimianl Records</div>
+ <div class="charts" id=loan>Loan Applications</div>
+ <div class="charts" id=apartment>Apartment Pricing</div>
+ <div class="charts" id=electronics>Electronics and Computer</div>
+ <div class="charts" id=space>Space</div>
+ <div class="charts" id=medical>Medical</div>
+ <div class="charts" id=cars>Cars and Trucks</div>
+ <div class="charts" id=guns>Guns and Politics</div>
 
 <script src= "/scripts/text.js"></script>
 <script src= "/scripts/datasets.js"></script>
