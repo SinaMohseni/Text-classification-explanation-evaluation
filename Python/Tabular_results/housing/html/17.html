@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divW5EG503J2D365G0"></div>
+        <div class="lime top_div" id="top_divFJ6FJC3JOUDX0KQ"></div>
         
         <script>
-        var top_div = d3.select('#top_divW5EG503J2D365G0').classed('lime top_div', true);
+        var top_div = d3.select('#top_divFJ6FJC3JOUDX0KQ').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 17.76580000000001, 10.011099999999988, 46.30669999999996);
+                    var pp = new lime.PredictedValue(pp_svg, 17.702200000000023, 8.404999999999987, 47.71380000000005);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["5.89 < RM <= 6.21", -3.0142603756741697], ["11.17 < LSTAT <= 16.78", -1.567754458474741], ["PTRATIO > 20.20", -1.0668937830018335], ["376.56 < B <= 391.88", 0.6018666801580883], ["277.00 < TAX <= 329.50", -0.24357331646481803]], 1, exp_div);
+            exp.show([["11.36 < LSTAT <= 16.91", -2.6137175830056854], ["5.88 < RM <= 6.21", -2.232891158789645], ["PTRATIO > 20.20", -0.9756387023443126], ["76.50 < AGE <= 93.82", -0.5306895037323035], ["374.71 < B <= 391.35", 0.4691963766102947]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["RM", "5.99", -3.0142603756741697], ["LSTAT", "14.67", -1.567754458474741], ["PTRATIO", "21.00", -1.0668937830018335], ["B", "386.75", 0.6018666801580883], ["TAX", "307.00", -0.24357331646481803]], 1, raw_div);
+            exp.show_raw_tabular([["LSTAT", "14.67", -2.6137175830056854], ["RM", "5.99", -2.232891158789645], ["PTRATIO", "21.00", -0.9756387023443126], ["AGE", "81.70", -0.5306895037323035], ["B", "386.75", 0.4691963766102947]], 1, raw_div);
         
         </script>
         </body></html>

@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divRCM8LQ3N2QF6SN1"></div>
+        <div class="lime top_div" id="top_divBR519J7QNI6JLVB"></div>
         
         <script>
-        var top_div = d3.select('#top_divRCM8LQ3N2QF6SN1').classed('lime top_div', true);
+        var top_div = d3.select('#top_divBR519J7QNI6JLVB').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, [0, 1], [2.8371810913085938e-05, 0.9999716281890869]);
+            var pp = new lime.PredictProba(pp_svg, [0, 1, 2, 3], [0.05403195321559906, 0.9459220767021179, 4.166991129750386e-05, 4.31214903073851e-06]);
             
         
         var exp_div;
-            var exp = new lime.Explanation([0, 1]);
+            var exp = new lime.Explanation([0, 1, 2, 3]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["TIME > 9.00", 0.8180718576618837], ["SUPER=0", -0.030551609961314733], ["JUNKY=0", -0.02621811961359448], ["48.00 < FOLLOW <= 52.00", 0.018835368863453893], ["9.00 < TSERVD <= 24.00", 0.013063018690632243]], 1, exp_div);
+                exp.show([["int_rate <= 925.00", 0.09270716099069971], ["term <= 36.00", 0.09109156063283184], ["58898.00 < annual_inc <= 82000.00", 0.031607881451426546], ["inq_last_6mths <= 0.00", 0.031038023714158796], ["fico_range_low > 740.00", 0.02637574748088442]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["TIME", "11.00", 0.8180718576618837], ["SUPER=0", "True", -0.030551609961314733], ["JUNKY=0", "True", -0.02621811961359448], ["FOLLOW", "52.00", 0.018835368863453893], ["TSERVD", "14.00", 0.013063018690632243]], 1, raw_div);
+            exp.show_raw_tabular([["int_rate", "603.00", 0.09270716099069971], ["term", "36.00", 0.09109156063283184], ["annual_inc", "77385.19", 0.031607881451426546], ["inq_last_6mths", "0.00", 0.031038023714158796], ["fico_range_low", "755.00", 0.02637574748088442]], 1, raw_div);
         
         </script>
         </body></html>

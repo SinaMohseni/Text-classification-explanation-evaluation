@@ -107,33 +107,38 @@
                             
                             this_record = d[i].features_list[j];
                             total_weights_crime_lime +=1;
-                            if (this_record[0].substring(0, 7) == "MARRIED"){
+
+                            this_record_list = this_record[0].split(" ");
+                            if (this_record_list.length == 1) this_record_list = this_record_list[0].split("=");
+                            // console.log("Here: ",tokenize(this_record_list, 1))
+
+                            if (this_record_list.indexOf("MARRIED") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Marriage";})[0].value +=1
-                            } else if (this_record[0].substring(0, 3) == "AGE"){
+                            } else if (this_record_list.indexOf("AGE") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Age";})[0].value +=1
-                            } else if (this_record[0].substring(0, 6) == "SCHOOL"){
+                            } else if (this_record_list.indexOf("SCHOOL") >= 0){   // } else if (this_record[0].substring(0, 6) == "SCHOOL"){
                                 $.grep(dataL, function(obj){return obj.label === "Education";})[0].value +=1
-                            } else if (this_record[0].substring(0, 5) == "WHITE"){
+                            } else if (this_record_list.indexOf("WHITE") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Race";})[0].value +=1
-                            } else if (this_record[0].substring(0, 5) == "ALCHY"){
+                            } else if (this_record_list.indexOf("ALCHY") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Alcohol";})[0].value +=1
-                            } else if (this_record[0].substring(0, 5) == "JUNKY"){
+                            } else if (this_record_list.indexOf("JUNKY") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Junky";})[0].value +=1
-                            } else if (this_record[0].substring(0, 5) == "SUPER"){
+                            } else if (this_record_list.indexOf("SUPER") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Supervised";})[0].value +=1
-                            } else if (this_record[0].substring(0, 7) == "WORKREL"){
+                            } else if (this_record_list.indexOf("WORKREL") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Work";})[0].value +=1
-                            } else if (this_record[0].substring(0, 5) == "FELON"){
+                            } else if (this_record_list.indexOf("FELON") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Felony";})[0].value +=1
-                            } else if (this_record[0].substring(0, 6) == "PROPTY"){
+                            } else if (this_record_list.indexOf("PROPTY") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Property";})[0].value +=1
-                            } else if (this_record[0].substring(0, 6) == "PERSON"){
+                            } else if (this_record_list.indexOf("PERSON") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Person";})[0].value +=1
-                            } else if (this_record[0].substring(0, 6) == "PRIORS"){
+                            } else if (this_record_list.indexOf("PRIORS") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Prior Arrests";})[0].value +=1
-                            } else if (this_record[0].substring(0, 4) == "RULE"){
+                            } else if (this_record_list.indexOf("RULE") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Prison Violation";})[0].value +=1
-                            } else if (this_record[0].substring(0, 6) == "TSERVD"){
+                            } else if (this_record_list.indexOf("TSERVD") >= 0){
                                 $.grep(dataL, function(obj){return obj.label === "Time Served";})[0].value +=1
                             }                    
                         }
@@ -399,30 +404,36 @@ function apapartment_ML(){
         for (var j = 0; j < d[i].features_list.length;j++){  // check decisions
 
             this_record = d[i].features_list[j];
+
+            this_record_list = this_record[0].split(" ");
+            if (this_record_list.length == 1) this_record_list = this_record_list[0].split("=");
+                            
+
+
             total_weights_apartment_lime +=1;
-                if (this_record[0].substring(0, 2) == "RM"){
+                if (this_record_list.indexOf("RM") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Rooms";})[0].value +=1
-                } else if (this_record[0].substring(0, 3) == "DIS"){
+                } else if (this_record_list.indexOf("DIS") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Employment";})[0].value +=1
-                } else if (this_record[0].substring(0, 3) == "RAD"){
+                } else if (this_record_list.indexOf("RAD") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Highways";})[0].value +=1
-                } else if (this_record[0].substring(0, 3) == "TAX"){
+                } else if (this_record_list.indexOf("TAX") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Property Tax";})[0].value +=1
-                } else if (this_record[0].substring(0, 4) == "CRIM"){
+                } else if (this_record_list.indexOf("CRIM") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Crime Rate";})[0].value +=1
-                } else if (this_record[0].substring(0, 2) == "ZN"){
+                } else if (this_record_list.indexOf("ZN") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Lots";})[0].value +=1
-                } else if (this_record[0].substring(0, 5) == "INDUS"){
+                } else if (this_record_list.indexOf("INDUS") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Business";})[0].value +=1
-                } else if (this_record[0].substring(0, 4) == "CHAS"){
+                } else if (this_record_list.indexOf("CHAS") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "River";})[0].value +=1
-                } else if (this_record[0].substring(0, 3) == "NOX"){
+                } else if (this_record_list.indexOf("NOX") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "NOS";})[0].value +=1
-                } else if (this_record[0].substring(0, 3) == "AGE"){
+                } else if (this_record_list.indexOf("AGE") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Ower-occupied";})[0].value +=1
-                } else if (this_record[0].substring(0, 7) == "PTRATIO"){
+                } else if (this_record_list.indexOf("PTRATIO") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Pupil-teacher";})[0].value +=1
-                } else if (this_record[0].substring(0, 5) == "LSTAT"){
+                } else if (this_record_list.indexOf("LSTAT") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Lower Status";})[0].value +=1
                 }
         }

@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divPVPG5EGLTLFQRWZ"></div>
+        <div class="lime top_div" id="top_divRZF3IPD1B5YX6D1"></div>
         
         <script>
-        var top_div = d3.select('#top_divPVPG5EGLTLFQRWZ').classed('lime top_div', true);
+        var top_div = d3.select('#top_divRZF3IPD1B5YX6D1').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 33.592600000000466, 9.897999999999994, 47.270599999999924);
+                    var pp = new lime.PredictedValue(pp_svg, 34.024200000000505, 9.20369999999999, 47.99760000000008);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["RM > 6.66", 8.849574242173993], ["LSTAT <= 7.09", 4.580244311720488], ["TAX <= 277.00", 0.6821295548125336], ["DIS > 5.26", -0.40318474945596516], ["0.45 < NOX <= 0.52", 0.35986657623623947]], 1, exp_div);
+            exp.show([["RM > 6.63", 6.791356282358419], ["LSTAT <= 7.13", 6.686291432987749], ["DIS > 5.12", -0.7012321995546081], ["TAX <= 279.00", 0.5408339914316295], ["CRIM <= 0.08", -0.35442804394611893]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["RM", "7.00", 8.849574242173993], ["LSTAT", "2.94", 4.580244311720488], ["TAX", "222.00", 0.6821295548125336], ["DIS", "6.06", -0.40318474945596516], ["NOX", "0.46", 0.35986657623623947]], 1, raw_div);
+            exp.show_raw_tabular([["RM", "7.00", 6.791356282358419], ["LSTAT", "2.94", 6.686291432987749], ["DIS", "6.06", -0.7012321995546081], ["TAX", "222.00", 0.5408339914316295], ["CRIM", "0.03", -0.35442804394611893]], 1, raw_div);
         
         </script>
         </body></html>

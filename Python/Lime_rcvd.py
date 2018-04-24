@@ -7,6 +7,7 @@ import lime
 import lime.lime_tabular
 
 import cPickle
+# import _pickle as cPickle
 
 import xgboost
 
@@ -30,8 +31,9 @@ def run_rcvd_lime(model):
     class_names = le.classes_
     data = data[:,:-1]
 
-    categorical_features = [0,1,2,3,4,5,6,7,8,9,17]  # 1,3,5, 6,7,8,9,13]
+    print("------------Length: ", len(data),labels.shape, data[0].shape, labels[0], len(feature_names))
 
+    categorical_features = [0,1,2,3,4,5,6,7,8,9,17]  # 1,3,5, 6,7,8,9,13]
 
     categorical_names = {}
     for feature in categorical_features:
@@ -42,13 +44,16 @@ def run_rcvd_lime(model):
 
     data = data.astype(float)
 
+
     encoder = sklearn.preprocessing.OneHotEncoder(categorical_features=categorical_features)
 
     np.random.seed(1)
     train, test, labels_train, labels_test = sklearn.model_selection.train_test_split(data, labels, train_size=0.80)
 
     encoder.fit(data)
-    encoded_train = encoder.transform(train)
+    
+    encoded_train = encoder.transform(train);
+    encoded_test = encoder.transform(test);
 
     if (model == "train"):  ### ----------------------- Traiing and saving the model
         
@@ -56,12 +61,12 @@ def run_rcvd_lime(model):
         gbtree = xgboost.XGBClassifier(n_estimators=300, max_depth=5)
         gbtree.fit(encoded_train, labels_train)
 
-        model_accuracy = sklearn.metrics.accuracy_score(labels_test, gbtree.predict(encoder.transform(test)))
+        model_accuracy = sklearn.metrics.accuracy_score(labels_test, gbtree.predict(encoded_test))
         print ("model_accuracy: ", model_accuracy)
 
-        print ("\n Saving the model")
-        with open('xgboost.pkl', 'wb') as fid:
-            cPickle.dump(gbtree, fid)    
+        # print ("\n Saving the model")
+        # with open('xgboost.pkl', 'wb') as fid:
+        #     cPickle.dump(gbtree, fid)
     else:   ### ------------------------ Loading a pre-trained model
     
         print ("loading the model")
@@ -103,7 +108,7 @@ def run_rcvd_lime(model):
     i = 0
     res_json = []
     for example in test_data:
-
+        # print (example.size, example)
         # data, inverse = explainer.__data_inverse(example, inverse)  # explainer
         # yss = predict_fn(inverse)
 
@@ -123,7 +128,7 @@ def run_rcvd_lime(model):
         res_json.append({"model_accuracy":model_accuracy,"predicted_class":predicted_class, "true_class":true_class, "features_list":features_list})
         i +=1
 
-    save_results(res_json)
+    # save_results(res_json)
     return
 
 def save_results(res_json):
@@ -138,6 +143,8 @@ def save_results(res_json):
 
 study_data =  './study_tabular_data/recidivism.csv'
 html_adrs = './Tabular_results/recidivism/html/'
-res_adrs = './Tabular_results/recidivism/results/rcvd.json'
 
-run_rcvd_lime(model="train");   # model="test"
+
+for ii in range(1, 10):
+    res_adrs = './Tabular_results/recidivism/results/rcvd-ML-'+str(ii)+'.json'
+    run_rcvd_lime(model="train");   # model="test"

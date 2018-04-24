@@ -14,6 +14,10 @@ def boston_explanations(inputs):
     rf = sklearn.ensemble.RandomForestRegressor(n_estimators=1000)
     train, test, labels_train, labels_test = sklearn.model_selection.train_test_split(boston.data, boston.target, train_size=0.80, test_size=0.20)
 
+    # print (train[0])
+    train[:,0]*=1;   # Feature engineering
+    # print (train[0])
+
     rf.fit(train, labels_train)
     print('Random Forest MSError', np.mean((rf.predict(test) - labels_test) ** 2))
     print('MSError when predicting the mean', np.mean((labels_train.mean() - labels_test) ** 2))
@@ -25,8 +29,8 @@ def boston_explanations(inputs):
     res_json = [];
     for this_exm in inputs:
 
-        print "\n Input: ",len(this_exm), this_exm
-        print "\n Explanation: "
+        # print ("\n Input: ",len(this_exm), this_exm)
+        # print ("\n Explanation: ")
         exp = explainer.explain_instance(this_exm, rf.predict, num_features=5)  # test[i]
         
         # predicted_class = rf.predict(this_exm)
@@ -36,7 +40,7 @@ def boston_explanations(inputs):
         features_list = exp.as_list()
         true_class = 0
         predicted_class = 0
-        print "\n \n Result: \n ", predicted_class, true_class
+        # print ("\n \n Result: \n ", predicted_class, true_class)
         res_json.append({"model_accuracy":model_accuracy,"predicted_class":predicted_class, "true_class":true_class, "features_list":features_list})
         i+=1
     
@@ -62,14 +66,15 @@ def save_results(res_json):
     return 0
 
 
-
-
-
 study_data =  './study_tabular_data/housing.csv'
 html_adrs = './Tabular_results/housing/html/'
-res_adrs = './Tabular_results/housing/results/housing.json'
+# res_adrs = './Tabular_results/housing/results/housing.json'
+# res_adrs = './Tabular_results/housing/results_10/housing.json'
 
 
 inputs = read_csv(study_data);
-boston_explanations(inputs);
+
+for ii in range(1,11):
+    res_adrs = './Tabular_results/housing/results/housing-'+str(ii)+'.json'
+    boston_explanations(inputs);
 
