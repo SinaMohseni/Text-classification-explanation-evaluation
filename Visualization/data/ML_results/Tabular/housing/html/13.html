@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divRK2GOQ0HZIDZ0R2"></div>
+        <div class="lime top_div" id="top_divXS3LJYYZVQY7PC4"></div>
         
         <script>
-        var top_div = d3.select('#top_divRK2GOQ0HZIDZ0R2').classed('lime top_div', true);
+        var top_div = d3.select('#top_divXS3LJYYZVQY7PC4').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 20.187400000000096, 10.48909999999995, 46.36280000000004);
+                    var pp = new lime.PredictedValue(pp_svg, 20.02930000000005, 10.989500000000017, 47.32169999999994);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["5.89 < RM <= 6.21", -2.925438740176423], ["7.09 < LSTAT <= 11.17", 1.7225631157292878], ["PTRATIO > 20.20", -1.0466731267725329], ["B > 396.29", -0.33533339885368996], ["3.35 < DIS <= 5.26", 0.17869566327127775]], 1, exp_div);
+            exp.show([["5.88 < RM <= 6.21", -2.371504003884316], ["7.13 < LSTAT <= 11.36", 1.7024444621515313], ["0.25 < CRIM <= 3.68", -0.7139026681225051], ["PTRATIO > 20.20", -0.5228984705796895], ["3.24 < DIS <= 5.12", -0.4644656264051947]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["RM", "5.95", -2.925438740176423], ["LSTAT", "8.26", 1.7225631157292878], ["PTRATIO", "21.00", -1.0466731267725329], ["B", "396.90", -0.33533339885368996], ["DIS", "4.71", 0.17869566327127775]], 1, raw_div);
+            exp.show_raw_tabular([["RM", "5.95", -2.371504003884316], ["LSTAT", "8.26", 1.7024444621515313], ["CRIM", "0.63", -0.7139026681225051], ["PTRATIO", "21.00", -0.5228984705796895], ["DIS", "4.71", -0.4644656264051947]], 1, raw_div);
         
         </script>
         </body></html>

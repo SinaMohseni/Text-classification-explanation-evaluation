@@ -98,7 +98,7 @@
 
 
     function crime_ML(){
-        jsonfile = "data/ML_results/Tabular/recidivism/results/rcvd.json"   // P1-crime.json
+        jsonfile = "data/ML_results/Tabular/recidivism/results/rcvd-ML-1.json"   // P1-crime.json
                 d3.json(jsonfile,function(d) {
                     
 
@@ -395,7 +395,7 @@ function apartmentpricing() {
 
 
 function apapartment_ML(){
-    jsonfile = "data/ML_results/Tabular/housing/results/housing.json"
+    jsonfile = "data/ML_results/Tabular/housing/results/housing-1.json"
     total_weights_apartment_lime = 0;
 
     d3.json(jsonfile,function(d) {
@@ -408,8 +408,6 @@ function apapartment_ML(){
             this_record_list = this_record[0].split(" ");
             if (this_record_list.length == 1) this_record_list = this_record_list[0].split("=");
                             
-
-
             total_weights_apartment_lime +=1;
                 if (this_record_list.indexOf("RM") >= 0){
                     $.grep(dataL_apartment, function(obj){return obj.label === "Rooms";})[0].value +=1
@@ -446,7 +444,7 @@ function apapartment_ML(){
         .attr("class", "svg3")
         // .attr("width", width)
         .attr("height", svg_height);
-
+    console.log(dataL_apartment)
     rightwing(svg3, dataR_apartment,total_weights_apartment)
     console.log("total ", total_weights_apartment_lime)
     leftwing(svg3, dataL_apartment,total_weights_apartment_lime);

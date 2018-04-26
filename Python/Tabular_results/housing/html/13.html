@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divXS3LJYYZVQY7PC4"></div>
+        <div class="lime top_div" id="top_divBCVQL83WPEB0QGJ"></div>
         
         <script>
-        var top_div = d3.select('#top_divXS3LJYYZVQY7PC4').classed('lime top_div', true);
+        var top_div = d3.select('#top_divBCVQL83WPEB0QGJ').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 20.02930000000005, 10.989500000000017, 47.32169999999994);
+                    var pp = new lime.PredictedValue(pp_svg, 20.10170000000007, 9.005599999999994, 47.43390000000003);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["5.88 < RM <= 6.21", -2.371504003884316], ["7.13 < LSTAT <= 11.36", 1.7024444621515313], ["0.25 < CRIM <= 3.68", -0.7139026681225051], ["PTRATIO > 20.20", -0.5228984705796895], ["3.24 < DIS <= 5.12", -0.4644656264051947]], 1, exp_div);
+            exp.show([["5.89 < RM <= 6.21", -2.9979334686059267], ["PTRATIO > 20.20", -0.7084184334595504], ["7.13 < LSTAT <= 11.33", 0.6165227960456527], ["5.13 < INDUS <= 9.69", -0.6090805654117984], ["43.25 < AGE <= 76.25", 0.4972810881528744]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["RM", "5.95", -2.371504003884316], ["LSTAT", "8.26", 1.7024444621515313], ["CRIM", "0.63", -0.7139026681225051], ["PTRATIO", "21.00", -0.5228984705796895], ["DIS", "4.71", -0.4644656264051947]], 1, raw_div);
+            exp.show_raw_tabular([["RM", "5.95", -2.9979334686059267], ["PTRATIO", "21.00", -0.7084184334595504], ["LSTAT", "8.26", 0.6165227960456527], ["INDUS", "8.14", -0.6090805654117984], ["AGE", "61.80", 0.4972810881528744]], 1, raw_div);
         
         </script>
         </body></html>

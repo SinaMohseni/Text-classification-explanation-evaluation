@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div4JIBA1MFDM6A2PC"></div>
+        <div class="lime top_div" id="top_divQ7A07TLSP9WY9UQ"></div>
         
         <script>
-        var top_div = d3.select('#top_div4JIBA1MFDM6A2PC').classed('lime top_div', true);
+        var top_div = d3.select('#top_divQ7A07TLSP9WY9UQ').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 33.77950000000018, 9.31740000000001, 48.176399999999994);
+                    var pp = new lime.PredictedValue(pp_svg, 34.62220000000031, 8.52520000000002, 47.54000000000017);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["RM > 6.63", 7.077515579825452], ["LSTAT <= 7.13", 6.570695699451191], ["TAX <= 279.00", 0.8496755036746599], ["3.24 < DIS <= 5.12", -0.3675380478231303], ["17.40 < PTRATIO <= 19.00", 0.35022504477206734]], 1, exp_div);
+            exp.show([["RM > 6.63", 8.947052350485654], ["LSTAT <= 7.13", 5.761783152825316], ["TAX <= 279.00", 0.624583388272844], ["0.45 < NOX <= 0.54", 0.46772310703176656], ["3.19 < DIS <= 5.23", -0.3917993816220327]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["RM", "7.18", 7.077515579825452], ["LSTAT", "4.03", 6.570695699451191], ["TAX", "242.00", 0.8496755036746599], ["DIS", "4.97", -0.3675380478231303], ["PTRATIO", "17.80", 0.35022504477206734]], 1, raw_div);
+            exp.show_raw_tabular([["RM", "7.18", 8.947052350485654], ["LSTAT", "4.03", 5.761783152825316], ["TAX", "242.00", 0.624583388272844], ["NOX", "0.47", 0.46772310703176656], ["DIS", "4.97", -0.3917993816220327]], 1, raw_div);
         
         </script>
         </body></html>

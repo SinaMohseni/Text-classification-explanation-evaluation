@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divI3GWM4CQ2JJ8EAS"></div>
+        <div class="lime top_div" id="top_div6KVPFMDNMJH8FO3"></div>
         
         <script>
-        var top_div = d3.select('#top_divI3GWM4CQ2JJ8EAS').classed('lime top_div', true);
+        var top_div = d3.select('#top_div6KVPFMDNMJH8FO3').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 19.951800000000013, 11.12960000000006, 47.786499999999926);
+                    var pp = new lime.PredictedValue(pp_svg, 19.96460000000005, 10.575200000000034, 47.77780000000016);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["RM <= 5.88", -3.347302597810592], ["7.13 < LSTAT <= 11.36", 1.6472652387076856], ["PTRATIO > 20.20", -0.9559698757090648], ["3.24 < DIS <= 5.12", -0.5782635821391543], ["5.13 < INDUS <= 8.56", -0.3316428186646537]], 1, exp_div);
+            exp.show([["RM <= 5.89", -4.067389199080525], ["7.13 < LSTAT <= 11.33", 1.1609459174632977], ["0.45 < NOX <= 0.54", 0.5119910044384327], ["ZN <= 0.00", -0.37278876661078136], ["3.19 < DIS <= 5.23", -0.3674954684528908]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["RM", "5.83", -3.347302597810592], ["LSTAT", "8.47", 1.6472652387076856], ["PTRATIO", "21.00", -0.9559698757090648], ["DIS", "4.50", -0.5782635821391543], ["INDUS", "8.14", -0.3316428186646537]], 1, raw_div);
+            exp.show_raw_tabular([["RM", "5.83", -4.067389199080525], ["LSTAT", "8.47", 1.1609459174632977], ["NOX", "0.54", 0.5119910044384327], ["ZN", "0.00", -0.37278876661078136], ["DIS", "4.50", -0.3674954684528908]], 1, raw_div);
         
         </script>
         </body></html>

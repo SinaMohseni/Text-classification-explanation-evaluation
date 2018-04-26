@@ -1,0 +1,13 @@
+The age and education variables are gained to see if it effects ML explanations.
+
+     Hint: FILE, TIME, Fellow, MALE are removed from dataset
+
+
+     results_1: No feature engineering 
+     results_2: Age changed from month to year format 
+     results_3: results_2 + Educations -9 years 
+     results_4: results_3 + education * 10
+     results_5: Gender feature is added to result_1
+     results_6: Fixed prior issue in result_1
+
+

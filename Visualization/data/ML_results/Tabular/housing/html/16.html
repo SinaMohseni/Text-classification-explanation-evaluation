@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divYQ04111VLGA75JQ"></div>
+        <div class="lime top_div" id="top_divAF6N2296BWQN9OR"></div>
         
         <script>
-        var top_div = d3.select('#top_divYQ04111VLGA75JQ').classed('lime top_div', true);
+        var top_div = d3.select('#top_divAF6N2296BWQN9OR').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 22.296799999999887, 9.84180000000002, 45.275799999999926);
+                    var pp = new lime.PredictedValue(pp_svg, 20.909200000000027, 10.7049, 47.53559999999996);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["LSTAT <= 7.09", 4.760930739591197], ["5.89 < RM <= 6.21", -3.1432703724212403], ["PTRATIO > 20.20", -0.9183947032646943], ["AGE <= 44.85", 0.4610502541167073], ["3.35 < DIS <= 5.26", 0.3992754762970096]], 1, exp_div);
+            exp.show([["LSTAT <= 7.13", 6.630009606520419], ["5.88 < RM <= 6.21", -2.4119425878835314], ["PTRATIO > 20.20", -0.7107596596239908], ["0.25 < CRIM <= 3.68", -0.4426086084132288], ["AGE <= 44.85", 0.33832226344841515]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["LSTAT", "6.58", 4.760930739591197], ["RM", "5.93", -3.1432703724212403], ["PTRATIO", "21.00", -0.9183947032646943], ["AGE", "29.30", 0.4610502541167073], ["DIS", "4.50", 0.3992754762970096]], 1, raw_div);
+            exp.show_raw_tabular([["LSTAT", "6.58", 6.630009606520419], ["RM", "5.93", -2.4119425878835314], ["PTRATIO", "21.00", -0.7107596596239908], ["CRIM", "1.05", -0.4426086084132288], ["AGE", "29.30", 0.33832226344841515]], 1, raw_div);
         
         </script>
         </body></html>

@@ -35808,17 +35808,17 @@
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.9995381236076355, 0.0004618798557203263]);
+            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.9994207620620728, 0.0005792563315480947]);
             
         
         var exp_div;
             var exp = new lime.Explanation([0, 1]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["TIME <= 0.00", -0.9864909194440984], ["FOLLOW <= 48.00", -0.0058860861251760176], ["JUNKY=1", 0.005113573860658152], ["PERSON=0", -0.004054633296178173], ["MARRIED=0", -0.003290687951548988]], 1, exp_div);
+                exp.show([["TIME <= 0.00", -0.9875565691252178], ["JUNKY=1", 0.0045963178780796], ["FOLLOW <= 48.00", -0.0045207870251687925], ["MARRIED=0", -0.00327185306433547], ["PRIORS <= 0.00", -0.002568023202579749]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["TIME", "0.00", -0.9864909194440984], ["FOLLOW", "46.00", -0.0058860861251760176], ["JUNKY=1", "True", 0.005113573860658152], ["PERSON=0", "True", -0.004054633296178173], ["MARRIED=0", "True", -0.003290687951548988]], 1, raw_div);
+            exp.show_raw_tabular([["TIME", "0.00", -0.9875565691252178], ["JUNKY=1", "True", 0.0045963178780796], ["FOLLOW", "46.00", -0.0045207870251687925], ["MARRIED=0", "True", -0.00327185306433547], ["PRIORS", "0.00", -0.002568023202579749]], 1, raw_div);
         
         </script>
         </body></html>

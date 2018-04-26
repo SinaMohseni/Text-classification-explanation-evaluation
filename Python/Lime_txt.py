@@ -11,7 +11,6 @@ import operator
 import math
 import json, csv, codecs
 
-
 import lime
 from lime import lime_text
 from lime.lime_text import LimeTextExplainer
@@ -36,15 +35,18 @@ from nltk.tokenize import RegexpTokenizer
 from stop_words import get_stop_words
 from nltk.stem.porter import PorterStemmer
 
+import xgboost
+
+
 # GLOVE_DIR = os.path.join('', 'glove.6B')
 # glove = pd.read_csv(open(os.path.join(GLOVE_DIR, 'glove.6B.100d.txt')), sep=" ", quoting=3, header=None, index_col=0)
 # glove2 = {key: val.values for key, val in glove.T.items()}
 # with open('glove.6B.100d.pkl', 'wb') as output:
 #     cPickle.dump(glove2, output)
 
-def run_txt_evaluation(model_name,header_mode,vectorization):
+def run_txt_evaluation(training_set, model_name,header_mode,vectorization):
     categories = ['sci.med', 'sci.electronics', 'talk.politics.guns', 'rec.autos' , 'sci.space']
-
+    print ("round: ", training_set)
     if (header_mode == "no_header"):
         newsgroups_train = fetch_20newsgroups(subset='train', categories = categories, remove=('headers', 'footers', 'quotes'))
         newsgroups_test = fetch_20newsgroups(subset='test', categories = categories, remove=('headers', 'footers', 'quotes'))
@@ -65,10 +67,13 @@ def run_txt_evaluation(model_name,header_mode,vectorization):
         test_labels = newsgroups_test.target;
     # else:
 
-    if model_name == "NB":  # Naive Baysian
+    if model_name == "NB":         # Naive Baysian    
         this_model = MultinomialNB(alpha=.01)
+        this_model.fit(train_vectors, train_labels) 
+    elif model_name == "xgboost":                     # Random Forset
+        this_model = xgboost.XGBClassifier(n_estimators=500, max_depth=5)
         this_model.fit(train_vectors, train_labels)
-    else:                     # Random Forset
+    else:
         this_model = sklearn.ensemble.RandomForestClassifier(n_estimators=500)
         this_model.fit(train_vectors, train_labels)
             # load it again
@@ -112,7 +117,7 @@ def run_txt_evaluation(model_name,header_mode,vectorization):
                   51,54,56,60,66,68,71,72,77,85,90,97] # ii
 
     res_json = [[],[],[],[],[]]
-    results_address = './Text/Study_results/'+str(model_name)+'/'+str(vectorization)+'/'+header_mode
+    results_address = './Text_results/Study_results/'+str(model_name)+'/'+str(vectorization)+'/'+header_mode
     for idx in study_list:
 
         print('\n \n Document id: %d' % idx)
@@ -142,21 +147,20 @@ def run_txt_evaluation(model_name,header_mode,vectorization):
 
         res_json[newsgroups_test.target[idx]].append({"model_accuracy":model_accuracy,"predicted_class":predicted_class, "true_class":true_class,"predictions_weights":predicted_class_matrix.tolist(), "features_list":features_list})  #  
 
-    save_results(res_json,class_names, results_address)
+    save_results(training_set, res_json,class_names, results_address)
     return
 
-def save_results(res_json,class_names,results_address):
+def save_results(training_set, res_json,class_names,results_address):
 
     for each_class in class_names:
-        fout = open(results_address+"/LIME_exp/"+str(each_class)+".json","w")
-        # print (">>>>>>>> saving: ", each_class, class_names.index(each_class), res_json[class_names.index(each_class)])
+        fout = open(results_address+"/LIME_exp/"+str(each_class)+"-"+str(training_set)+".json","w")
         fout.write(json.dumps(res_json[class_names.index(each_class)],indent=1))
         fout.close()
 
     return 0
 
 def glove_test(model_name,header_mode,vectorization):
-    categories = ['sci.med', 'sci.electronics', 'talk.politics.guns', 'rec.autos' , 'sci.space']
+    categories = ['sci.med', 'sci.electronics', 'talk.politics.guns', 'rec.autos' , 'sci.space'];
 
     if (header_mode == "no_header"):
         newsgroups_train = fetch_20newsgroups(subset='train', categories = categories, remove=('headers', 'footers', 'quotes'))
@@ -170,86 +174,87 @@ def glove_test(model_name,header_mode,vectorization):
 
     print(','.join(class_names))
 
-    if (vectorization == "tfidf"):
-        vectorizer = sklearn.feature_extraction.text.TfidfVectorizer(lowercase=False)
-        train_vectors = vectorizer.fit_transform(newsgroups_train.data)
-        test_vectors = vectorizer.transform(newsgroups_test.data)
-        train_labels = newsgroups_train.target;
-        test_labels = newsgroups_test.target;
-    else:
+    # if (vectorization == "tfidf"):
+    #     vectorizer = sklearn.feature_extraction.text.TfidfVectorizer(lowercase=False)
+    #     train_vectors = vectorizer.fit_transform(newsgroups_train.data)
+    #     test_vectors = vectorizer.transform(newsgroups_test.data)
+    #     train_labels = newsgroups_train.target;
+    #     test_labels = newsgroups_test.target;
+    # else:
 
-        with open('glove.6B.100d.pkl', 'rb') as pkl:
-            glove = cPickle.load(pkl)
-        
-        stoplist = set(get_stop_words('en'))
+    with open('glove.6B.100d.pkl', 'rb') as pkl:
+        glove = cPickle.load(pkl);
+    
+    stoplist = set(get_stop_words('en'))
 
-        tokens_train = [[word for word in WordPunctTokenizer().tokenize(str(document).lower()) if ((word not in stoplist) )]
-        for document in newsgroups_train.data]
+    tokens_train = [[word for word in WordPunctTokenizer().tokenize(str(document).lower()) if ((word not in stoplist) )]
+    for document in newsgroups_train.data]
 
-        tokens_test = [[word for word in WordPunctTokenizer().tokenize(str(document).lower()) if ((word not in stoplist) )]
-        for document in newsgroups_test.data]
-        ii = 0        
-        total_emp = 0
-        for xx in tokens_train:
-            if (len(xx) == 0):
-                total_emp +=1
-                print (newsgroups_train.data[ii])
-                print (len(xx))
-                # xx.append(this doc is null)
+    tokens_test = [[word for word in WordPunctTokenizer().tokenize(str(document).lower()) if ((word not in stoplist) )]
+    for document in newsgroups_test.data]
+    ii = 0        
+    total_emp = 0
+    for xx in tokens_train:
+        if (len(xx) == 0):
+            total_emp +=1
+            print (newsgroups_train.data[ii])
+            print (len(xx))
+            # xx.append(this doc is null)
 
-        print ("Total: ---------------------------------", total_emp)
-        total_emp = 0
-        for xx in tokens_test:
-            if (len(xx) == 0):
-                total_emp +=1
-                # print (newsgroups_test.data[ii])
-                print (len(xx))
-                # xx.append(this doc is null)
+    print ("Total: ---------------------------------", total_emp)
+    total_emp = 0
+    for xx in tokens_test:
+        if (len(xx) == 0):
+            total_emp +=1
+            # print (newsgroups_test.data[ii])
+            print (len(xx))
+            # xx.append(this doc is null)
 
-        print ("Total Test: ---------------------------------", total_emp)
-        vectorizer = EmbeddingVectorizer(word_vectors=glove, weighted=True, R=True)
-        train_vectors = vectorizer.fit_transform(tokens_train)
-        test_vectors = vectorizer.transform(newsgroups_test.data)
-        
+    print ("Total Test: ---------------------------------", total_emp)
+    vectorizer = EmbeddingVectorizer(word_vectors=glove, weighted=True, R=True)
+    train_vectors = vectorizer.fit_transform(tokens_train)
+    test_vectors = vectorizer.transform(newsgroups_test.data)
 
-        # vectorizer = MeanEmbeddingVectorizer(word_vectors=glove)
-        # train_vectors = vectorizer.fit(tokens_train)
-        # test_vectors = vectorizer.transform(newsgroups_test.data)
-        # print ("-------------------------------------")
-        # train_labels = newsgroups_train.target;
-        # test_labels = newsgroups_test.target;
+    # vectorizer = MeanEmbeddingVectorizer(word_vectors=glove)
+    # train_vectors = vectorizer.fit(tokens_train)
+    # test_vectors = vectorizer.transform(newsgroups_test.data)
+    # print ("-------------------------------------")
+    # train_labels = newsgroups_train.target;
+    # test_labels = newsgroups_test.target;
 
-        # Vs0 = emb.fit_transform(sickA)      
-        # Vs1 = emb.fit_transform(sickB)
+    # Vs0 = emb.fit_transform(sickA)      
+    # Vs1 = emb.fit_transform(sickB)
 
-        # BASE_DIR = ''
-        # GLOVE_DIR = os.path.join(BASE_DIR, 'glove.6B')
-        # TEXT_DATA_DIR = os.path.join(BASE_DIR, '20_newsgroup')
-        # MAX_SEQUENCE_LENGTH = 1000
-        # MAX_NUM_WORDS = 20000
-        # EMBEDDING_DIM = 100
-        # VALIDATION_SPLIT = 0.2
+    # BASE_DIR = ''
+    # GLOVE_DIR = os.path.join(BASE_DIR, 'glove.6B')
+    # TEXT_DATA_DIR = os.path.join(BASE_DIR, '20_newsgroup')
+    # MAX_SEQUENCE_LENGTH = 1000
+    # MAX_NUM_WORDS = 20000
+    # EMBEDDING_DIM = 100
+    # VALIDATION_SPLIT = 0.2
 
-        # # first, build index mapping words in the embeddings set
-        # # to their embedding vector
+    # # first, build index mapping words in the embeddings set
+    # # to their embedding vector
 
-        # print('Indexing word vectors.')
+    # print('Indexing word vectors.')
 
-        # embeddings_index = {}
-        # with open(os.path.join(GLOVE_DIR, 'glove.6B.100d.txt')) as f:
-        #     for line in f:
-        #         values = line.split()
-        #         word = values[0]
-        #         coefs = np.asarray(values[1:], dtype='float32')
-        #         embeddings_index[word] = coefs
+    # embeddings_index = {}
+    # with open(os.path.join(GLOVE_DIR, 'glove.6B.100d.txt')) as f:
+    #     for line in f:
+    #         values = line.split()
+    #         word = values[0]
+    #         coefs = np.asarray(values[1:], dtype='float32')
+    #         embeddings_index[word] = coefs
 
-        # print('Found %s word vectors.' % len(embeddings_index))
+    # print('Found %s word vectors.' % len(embeddings_index))
 
-        # print ("test1", embeddings_index.get("gun"))
-        # # embedding_vector = embeddings_index.get(word)
-        # # if embedding_vector is not None:
-        # #     # words not found in embedding index will be all-zeros.
-        # #     embedding_matrix[i] = embedding_vector
+    # print ("test1", embeddings_index.get("gun"))
+    # # embedding_vector = embeddings_index.get(word)
+    # # if embedding_vector is not None:
+    # #     # words not found in embedding index will be all-zeros.
+    # #     embedding_matrix[i] = embedding_vector
+
+    # ------------------------- End of work embbeding ------------------------
 
     if (model_name == "NB"):  # Naive Baysian
         this_model = MultinomialNB(alpha=.01)
@@ -397,14 +402,16 @@ def is_int(s):
 txt_exp = "./txt/"
 res_folder = "./res/"
 
-
-# newsgroup_keras()
-run_txt_evaluation("NB","no_header","tfidf")
-# run_txt_evaluation("NB","no_header","GloVe")
-run_txt_evaluation("NB","header","tfidf")
-run_txt_evaluation("RF","no_header","tfidf")
-run_txt_evaluation("RF","header","tfidf")
-# glove_test("NB","no_header","glove")
+for training_set in range(1,11):
+    # newsgroup_keras()
+    # run_txt_evaluation("NB","no_header","tfidf")
+    # run_txt_evaluation("NB","no_header","GloVe")
+    # run_txt_evaluation("NB","header","tfidf")
+    # run_txt_evaluation("RF","no_header","tfidf")
+    # run_txt_evaluation("RF","header","tfidf")
+    run_txt_evaluation(training_set, "xgboost","no_header","tfidf")
+    run_txt_evaluation(training_set, "xgboost","header","tfidf")
+    # glove_test("NB","no_header","glove")
 
 
 

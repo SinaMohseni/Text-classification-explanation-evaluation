@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divWAWYRVRMXERIHT5"></div>
+        <div class="lime top_div" id="top_div6YSM6RTRFVABJ1J"></div>
         
         <script>
-        var top_div = d3.select('#top_divWAWYRVRMXERIHT5').classed('lime top_div', true);
+        var top_div = d3.select('#top_div6YSM6RTRFVABJ1J').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.9983986616134644, 0.0016013248823583126]);
+            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.7024741172790527, 0.29752588272094727]);
             
         
         var exp_div;
             var exp = new lime.Explanation([0, 1]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["TIME <= 0.00", -0.9836026638437025], ["JUNKY=1", 0.0054807891249612885], ["TSERVD > 24.00", -0.0041672089824203356], ["PERSON=0", -0.003196867215139357], ["MARRIED=0", -0.0022840862279107812]], 1, exp_div);
+                exp.show([["TSERVD > 24.00", 0.09380471689113465], ["RULE > 1.00", 0.0930353453396929], ["PROPTY=0", -0.07143065501530643], ["WHITE=0", 0.05505177001018847], ["258.50 < AGE <= 315.00", 0.04843692058894918]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["TIME", "0.00", -0.9836026638437025], ["JUNKY=1", "True", 0.0054807891249612885], ["TSERVD", "53.00", -0.0041672089824203356], ["PERSON=0", "True", -0.003196867215139357], ["MARRIED=0", "True", -0.0022840862279107812]], 1, raw_div);
+            exp.show_raw_tabular([["TSERVD", "53.00", 0.09380471689113465], ["RULE", "4.00", 0.0930353453396929], ["PROPTY=0", "True", -0.07143065501530643], ["WHITE=0", "True", 0.05505177001018847], ["AGE", "296.00", 0.04843692058894918]], 1, raw_div);
         
         </script>
         </body></html>

@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divUBLLJYML71ZE3ZM"></div>
+        <div class="lime top_div" id="top_divO7KU5JH88BSVBW9"></div>
         
         <script>
-        var top_div = d3.select('#top_divUBLLJYML71ZE3ZM').classed('lime top_div', true);
+        var top_div = d3.select('#top_divO7KU5JH88BSVBW9').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 18.8166, 8.78539999999999, 46.07279999999999);
+                    var pp = new lime.PredictedValue(pp_svg, 19.26500000000001, 9.963999999999986, 48.51499999999998);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["LSTAT > 16.78", -4.844436580024239], ["5.89 < RM <= 6.21", -3.265944665269835], ["PTRATIO <= 17.40", 1.2907620508996862], ["376.56 < B <= 391.88", 0.3968650821482573], ["76.80 < AGE <= 93.65", -0.35665637877593365]], 1, exp_div);
+            exp.show([["LSTAT > 16.91", -6.1421241102423325], ["5.88 < RM <= 6.21", -2.6037923517285018], ["DIS > 5.12", -0.7770291144483451], ["CHAS=0", -0.6697273539092626], ["PTRATIO <= 17.40", 0.5842878559440843]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["LSTAT", "17.10", -4.844436580024239], ["RM", "6.00", -3.265944665269835], ["PTRATIO", "15.20", 1.2907620508996862], ["B", "386.71", 0.3968650821482573], ["AGE", "85.90", -0.35665637877593365]], 1, raw_div);
+            exp.show_raw_tabular([["LSTAT", "17.10", -6.1421241102423325], ["RM", "6.00", -2.6037923517285018], ["DIS", "6.59", -0.7770291144483451], ["CHAS=0", "True", -0.6697273539092626], ["PTRATIO", "15.20", 0.5842878559440843]], 1, raw_div);
         
         </script>
         </body></html>

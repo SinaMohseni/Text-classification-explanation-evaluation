@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div9ZTI8XYTH0JQLVB"></div>
+        <div class="lime top_div" id="top_divHX8FM5UTSJ3U4PG"></div>
         
         <script>
-        var top_div = d3.select('#top_div9ZTI8XYTH0JQLVB').classed('lime top_div', true);
+        var top_div = d3.select('#top_divHX8FM5UTSJ3U4PG').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.004488170146942139, 0.9955118298530579]);
+            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.48601651191711426, 0.5139834880828857]);
             
         
         var exp_div;
             var exp = new lime.Explanation([0, 1]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["TIME > 9.00", 0.8178231287485462], ["JUNKY=0", -0.02531101644178398], ["SUPER=1", -0.0158314524557177], ["MARRIED=1", 0.015061102850885971], ["WHITE=1", -0.013026076482554032]], 1, exp_div);
+                exp.show([["RULE > 1.00", 0.10989130877005099], ["TSERVD > 24.00", 0.08768277244691923], ["PROPTY=0", -0.06567502907952051], ["FELON=1", -0.06545257746262143], ["WHITE=1", -0.05485173648349296]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["TIME", "48.00", 0.8178231287485462], ["JUNKY=0", "True", -0.02531101644178398], ["SUPER=1", "True", -0.0158314524557177], ["MARRIED=1", "True", 0.015061102850885971], ["WHITE=1", "True", -0.013026076482554032]], 1, raw_div);
+            exp.show_raw_tabular([["RULE", "2.00", 0.10989130877005099], ["TSERVD", "26.00", 0.08768277244691923], ["PROPTY=0", "True", -0.06567502907952051], ["FELON=1", "True", -0.06545257746262143], ["WHITE=1", "True", -0.05485173648349296]], 1, raw_div);
         
         </script>
         </body></html>

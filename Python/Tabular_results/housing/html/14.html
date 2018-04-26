@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divKUE1ODVLISB7FK1"></div>
+        <div class="lime top_div" id="top_divIZJF67EW1AYC5CA"></div>
         
         <script>
-        var top_div = d3.select('#top_divKUE1ODVLISB7FK1').classed('lime top_div', true);
+        var top_div = d3.select('#top_divIZJF67EW1AYC5CA').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 18.740800000000227, 9.140400000000009, 47.47009999999996);
+                    var pp = new lime.PredictedValue(pp_svg, 18.918300000000254, 8.406499999999994, 46.86490000000005);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["5.88 < RM <= 6.21", -2.618664300776925], ["7.13 < LSTAT <= 11.36", 1.5470713790900517], ["PTRATIO > 20.20", -0.8153879192847845], ["0.45 < NOX <= 0.54", 0.4251985423600691], ["76.50 < AGE <= 93.82", -0.31557627238736374]], 1, exp_div);
+            exp.show([["5.89 < RM <= 6.21", -2.707661252763802], ["7.13 < LSTAT <= 11.33", 1.150608817502438], ["252.77 < CRIM <= 3840.06", -0.508347445610995], ["76.25 < AGE <= 94.10", -0.39466958481674796], ["3.19 < DIS <= 5.23", -0.3094762138280758]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["RM", "6.10", -2.618664300776925], ["LSTAT", "10.26", 1.5470713790900517], ["PTRATIO", "21.00", -0.8153879192847845], ["NOX", "0.54", 0.4251985423600691], ["AGE", "84.50", -0.31557627238736374]], 1, raw_div);
+            exp.show_raw_tabular([["RM", "6.10", -2.707661252763802], ["LSTAT", "10.26", 1.150608817502438], ["CRIM", "637.96", -0.508347445610995], ["AGE", "84.50", -0.39466958481674796], ["DIS", "4.46", -0.3094762138280758]], 1, raw_div);
         
         </script>
         </body></html>

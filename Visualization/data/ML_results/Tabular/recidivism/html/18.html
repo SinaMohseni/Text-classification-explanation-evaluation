@@ -35808,17 +35808,17 @@
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.9983447194099426, 0.0016553016612306237]);
+            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.9997793436050415, 0.00022063220967538655]);
             
         
         var exp_div;
             var exp = new lime.Explanation([0, 1]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["TIME <= 0.00", -0.9799215550376247], ["PERSON=0", 0.004649941317274407], ["9.00 < TSERVD <= 24.00", -0.004183209451500503], ["WORKREL=0", 0.003693946712660232], ["RULE > 1.00", -0.0036245463958150983]], 1, exp_div);
+                exp.show([["TIME <= 0.00", -0.9803489110302331], ["9.00 < TSERVD <= 24.00", -0.004328155200445235], ["FILE=2", -0.0034285733969065986], ["0.00 < PRIORS <= 3.00", -0.003363127794888921], ["WORKREL=0", 0.003204889085533816]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["TIME", "0.00", -0.9799215550376247], ["PERSON=0", "True", 0.004649941317274407], ["TSERVD", "18.00", -0.004183209451500503], ["WORKREL=0", "True", 0.003693946712660232], ["RULE", "3.00", -0.0036245463958150983]], 1, raw_div);
+            exp.show_raw_tabular([["TIME", "0.00", -0.9803489110302331], ["TSERVD", "18.00", -0.004328155200445235], ["FILE=2", "True", -0.0034285733969065986], ["PRIORS", "1.00", -0.003363127794888921], ["WORKREL=0", "True", 0.003204889085533816]], 1, raw_div);
         
         </script>
         </body></html>

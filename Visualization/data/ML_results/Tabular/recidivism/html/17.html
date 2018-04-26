@@ -35808,17 +35808,17 @@
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.9999913573265076, 8.660985258757137e-06]);
+            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.9999914169311523, 8.571780199417844e-06]);
             
         
         var exp_div;
             var exp = new lime.Explanation([0, 1]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["TIME <= 0.00", -0.9854863602983344], ["JUNKY=0", -0.0029811444543399995], ["48.00 < FOLLOW <= 52.00", 0.0029574686665055907], ["SUPER=1", -0.002702989114088161], ["FILE=3", 0.002013337488500891]], 1, exp_div);
+                exp.show([["TIME <= 0.00", -0.9859344508585507], ["48.00 < FOLLOW <= 52.00", 0.002896994821564215], ["JUNKY=0", -0.002837947929573908], ["SUPER=1", -0.0026362078424010957], ["FILE=3", 0.0019679498316090764]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["TIME", "0.00", -0.9854863602983344], ["JUNKY=0", "True", -0.0029811444543399995], ["FOLLOW", "52.00", 0.0029574686665055907], ["SUPER=1", "True", -0.002702989114088161], ["FILE=3", "True", 0.002013337488500891]], 1, raw_div);
+            exp.show_raw_tabular([["TIME", "0.00", -0.9859344508585507], ["FOLLOW", "52.00", 0.002896994821564215], ["JUNKY=0", "True", -0.002837947929573908], ["SUPER=1", "True", -0.0026362078424010957], ["FILE=3", "True", 0.0019679498316090764]], 1, raw_div);
         
         </script>
         </body></html>

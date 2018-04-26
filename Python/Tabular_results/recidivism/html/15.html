@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div1LYAB1XPWX97KJA"></div>
+        <div class="lime top_div" id="top_divL0E67M11KL85IMB"></div>
         
         <script>
-        var top_div = d3.select('#top_div1LYAB1XPWX97KJA').classed('lime top_div', true);
+        var top_div = d3.select('#top_divL0E67M11KL85IMB').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.9999908804893494, 9.092424988921266e-06]);
+            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.9323700070381165, 0.06762999296188354]);
             
         
         var exp_div;
             var exp = new lime.Explanation([0, 1]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["TIME <= 0.00", -0.9865456900574474], ["JUNKY=0", 0.004596038737123021], ["FILE=3", -0.003916717222484992], ["AGE > 408.00", 0.0029088178244068555], ["PRIORS <= 0.00", 0.0025928215719500844]], 1, exp_div);
+                exp.show([["AGE > 408.00", -0.18041590065534518], ["PRIORS=0", -0.13405670848265913], ["RULE <= 0.00", -0.1008989090048889], ["PROPTY=1", 0.06987146141821088], ["ALCHY=0", -0.06813899257129659]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["TIME", "0.00", -0.9865456900574474], ["JUNKY=0", "True", 0.004596038737123021], ["FILE=3", "True", -0.003916717222484992], ["AGE", "420.00", 0.0029088178244068555], ["PRIORS", "-9.00", 0.0025928215719500844]], 1, raw_div);
+            exp.show_raw_tabular([["AGE", "420.00", -0.18041590065534518], ["PRIORS=0", "True", -0.13405670848265913], ["RULE", "0.00", -0.1008989090048889], ["PROPTY=1", "True", 0.06987146141821088], ["ALCHY=0", "True", -0.06813899257129659]], 1, raw_div);
         
         </script>
         </body></html>

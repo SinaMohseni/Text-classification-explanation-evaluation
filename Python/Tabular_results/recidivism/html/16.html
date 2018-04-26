@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divGP4KN16Z4JOQ41R"></div>
+        <div class="lime top_div" id="top_div04FWLWL5RD469F5"></div>
         
         <script>
-        var top_div = d3.select('#top_divGP4KN16Z4JOQ41R').classed('lime top_div', true);
+        var top_div = d3.select('#top_div04FWLWL5RD469F5').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.00014531612396240234, 0.9998546838760376]);
+            var pp = new lime.PredictProba(pp_svg, [0, 1], [0.12107479572296143, 0.8789252042770386]);
             
         
         var exp_div;
             var exp = new lime.Explanation([0, 1]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["0.00 < TIME <= 9.00", 0.7179997842721016], ["FOLLOW <= 48.00", -0.026665374805515417], ["FELON=1", 0.02419170947677852], ["258.50 < AGE <= 315.00", -0.02092582913954417], ["MARRIED=0", -0.01819133819710309]], 1, exp_div);
+                exp.show([["RULE <= 0.00", -0.0853337066354555], ["PROPTY=1", 0.085263641382297], ["TSERVD > 24.00", 0.07505688061259844], ["WHITE=0", 0.06187290037193984], ["FELON=1", -0.05069971818407252]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["TIME", "7.00", 0.7179997842721016], ["FOLLOW", "47.00", -0.026665374805515417], ["FELON=1", "True", 0.02419170947677852], ["AGE", "273.00", -0.02092582913954417], ["MARRIED=0", "True", -0.01819133819710309]], 1, raw_div);
+            exp.show_raw_tabular([["RULE", "0.00", -0.0853337066354555], ["PROPTY=1", "True", 0.085263641382297], ["TSERVD", "35.00", 0.07505688061259844], ["WHITE=0", "True", 0.06187290037193984], ["FELON=1", "True", -0.05069971818407252]], 1, raw_div);
         
         </script>
         </body></html>
