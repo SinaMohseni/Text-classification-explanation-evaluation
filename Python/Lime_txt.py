@@ -71,7 +71,7 @@ def run_txt_evaluation(training_set, model_name,header_mode,vectorization):
         this_model = MultinomialNB(alpha=.01)
         this_model.fit(train_vectors, train_labels) 
     elif model_name == "xgboost":                     # Random Forset
-        this_model = xgboost.XGBClassifier(n_estimators=500, max_depth=5)
+        this_model = xgboost.XGBClassifier(n_estimators=100, max_depth=11)
         this_model.fit(train_vectors, train_labels)
     else:
         this_model = sklearn.ensemble.RandomForestClassifier(n_estimators=500)
@@ -333,7 +333,7 @@ def glove_test(model_name,header_mode,vectorization):
 
         res_json[newsgroups_test.target[idx]].append({"model_accuracy":model_accuracy,"predicted_class":predicted_class, "true_class":true_class,"predictions_weights":predicted_class_matrix.tolist(), "features_list":features_list})  #  
 
-    save_results(res_json,class_names, results_address)
+    # save_results(res_json,class_names, results_address)
     return
 
 def newsgroup_keras():
@@ -408,9 +408,9 @@ for training_set in range(1,11):
     # run_txt_evaluation("NB","no_header","GloVe")
     # run_txt_evaluation("NB","header","tfidf")
     # run_txt_evaluation("RF","no_header","tfidf")
-    # run_txt_evaluation("RF","header","tfidf")
+    # run_txt_evaluation(training_set, "RF","header","tfidf")
     run_txt_evaluation(training_set, "xgboost","no_header","tfidf")
-    run_txt_evaluation(training_set, "xgboost","header","tfidf")
+    # run_txt_evaluation(training_set, "xgboost","header","tfidf")
     # glove_test("NB","no_header","glove")
 
 

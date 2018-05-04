@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divVLYAC040V3IDSDD"></div>
+        <div class="lime top_div" id="top_divYIZ038J75827B67"></div>
         
         <script>
-        var top_div = d3.select('#top_divVLYAC040V3IDSDD').classed('lime top_div', true);
+        var top_div = d3.select('#top_divYIZ038J75827B67').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["autos", "electronics", "med", "space", "guns"], [0.082, 0.152, 0.074, 0.592, 0.1]);
+            var pp = new lime.PredictProba(pp_svg, ["autos", "electronics", "med", "space", "guns"], [0.076, 0.112, 0.07, 0.61, 0.132]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["autos", "electronics", "med", "space", "guns"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["henry", 0.07447060218116519], ["zoo", 0.07058957555229106], ["Henry", 0.049351126031074756], ["Spencer", 0.04569099823877395], ["toronto", 0.03927657755004433], ["Zoology", 0.03629746565289494], ["utzoo", 0.028829320412808217], ["writes", 0.027983224160451573], ["Toronto", 0.026494227226601642], ["Re", 0.023326978384941098]], 3, exp_div);
+                exp.show([["henry", 0.08251936208561332], ["Henry", 0.06615170231128406], ["zoo", 0.061810459469006256], ["Spencer", 0.05931880093947813], ["Zoology", 0.04092264396564812], ["toronto", 0.03942746357809706], ["utzoo", 0.03841617491081259], ["writes", 0.029534499209263387], ["of", 0.029154195348202412], ["government", -0.019570184716641726]], 3, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["henry", 6, 0.07447060218116519], ["henry", 903, 0.07447060218116519], ["henry", 932, 0.07447060218116519], ["zoo", 12, 0.07058957555229106], ["zoo", 909, 0.07058957555229106], ["Henry", 29, 0.049351126031074756], ["Henry", 823, 0.049351126031074756], ["Spencer", 35, 0.04569099823877395], ["Spencer", 829, 0.04569099823877395], ["toronto", 16, 0.03927657755004433], ["toronto", 913, 0.03927657755004433], ["Zoology", 97, 0.03629746565289494], ["Zoology", 852, 0.03629746565289494], ["utzoo", 926, 0.028829320412808217], ["writes", 212, 0.027983224160451573], ["Toronto", 89, 0.026494227226601642], ["Toronto", 844, 0.026494227226601642], ["Re", 53, 0.023326978384941098]], 3, "From: henry@zoo.toronto.edu (Henry Spencer)\nSubject: Re: Rocket Types\nOrganization: U of Toronto Zoology\nLines: 14\n\nIn article |1rpv9o$k00@wraith.cs.uow.edu.au| u9152083@wraith.cs.uow.edu.au (Glen Justin Balmer) writes:\n|It said that in the 60's they developed a rocket that used ions or nuclear\n|particles for propolsion.\n|The government however, didn't give them $1billion for the developement...\n\nI'd guess this was a garbled report of the NERVA effort to develop a\nsolid-core fission rocket (the most mundane type of nuclear rocket).\nThat was the only advanced-propulsion project that was done on a large\nenough scale to be likely to attract news attention.  It *could* be any\nnumber of things -- the description given is awfully vague -- but I'd\nput a small bet on NERVA.\n-- \nSVR4 resembles a high-speed collision   | Henry Spencer @ U of Toronto Zoology\nbetween SVR3 and SunOS.    - Dick Dunn  |  henry@zoo.toronto.edu  utzoo!henry\n", raw_div, true);
+            exp.show_raw_text([["henry", 6, 0.08251936208561332], ["henry", 903, 0.08251936208561332], ["henry", 932, 0.08251936208561332], ["Henry", 29, 0.06615170231128406], ["Henry", 823, 0.06615170231128406], ["zoo", 12, 0.061810459469006256], ["zoo", 909, 0.061810459469006256], ["Spencer", 35, 0.05931880093947813], ["Spencer", 829, 0.05931880093947813], ["Zoology", 97, 0.04092264396564812], ["Zoology", 852, 0.04092264396564812], ["toronto", 16, 0.03942746357809706], ["toronto", 913, 0.03942746357809706], ["utzoo", 926, 0.03841617491081259], ["writes", 212, 0.029534499209263387], ["of", 86, 0.029154195348202412], ["of", 436, 0.029154195348202412], ["of", 518, 0.029154195348202412], ["of", 688, 0.029154195348202412], ["of", 841, 0.029154195348202412], ["government", 328, -0.019570184716641726]], 3, "From: henry@zoo.toronto.edu (Henry Spencer)\nSubject: Re: Rocket Types\nOrganization: U of Toronto Zoology\nLines: 14\n\nIn article |1rpv9o$k00@wraith.cs.uow.edu.au| u9152083@wraith.cs.uow.edu.au (Glen Justin Balmer) writes:\n|It said that in the 60's they developed a rocket that used ions or nuclear\n|particles for propolsion.\n|The government however, didn't give them $1billion for the developement...\n\nI'd guess this was a garbled report of the NERVA effort to develop a\nsolid-core fission rocket (the most mundane type of nuclear rocket).\nThat was the only advanced-propulsion project that was done on a large\nenough scale to be likely to attract news attention.  It *could* be any\nnumber of things -- the description given is awfully vague -- but I'd\nput a small bet on NERVA.\n-- \nSVR4 resembles a high-speed collision   | Henry Spencer @ U of Toronto Zoology\nbetween SVR3 and SunOS.    - Dick Dunn  |  henry@zoo.toronto.edu  utzoo!henry\n", raw_div, true);
             
         </script>
         </body></html>

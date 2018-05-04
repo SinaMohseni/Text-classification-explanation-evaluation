@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divPJDS2EJ97HRM76L"></div>
+        <div class="lime top_div" id="top_divSVTHJ3A8DNNONRR"></div>
         
         <script>
-        var top_div = d3.select('#top_divPJDS2EJ97HRM76L').classed('lime top_div', true);
+        var top_div = d3.select('#top_divSVTHJ3A8DNNONRR').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["autos", "electronics", "med", "space", "guns"], [0.7686824798583984, 0.04149305820465088, 0.12017655372619629, 0.009830402210354805, 0.05981750786304474]);
+            var pp = new lime.PredictProba(pp_svg, ["autos", "electronics", "med", "space", "guns"], [0.23874162137508392, 0.1269892305135727, 0.4668061435222626, 0.04301617294549942, 0.1244467943906784]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["autos", "electronics", "med", "space", "guns"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["bought", 0.1896151155964982], ["of", -0.16974388846930977], ["new", 0.1435453519813093], ["my", 0.13592663305649402], ["had", 0.09584539822436475], ["be", -0.09317795287145403], ["to", -0.08840261944084489], ["and", -0.06059025446724641], ["back", 0.0476901874568536], ["rims", -0.04571080875649373]], 0, exp_div);
+                exp.show([["of", 0.17881571341299446], ["My", 0.14409178068256182], ["be", 0.11032485520617526], ["the", -0.10374906372952851], ["to", 0.09361454366622553], ["bought", -0.06477197522636813], ["and", 0.059348383711127155], ["your", 0.057039871304658735], ["were", -0.04104274478685995], ["just", -0.022768045900608463]], 2, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["bought", 3, 0.1896151155964982], ["of", 16, -0.16974388846930977], ["of", 197, -0.16974388846930977], ["new", 92, 0.1435453519813093], ["new", 239, 0.1435453519813093], ["my", 89, 0.13592663305649402], ["had", 112, 0.09584539822436475], ["be", 165, -0.09317795287145403], ["to", 55, -0.08840261944084489], ["to", 184, -0.08840261944084489], ["to", 270, -0.08840261944084489], ["and", 43, -0.06059025446724641], ["back", 38, 0.0476901874568536], ["rims", 96, -0.04571080875649373], ["rims", 215, -0.04571080875649373]], 0, "\nI bought a set of ARE's a few months back and decided to add locks\nso that I could keep my new rims. I haven't had a balance problem \nyet so I assume that it might be just particular to your type of\nstock nuts. My rims were balanced with new BFG T/A's at a speed \nshop to the finest setting on their bal. machine, so that helps too.", raw_div, true);
+            exp.show_raw_text([["of", 16, 0.17881571341299446], ["of", 197, 0.17881571341299446], ["My", 212, 0.14409178068256182], ["be", 165, 0.11032485520617526], ["the", 273, -0.10374906372952851], ["to", 55, 0.09361454366622553], ["to", 184, 0.09361454366622553], ["to", 270, 0.09361454366622553], ["bought", 3, -0.06477197522636813], ["and", 43, 0.059348383711127155], ["your", 187, 0.057039871304658735], ["were", 220, -0.04104274478685995], ["just", 168, -0.022768045900608463]], 2, "\nI bought a set of ARE's a few months back and decided to add locks\nso that I could keep my new rims. I haven't had a balance problem \nyet so I assume that it might be just particular to your type of\nstock nuts. My rims were balanced with new BFG T/A's at a speed \nshop to the finest setting on their bal. machine, so that helps too.", raw_div, true);
             
         </script>
         </body></html>

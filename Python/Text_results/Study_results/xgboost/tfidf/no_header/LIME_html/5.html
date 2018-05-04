@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div0HGXKMIAGT2HOX4"></div>
+        <div class="lime top_div" id="top_divPAUN6DKY0CUKNQK"></div>
         
         <script>
-        var top_div = d3.select('#top_div0HGXKMIAGT2HOX4').classed('lime top_div', true);
+        var top_div = d3.select('#top_divPAUN6DKY0CUKNQK').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["autos", "electronics", "med", "space", "guns"], [0.01244696881622076, 0.04914479702711105, 0.13057619333267212, 0.7269776463508606, 0.08085444569587708]);
+            var pp = new lime.PredictProba(pp_svg, ["autos", "electronics", "med", "space", "guns"], [0.04925825819373131, 0.15644341707229614, 0.26987332105636597, 0.3994786739349365, 0.12494634091854095]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["autos", "electronics", "med", "space", "guns"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["rocket", 0.19523066374001025], ["things", 0.13375501095348796], ["could", 0.11519916475179957], ["of", 0.11318066617148408], ["the", 0.05963326703733584], ["project", 0.056520572323089095], ["number", -0.04932487054914105], ["news", -0.043729550908934094], ["It", -0.04029663146723356], ["develop", -0.02932071435388008]], 3, exp_div);
+                exp.show([["rocket", 0.14328591217801262], ["of", 0.1186734156921558], ["any", -0.09253834747617119], ["things", 0.07590909470563016], ["number", -0.05970331181116691], ["the", 0.03542037976562181], ["is", 0.031464205032858836], ["news", -0.026510972291347853], ["NERVA", -0.02439578458745373], ["could", 0.01303873615715767]], 3, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["rocket", 89, 0.19523066374001025], ["rocket", 130, 0.19523066374001025], ["things", 292, 0.13375501095348796], ["could", 268, 0.11519916475179957], ["of", 37, 0.11318066617148408], ["of", 119, 0.11318066617148408], ["of", 289, 0.11318066617148408], ["the", 40, 0.05963326703733584], ["the", 97, 0.05963326703733584], ["the", 148, 0.05963326703733584], ["the", 302, 0.05963326703733584], ["project", 177, 0.056520572323089095], ["number", 282, -0.04932487054914105], ["news", 247, -0.043729550908934094], ["It", 264, -0.04029663146723356], ["develop", 60, -0.02932071435388008]], 3, "\nI'd guess this was a garbled report of the NERVA effort to develop a\nsolid-core fission rocket (the most mundane type of nuclear rocket).\nThat was the only advanced-propulsion project that was done on a large\nenough scale to be likely to attract news attention.  It *could* be any\nnumber of things -- the description given is awfully vague -- but I'd\nput a small bet on NERVA.", raw_div, true);
+            exp.show_raw_text([["rocket", 89, 0.14328591217801262], ["rocket", 130, 0.14328591217801262], ["of", 37, 0.1186734156921558], ["of", 119, 0.1186734156921558], ["of", 289, 0.1186734156921558], ["any", 278, -0.09253834747617119], ["things", 292, 0.07590909470563016], ["number", 282, -0.05970331181116691], ["the", 40, 0.03542037976562181], ["the", 97, 0.03542037976562181], ["the", 148, 0.03542037976562181], ["the", 302, 0.03542037976562181], ["is", 324, 0.031464205032858836], ["news", 247, -0.026510972291347853], ["NERVA", 44, -0.02439578458745373], ["NERVA", 371, -0.02439578458745373], ["could", 268, 0.01303873615715767]], 3, "\nI'd guess this was a garbled report of the NERVA effort to develop a\nsolid-core fission rocket (the most mundane type of nuclear rocket).\nThat was the only advanced-propulsion project that was done on a large\nenough scale to be likely to attract news attention.  It *could* be any\nnumber of things -- the description given is awfully vague -- but I'd\nput a small bet on NERVA.", raw_div, true);
             
         </script>
         </body></html>

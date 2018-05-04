@@ -35800,25 +35800,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divIC94Z1UZ1OKTAR0"></div>
+        <div class="lime top_div" id="top_divHYZE0MZOH04K8YQ"></div>
         
         <script>
-        var top_div = d3.select('#top_divIC94Z1UZ1OKTAR0').classed('lime top_div', true);
+        var top_div = d3.select('#top_divHYZE0MZOH04K8YQ').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["autos", "electronics", "med", "space", "guns"], [0.9998270869255066, 7.60658731451258e-05, 9.024732207763009e-06, 2.391540510870982e-05, 6.394390220521018e-05]);
+            var pp = new lime.PredictProba(pp_svg, ["autos", "electronics", "med", "space", "guns"], [0.9776577949523926, 0.007081612478941679, 0.0016376018757000566, 0.0018893548985943198, 0.011733622290194035]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["autos", "electronics", "med", "space", "guns"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["car", 0.054943800723521334], ["my", 0.038783591359683116], ["engine", 0.03576427081425262], ["wheel", 0.029378287930440613], ["had", 0.017780765499150697], ["do", 0.012851522249084441], ["me", 0.012135440284206588], ["window", 0.011328893415765142], ["for", -0.006833902638834414], ["long", -0.005855794854109832]], 0, exp_div);
+                exp.show([["car", 0.20018971037828598], ["my", 0.07701237595189628], ["wheel", 0.054075617354195395], ["engine", 0.046442533172518854], ["window", 0.03141515178450878], ["fire", -0.02594802778368394], ["power", -0.023985586241729123], ["have", -0.01865588212191662], ["do", 0.011447084626111244], ["had", 0.00987389342475245]], 0, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["car", 14, 0.054943800723521334], ["my", 11, 0.038783591359683116], ["my", 163, 0.038783591359683116], ["engine", 28, 0.03576427081425262], ["wheel", 349, 0.029378287930440613], ["had", 7, 0.017780765499150697], ["do", 431, 0.012851522249084441], ["do", 488, 0.012851522249084441], ["do", 523, 0.012851522249084441], ["me", 25, 0.012135440284206588], ["me", 252, 0.012135440284206588], ["window", 405, 0.011328893415765142], ["for", 107, -0.006833902638834414], ["long", 518, -0.005855794854109832]], 0, "Having had my car die on me(engine fire, insurance agent said\nit was probably totaled), I am in the market for a another vehicle.\nI saw a Toronado that was within my expected price range and was\nwondering if anybody could relate their experiences with me.\n\nNamely:  1.  Does it have accceptable power(it has a 305 in it)?\n\t 2.  Does its being front wheel drive make maintenance difficult?\n\t 3.  One power window and the power seat do not work, are these\n\t\texpensive items to replace if I do the work myself?\n\t 4.  How long do the engines usually last( 90M+ now)?\n\t 5.  Any other experiences good or bad, and opinions.", raw_div, true);
+            exp.show_raw_text([["car", 14, 0.20018971037828598], ["my", 11, 0.07701237595189628], ["my", 163, 0.07701237595189628], ["wheel", 349, 0.054075617354195395], ["engine", 28, 0.046442533172518854], ["window", 405, 0.03141515178450878], ["fire", 35, -0.02594802778368394], ["power", 295, -0.023985586241729123], ["power", 399, -0.023985586241729123], ["power", 420, -0.023985586241729123], ["have", 278, -0.01865588212191662], ["do", 431, 0.011447084626111244], ["do", 488, 0.011447084626111244], ["do", 523, 0.011447084626111244], ["had", 7, 0.00987389342475245]], 0, "Having had my car die on me(engine fire, insurance agent said\nit was probably totaled), I am in the market for a another vehicle.\nI saw a Toronado that was within my expected price range and was\nwondering if anybody could relate their experiences with me.\n\nNamely:  1.  Does it have accceptable power(it has a 305 in it)?\n\t 2.  Does its being front wheel drive make maintenance difficult?\n\t 3.  One power window and the power seat do not work, are these\n\t\texpensive items to replace if I do the work myself?\n\t 4.  How long do the engines usually last( 90M+ now)?\n\t 5.  Any other experiences good or bad, and opinions.", raw_div, true);
             
         </script>
         </body></html>

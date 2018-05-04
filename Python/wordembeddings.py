@@ -1,6 +1,5 @@
 import six
-import math
-import pandas as pd
+
 import numpy as np
 
 from sklearn.feature_extraction.text import CountVectorizer
@@ -22,7 +21,7 @@ class EmbeddingVectorizer(CountVectorizer):
         Mapping of token -> word vector
     weighted : boolean, default False
         Whether to take a weighted average of the word vectors
-    R : boolean, default False  
+    R : boolean, default False
         Whether to remove the common component
         
         
@@ -60,33 +59,27 @@ class EmbeddingVectorizer(CountVectorizer):
         the (weighted) mean of the word vectors"""
         
         #analyze = self.build_analyzer()
-
+        
         values = []
-        total_doc = 0
+        
         for doc in raw_documents:
-            # print (">>> doc", doc)
+            
             word_vecs = []
             
             #for token in analyze(doc):
-            # doc = doc.split(" ")
-            # print (doc)
             for token in doc:
                 #TODO integrate this with analyzer
                 token = token.lower()
-                # print (">>> token", token)
                 try:
                     vw = np.array(self.word_vectors[token])
                     if self.weighted:
                         freq = _get_word_freq(token) 
                         vw *= 1e-3 / (1e-3 + freq)
                     word_vecs.append(vw)
-                    # print (">>>",vw)
                 except KeyError:
                     # Ignore out-of-vocabulary items for fixed_vocab=True
                     continue
                     
-            # print (">>> word_vecs insdie: ", word_vecs)
-
             vs = np.array(word_vecs).mean(axis=0)
             
             values.append(vs)
@@ -95,24 +88,7 @@ class EmbeddingVectorizer(CountVectorizer):
     
     
     def _calculate_singular_vector(self, X):
-        # print (len(X),len(X[0]),len(X[1]),len(X[2]),len(X[3]))
-        # new_X = []
-        # for xx in X:
-        #     print (len(xx), "<<<",xx)
-        #     if xx 
-        #     new_X.append()
-        #     if (isnan(x)):
-        #         print (xx)
-        # print ([value for value in X if not math.isnan(value)])
-        # X = X[~np.isnan(X)]
-        X = X[~pd.isnull(X)]
-        # x = x[~pd.isnull(x)]
-        for xx in X:
-            # print (len(xx), "<<<",xx)
-            if (len(xx) != 100):
-                print (len(xx), "<<<",xx)
-        # filter(lambda v: v==v, X)
-
+        
         svd = TruncatedSVD(n_components=1, n_iter=7, random_state=0).fit(X)
         u = svd.components_[0]
         
@@ -141,9 +117,6 @@ class EmbeddingVectorizer(CountVectorizer):
         # We intentionally don't call the transform method to make
         # fit_transform overridable without unwanted side effects in
         # TfidfVectorizer.
-
-        # print (">>> raw_documents insdie: ", raw_documents)
-
         if isinstance(raw_documents, six.string_types):
             raise ValueError(
                 "Iterable over raw text documents expected, "
@@ -170,9 +143,6 @@ class EmbeddingVectorizer(CountVectorizer):
         X : sparse matrix, [n_samples, n_features]
             Document-term matrix.
         """
-
-        print (">>> raw_documents insdie: ", raw_documents)
-
         if isinstance(raw_documents, six.string_types):
             raise ValueError(
                 "Iterable over raw text documents expected, "
