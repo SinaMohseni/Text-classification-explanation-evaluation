@@ -127,10 +127,6 @@ def save_results(article_exp,eval_folder,topic):
 
     return 0
 
-def visualization():
-    return
-
-
 def user_eval(img_folder,res_folder):
     print "\n User evaluation..."
 
@@ -152,14 +148,14 @@ def user_eval(img_folder,res_folder):
 
 # article_exp = [];
 txt_folder = "./Text/org_documents/20news-bydate/20news-bydate-test/" # sci.electronics # sci.med
-vis_folder = "./Text/visualization/" # sci.electronics # sci.med
 eval_folder = "./Text/user_evaluation/" # sci.electronics # sci.med
 res_folder = "./Text/user_json/" # sci.electronics # sci.med
 
 # shutil.rmtree(mask_folder)
 # os.remove(mask_folder, *, dir_fd=None)
 
+
+# Calculating explanations score for text classifiers based on user reviews
 user_eval(txt_folder,res_folder)
-visualization();
 
 

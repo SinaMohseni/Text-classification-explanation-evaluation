@@ -1,6 +1,7 @@
+
 # -*- coding: utf-8 -*- 
 
-print "importing..."
+print ("importing...")
 
 import re
 import glob
@@ -22,18 +23,19 @@ import time
 from datetime import datetime
 from collections import Counter
 
-import urllib2,urllib
-# import urllib3
+# import urllib2,urllib
+import urllib3
 
 from collections import defaultdict
 
 import cv2
-import numpy as np
-# import numpy
-from matplotlib import pyplot as plt
+print ("OpenCV Version: ", cv2.__version__)
 
-from skimage.io import imread
-from skimage.segmentation import mark_boundaries
+import numpy as np
+# from matplotlib import pyplot as plt
+
+# from skimage.io import imread
+# from skimage.segmentation import mark_boundaries
 import scipy.misc
 
 
@@ -67,7 +69,7 @@ def read_json(json_file):
             new_points = [an_img["points"]]
             new_user_list.append({"image":an_img["image"],"points": new_points }) 
 
-    print "\n number of user annotations", len(new_user_list)#, new_user_list
+    print ("\n number of user annotations", len(new_user_list))#, new_user_list
     return new_user_list
 
 def read_user_data(img_folder, json_file,tot_user):
@@ -118,12 +120,12 @@ def mask_exact_obj(user_mask,this_image):
             masked = 1
 
     if (masked == 0):
-        print "\n Error: didn't ref masked: ", this_image
+        print ("\n Error: didn't ref masked: ", this_image)
 
     return user_mask
 
 def reference_mask(img_folder, ref_file,ref_mask):
-    print "\n Reference Mask..."
+    print ("\n Reference Mask...")
     # user_mask = read_ref(img_folder, ref_file)   #ref_mask
 
     all_imgs = read_json(ref_file)    
@@ -163,7 +165,7 @@ def update_heatmap_mask(heatmap_path, user_mask):
     return 0
 
 def user_heatmap(img_folder,heatmap_folder,mask_folder):
-    print "\n User heatmap..."
+    print ("\n User heatmap...")
     for this_img in ref_mask:
 
         gray_mask_path = mask_folder + this_img[0]
@@ -220,7 +222,7 @@ def user_heatmap(img_folder,heatmap_folder,mask_folder):
     return 0
 
 def LIME_heatmap(img_folder,LIME_overlay,LIME_mask):
-    print "\n LIME heatmap..."
+    print ("\n LIME heatmap...")
     for this_img in ref_mask:
 
         gray_mask_path = LIME_mask + "mask_"+ this_img[0] + ".jpg"
@@ -318,7 +320,7 @@ def img_process(jpg_file,usr_img,tot_user):
     return exp_img, mask
 
 def evaluate_explanations():
-    print "\n Explanation Evaluation..."
+    print ("\n Explanation Evaluation...")
     
     # Precision: TP/(TP + FP)
     # Recall: TP/(TP + FN)
@@ -353,14 +355,14 @@ def evaluate_explanations():
         # cv2.imshow('FP',FP)
         # cv2.waitKey(0)                
         # cv2.destroyAllWindows()
-        print TP, FN,FP
+        print (TP, FN,FP)
         precision =  float(TP)/(TP + FP)
         recall = float(TP)/(TP + FN)
         PR.append([precision, recall])
 
     all_precision=0
     all_recall=0
-
+    
     for this_PR in PR:
         all_precision += this_PR[0]
         all_recall += this_PR[1]
@@ -368,19 +370,19 @@ def evaluate_explanations():
     Precision = all_precision/len(PR)
     Recall = all_recall/len(PR)
     
-    print "\n Precision: ", Presicion , "Recall :", Recall
+    print ("\n Precision: ", Presicion , "Recall :", Recall)
 
     return Precision, Recall
 
 def user_mask(img_folder,res_folder):
-    print "\n User Mask..."
+    print ("\n User Mask...")
     image_heatmap = []
     user_accuracy = []
 
     tot_user = 9;
     for i in xrange(1,tot_user+1):   # users loop 
             # contour_img(img_folder + "test.jpg")
-        print "user: P", i
+        print ("user: P", i)
         images_accuracy = read_user_data(img_folder, res_folder+"P"+str(i)+".json",tot_user)
         user_accuracy.append(images_accuracy)
    
@@ -396,9 +398,18 @@ res_folder = "./Image/json_res/"
 # shutil.rmtree(mask_folder)
 # os.remove(mask_folder, *, dir_fd=None)
 
-reference_mask(img_folder, res_folder+"ref.json",ref_mask);
+# Genrating objects reference mask useing ref contur
+# reference_mask(img_folder, res_folder+"ref.json",ref_mask);
+
+# Generating users weighted mask with user data
 # user_mask(img_folder,res_folder)
+
+# Generating user heatmaps for visualization
 # user_heatmap(img_folder,heatmap_folder,mask_folder);
+
+# Genrating LIME heatmaps from visualizations
 # LIME_heatmap(img_folder,LIME_overlay,LIME_mask);
-# Precision, Recall = evaluate_explanations();
+
+# Calculating explanations score compared to user
+Precision, Recall = evaluate_explanations();
 

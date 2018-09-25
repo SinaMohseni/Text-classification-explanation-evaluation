@@ -1,6 +1,8 @@
 import os,sys
 import time
+
 print('\n \n Loading Inception and Keras:')
+
 import tensorflow
 import keras
 from keras.applications import inception_v3 as inc_net
@@ -133,17 +135,19 @@ def evaluate(img_folder,res_folder):
         
 
 def quick_explanations(test_folder):
-    jpg_file = "22.jpg"
+    jpg_file = "dog5_2.jpg"  # elephant-dog.jpg  cat_basketball.jpg dog5.jpg dog3 dog5_2 flower4 plane-shark2 plane-shjark ship1 ship5 ship-house telephone-flower zebra-cat
     img_exp = find_explanation(test_folder, jpg_file)
     # write_exp(img_exp, jpg_file)
-
+# 
 
 
 tmp_total = time.time()
-img_folder = "Image/org_img/"
-res_folder = "Image/json_res/"
-test_folder = "Datasets/self-driving-car-croped/"
+img_folder = "Image_results/org_img/"
+res_folder = "Image_results/json_res/"
+test_folder = "Image_results/fake_images/"  
+
 # evaluate(img_folder,res_folder);
+
 quick_explanations(test_folder)
 print ("\n Total time: ", time.time() - tmp_total)
 
