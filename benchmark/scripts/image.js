@@ -56,17 +56,21 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 var txtfiles = []
 var readfiles = []
 var imageName;
-var folder_name = "ImageNet"
+// var folder_name = "VOC/raw_images"
+var folder_name = "org_img"
 var call_once = 0;
-var total_doc
-var doc_num
+var total_doc;
+var doc_num;
+
 
 function txtfilename(){
 	
-	folder_name = getCookie("user_selection")
+	// folder_name = getCookie("user_selection")  don't use cookies to get folder name 
+
 	var folder = "data/"+ folder_name +"/";
+	// var folder = folder_name;
 	var txtdoc = []
-	
+	console.log('this folder ', folder)
 	$.ajax({
 	    url : folder,
 	    success: function (data) {
@@ -75,7 +79,9 @@ function txtfilename(){
 	            	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
 	            	// this_file.pop()
 	            	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
-	            		txtfiles.push(folder+val) // txtfiles.push(folder+val)
+	            		console.log(folder)
+						console.log(val)
+	            		txtfiles.push(val) // txtfiles.push(folder+val)
 	            	}
 	        });
 	        console.log(txtfiles)

@@ -19,9 +19,10 @@ var fill_checkbox = 1
 
 
 var path;
-var color = "lightblue"
-x_old = 0
-y_old = 0
+var color = "lightblue";
+x_old = 0;
+y_old = 0;
+
 
 var div1 = d3.select("body").append("talkbubble")   // Tooltip
 		.attr("class", "tooltip")
@@ -56,7 +57,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 var txtfiles = []
 var readfiles = []
 var imageName;
-var folder_name = "ImageNet"
+var folder_name = "VOC/raw_images"
 // var folder_name = "udacity"
 var call_once = 0;
 var total_doc
@@ -64,8 +65,8 @@ var doc_num
 
 function txtfilename(){
 	
-	folder_name = getCookie("user_selection")
-	var folder = "data/"+ folder_name +"_exp/";
+	// folder_name = getCookie("user_selection")
+	var folder = "data/"+ folder_name; //  +"_exp/";
 	var txtdoc = []
 	
 	$.ajax({

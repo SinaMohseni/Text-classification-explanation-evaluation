@@ -138,19 +138,29 @@
         function link_address(){
           folder_name = getCookie("user_selection")  
 
-          if (folder_name == "ImageAnnotation") {
+          if ((folder_name == "ImageNet") | (folder_name == "udacity") | (folder_name == "ImageNet-feedback")) {
             location.reload();
             location.href='./expimg.html';   // feed-forward
-          }else if (folder_name == "ImageRating") {
+          }else if ((folder_name == "recidivism") | (folder_name == "lendingclub") | (folder_name == "housing")) {
             location.reload();
-            location.href='./expqlty.html';   // feed-back
-            // location.href='./rateimg.html';   // feed-back
+            location.href='./exptab.html';   // feed-forward
+          }else if ((folder_name == 'quiz')) {
+            location.reload();
+            location.href='./expqlty.html';    
+          }else if ((folder_name == "weak") | (folder_name == "robust")) {
+            location.reload();
+            location.href='./qlty_show.html';
+          }else if ((folder_name == 'ImageNet-feedback')) {
+            location.reload(); 
+            location.href='./evlimg.html';   // feed-back
+          }else if ((folder_name == '20news-feedback')) {
+            location.reload();
+            location.href='./evltxt.html';   // feed-back
           }else{
             location.reload();
-            location.href='./unknownstudy.html';   // feed-forward
+            location.href='./exptxt.html';   // feed-forward
           }
         }
-
 
         function getCookie(cname) {
           var name = cname + "=";
