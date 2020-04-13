@@ -54,38 +54,71 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
     });
   };
 
+const study_length = 10;
+const training_imgs = 5; 
+const time_out = 20;
+
+var results_json = [];
 var txtfiles = []
 var readfiles = []
 var imageName;
-var folder_name = "VOC/raw_images"
+var folder_name = "VOC2012"
 // var folder_name = "udacity"
 var call_once = 0;
-var total_doc
-var doc_num
+var total_doc = study_length;
+var doc_num;
+current_time_s = 0
+last_time_s = 0
 
 function txtfilename(){
 	
-	// folder_name = getCookie("user_selection")
-	var folder = "data/"+ folder_name; //  +"_exp/";
-	var txtdoc = []
-	
-	$.ajax({
-	    url : folder,
-	    success: function (data) {
-	        $(data).find("a").attr("href", function (i, val) {
-	            	this_file = val.split("");
-	            	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
-	            	// this_file.pop()
-	            	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
-	            		txtfiles.push(val) // txtfiles.push(folder+val)
-	            	}
-	        });
-	        // console.log(txtfiles)
-	        total_doc = txtfiles.length;
-			nextImage();
-	    }
-	});
+	task_key_id = getCookie("task_key_id")
+	dataset_key = task_key_id.split(",")[1];
+	mturk_id = task_key_id.split(",")[2];
 
+
+	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0})
+
+	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
+	var txtdoc = []	
+
+
+	// 	$.ajax({
+	//     url : folder,
+	//     success: function (data) {
+	//         $(data).find("a").attr("href", function (i, val) {
+	//             	this_file = val.split("");
+	//             	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
+	//             	// this_file.pop()
+	//             	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
+	//             		console.log(folder)
+	// 					console.log(val)
+	//             		txtfiles.push(val) // txtfiles.push(folder+val)
+	//             	}
+	//         });
+	//         console.log(txtfiles)
+	//         total_doc = txtfiles.length;
+	// 		nextImage();
+	//     }
+	// });
+
+
+	if (annotated_imgs.length >= ((parseInt(task_key_id.split(",")[1])+1)*study_length)  ){
+
+		for (i=0;i<study_length;i++){
+			// task_key_id.split(",")[1]  // key	
+			txtfiles.push(annotated_imgs[i+(task_key_id.split(",")[1]*study_length)])
+
+		}
+	}else{
+		
+		console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
+		console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", annotated_imgs.length)
+		alert("Not Enough Images found!")
+	}
+	// console.log('annotated_imgs', annotated_imgs.length,((task_key_id.split(",")[1]+1)*10),txtfiles)	
+	last_time_s = Math.floor(Date.now() / 1000);
+	nextImage();
 }
 
 
@@ -96,45 +129,78 @@ function start_over(){
 		highlight_data = []
 		txtfiles = []
 		ct = 0;
-		saved = 1;
 		readfiles = []
 		txtfilename();
 		location.href="../expevl.html"
 	}
 }
 
-function nextImage() {
+function nextImage() {	
 
-	save_json();     // if ((ct > 0) & (saved == 0)) save_json();
+	current_time_s = Math.floor(Date.now() / 1000)
+	tot_time = current_time_s - last_time_s;
+	last_time_s = current_time_s;
+	
+	if (doc_num == study_length) {
+		
+		alert("End of this HIT! \n\n Code is printed in a new tab. Please copy the code it in the AMT page to finish the HIT! \n\n You can also click on Download Results")
 
-    $('input[name=star]').prop('checked', false);
+		WriteFile(tot_time);
+		document.getElementById("nextbutton-1").innerHTML = "Download Results"
+		document.getElementById("nextbutton-2").innerHTML = "Download Results"
 
-	for (var i = 0; i < txtfiles.length ; i ++){
-	  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
-			readfiles.push(txtfiles[i])
-			
-			showImage(txtfiles[i], 0);
-            rating = 0; 
+	}else{
 
-			imageName = txtfiles[i].split("/").pop();
-			doc_num =i + 1;
-			image_title();
-			
-			d3.selectAll('path.line').remove();
-			highlight_data = []
-  			ct =0;
+		document.getElementById("nextbutton-1").disabled = true;
+		document.getElementById("nextbutton-2").disabled = true;
+		// $('#my-input-id').prop('disabled', false);
+		save_json(tot_time);     // if ((ct > 0) & (saved == 0)) save_json();
 
-			break;
+	    $('input[name=star]').prop('checked', false);
+
+		for (var i = 0; i < txtfiles.length ; i ++){
+		  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
+				readfiles.push(txtfiles[i])
+				
+				showImage(txtfiles[i], 0);
+	            rating = 0; 
+
+				imageName = txtfiles[i].split("/").pop();
+				doc_num =i + 1;
+				image_title();
+				
+				d3.selectAll('path.line').remove();
+				highlight_data = []
+	  			ct =0;
+
+				break;
+			}
 		}
+
+
+		for (i=1;i<11;i++){
+			freezRating("star-"+i)
+		}
+		
+	      // document.getElementsByClassName("star star-10").disabled = true; // disabled="disabled"
+	      // setTimeout(function(){document.getElementsByClassName("star star-10").disabled = false;},2000);
 	}
 
-	
+
+
+
 
 }
 
+function freezRating(id){
+      document.getElementById(id).disabled = true; // disabled="disabled"
+      setTimeout(function(){document.getElementById(id).disabled = false;},time_out);
+      // ... dim colors ...
+    }
+
 function lastImage() {
 			
-			save_json();       // if ((ct > 0) & (saved == 0)) save_json();
+			// save_json();       // if ((ct > 0) & (saved == 0)) save_json();
 
             $('input[name=star]').prop('checked', false);
             rating = 0;
@@ -142,7 +208,7 @@ function lastImage() {
 	  		readfiles.pop()
 	  		this_article = readfiles.pop()
 	  		readfiles.push(this_article)
-	  		// console.log(this_article)
+	  		console.log("this_article: ", this_article)
 
 	  		showImage(this_article, 0);
 	  		imageName = this_article.split("/").pop();
@@ -160,7 +226,7 @@ function lastImage() {
 
 var words_hash = []; 
 var words_array = [];
-var results_json = [];
+
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -181,7 +247,7 @@ function getCookie(cname) {
 
 function image_title(){
     obj = imageName.toString().split(".")[0].slice(0,-1)
-    explanation_title.text("Please rate how accurate the machine learning algorithm can identify the object in this image: ( "+ doc_num+" / "+total_doc+ " )");
+    explanation_title.text("Please rate how accurate the machine learning algorithm can identify the object in this image: ( "+ doc_num +" / "+total_doc+ " )");
 }
 
 function showImage(image_name, update_txt) {
@@ -211,7 +277,8 @@ function showImage(image_name, update_txt) {
   
             var folder = "data/"+ folder_name +"_exp/";
             // document.getElementById("test_img").src= folder+image_name;
-            document.getElementById("test_img").src= ".."+image_name;
+            // document.getElementById("test_img").src= ".."+image_name;
+            document.getElementById("test_img").src= image_name;
 
 
 }
@@ -220,7 +287,6 @@ function showImage(image_name, update_txt) {
 var ct = 0;
 var str = "line"
 var first_point;
-var saved = 1;
 
 var line = d3.line()
     .curve(d3.curveBasis);
@@ -233,7 +299,6 @@ var svg = d3.select("#img_box")
 
 function dragstarted() {
 
-	saved = 0;
 	ct++;
 	highlight_data.push([])
 
@@ -317,28 +382,52 @@ d3.select('#palette')
 
 var rating = 0;
 
+// $('#nextbutton').prop('disabled', false);
+// document.getElementById("nextbutton").removeAttribute('disabled');
+// $("#nextbutton").removeAttr('disabled');
+
+// document.getElementById("nextbutton-1").disabled = true;
+
+// $("#nextbutton *").attr("disabled", "disabled").off('click');
+
+
+// $("#nextbutton *").attr("disabled", "disabled").off('click');
+// $("#nextbutton").hasClass("disabledDiv");
+// $("#nextbutton").addClass("disabledDiv");
+
 $(document).ready(function() {
   $('input[type=radio][name=star]').change(function() {
      // confirm(this.value)
      rating = this.value
-     // console.log(rating)
+     // document.getElementById("nextbutton").disabled = false;
+	$('#nextbutton-1').prop('disabled', false);
+	$('#nextbutton-2').prop('disabled', false);
+     // $("#nextbutton *").attr("disabled", "false");
+     // $("#nextbutton").prop("disabled", false); 
+     // $("#nextbutton").removeAttr("disabled");
+     // $("#nextbutton").removeClass("disabledDiv")
+     // $("#nextbutton").removeClass("disabledDiv");
+     // console.log("here")
   });
 });
 
 
-function save_json(){  
+function save_json(tot_time){  
 
-	
+	if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
 	// for (var i=0;i<highlight_data.length;i++){
-	if (rating > 0) results_json.push({image: imageName, rating: rating})// contour: i+1, points: highlight_data[i]})
+	// if (rating > 0) results_json.push({i: this_image, r: rating, d: tot_time})// contour: i+1, points: highlight_data[i]})
+	if (rating > 0) results_json.push({i: this_image, r: rating})// contour: i+1, points: highlight_data[i]})
 	// console.log("rate", rating)
 	// }
-	saved = 1;
 }
 
-function WriteFile(){
+function WriteFile(tot_time){
     
-	save_json();
+	save_json(tot_time);
+
+		
+
 
 	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
 	var a = document.createElement('a');
@@ -346,6 +435,23 @@ function WriteFile(){
 	a.download = 'results.json';
 	a.innerHTML = 'End Study';
 	a.click();
+	
+	var winPrint = window.open("about:blank", "_blank")//'', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0',"_blank"); 
+	winPrint.document.write(JSON.stringify(results_json)); 
+	winPrint.document.close(); 
+	// something = window.open("data:text/json," + encodeURIComponent(JSON.stringify(results_json))); // ,"_blank"
+	// something.focus();
+
+
+    // var myjson = JSON.stringify(results_json, null, 2);
+    // console.log(myjson);
+    // var x = window.open();
+    // x.document.open();
+    // x.document.write('<html><body><pre>' + myjson + '</pre></body></html>');
+    // x.document.close();
+
+
+	// document.write(results_json);
 }
 
 // function saveIt(){  
@@ -474,6 +580,9 @@ var w_size = window,
 	// 				.style("fill-opacity",0.8)
 	// 				.style("stroke","gray")
 	// 				.style("stroke-opacity",0.5);
+
+
+
 
 // start_over();
 txtfilename();

@@ -52,6 +52,19 @@ a{
             box-sizing: border-box;
 }
 
+.save_button {
+  background-color: #e66f25;
+  border: none;
+  color: white;
+  padding: 15px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
 #cnsntDiv {
   display: table;
 	font-family: sans-serif;
@@ -103,7 +116,7 @@ margin-left: 5%;
 width: 40%;	
 }
 
-#exit_button {
+#exit_button-1 {
 	display: inline-block;
   float: left;
   /*margin-left: 10%;*/
@@ -119,7 +132,13 @@ width: 40%;
   margin-left: 5%
 }
 
-#nextbutton {
+#nextbutton-1 {
+  display: inline-block;
+  float:right;
+  margin-right: 10%
+}
+
+#nextbutton-2 {
   display: inline-block;
   float:right;
   margin-right: 10%
@@ -170,7 +189,7 @@ p{
 
 #endbutton {
   /*display: inline-block;*/
-  float:right;
+  float:left;
   margin-right: 5%;
   margin-bottom: 2%;
 }
@@ -273,7 +292,7 @@ div.absolute {
   width: 50%;
 }*/
 img {
-    width: 80%;
+    width: 50%;
     margin-left: 10%;
     height: auto;
 }
@@ -355,4 +374,10 @@ label.star:before {
   content: '\f006';
 
   font-family: FontAwesome;
+}
+
+
+.disabledDiv {
+    pointer-events: none;
+    opacity: 0.4;
 }

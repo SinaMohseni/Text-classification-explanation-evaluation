@@ -71,25 +71,63 @@ function txtfilename(){
 	// var folder = folder_name;
 	var txtdoc = []
 	console.log('this folder ', folder)
-	$.ajax({
-	    url : folder,
-	    success: function (data) {
-	        $(data).find("a").attr("href", function (i, val) {
-	            	this_file = val.split("");
-	            	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
-	            	// this_file.pop()
-	            	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
-	            		console.log(folder)
-						console.log(val)
-	            		txtfiles.push(val) // txtfiles.push(folder+val)
-	            	}
-	        });
-	        console.log(txtfiles)
-	        total_doc = txtfiles.length;
-			nextImage();
-	    }
-	});
+	// $.ajax({
+	//     url : folder,
+	//     success: function (data) {
+	//         $(data).find("a").attr("href", function (i, val) {
+	//             	this_file = val.split("");
+	//             	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
+	//             	// this_file.pop()
+	//             	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
+	//             		console.log(folder)
+	// 					console.log(val)
+	//             		txtfiles.push(val) // txtfiles.push(folder+val)
+	//             	}
+	//         });
+	//         console.log(txtfiles)
+	//         total_doc = txtfiles.length;
+	// 		nextImage();
+	//     }
+	// });
 
+
+	txtfiles =["data/VOC2012/cat-2007_000528.jpg",
+	"data/VOC2012_raw/cat-2007_000876.jpg",
+	"data/VOC2012_raw/cat-2007_003778.jpg",
+	"data/VOC2012_raw/cat-2008_000824.jpg",
+	"data/VOC2012_raw/cat-2008_000950.jpg",
+	"data/VOC2012_raw/cat-2008_001980.jpg",
+	"data/VOC2012_raw/cat-2008_002177.jpg",
+	"data/VOC2012_raw/cat-2008_002225.jpg",
+	"data/VOC2012_raw/cat-2008_002294.jpg",
+	"data/VOC2012_raw/cat-2008_002299.jpg",
+	"data/VOC2012_raw/cat-2008_002410.jpg",
+	"data/VOC2012_raw/cat-2008_002583.jpg",
+	"data/VOC2012_raw/cat-2008_003386.jpg",
+	"data/VOC2012_raw/cat-2008_003559.jpg",
+	"data/VOC2012_raw/cat-2008_004303.jpg",
+	"data/VOC2012_raw/cat-2008_005300.jpg",
+	"data/VOC2012_raw/cat-2008_005496.jpg",
+	"data/VOC2012_raw/cat-2008_005566.jpg",
+	"data/VOC2012_raw/cat-2008_005600.jpg",
+	"data/VOC2012_raw/cat-2008_006081.jpg",
+	"data/VOC2012_raw/cat-2008_006377.jpg",
+	"data/VOC2012_raw/cat-2008_006609.jpg",
+	"data/VOC2012_raw/cat-2008_007403.jpg",
+	"data/VOC2012_raw/cat-2008_007610.jpg",
+	"data/VOC2012_raw/cat-2009_000504.jpg",
+	"data/VOC2012_raw/cat-2009_000684.jpg",
+	"data/VOC2012_raw/cat-2009_001391.jpg",
+	"data/VOC2012_raw/cat-2009_002008.jpg",
+	"data/VOC2012_raw/cat-2009_003904.jpg",
+	"data/VOC2012_raw/cat-2010_000500.jpg",
+	"data/VOC2012_raw/cat-2010_000799.jpg"]
+// "data/VOC2012_raw/cat-2010_003299.jpg",
+// "data/VOC2012_raw/cat-2010_004712.jpg",
+// "data/VOC2012_raw/cat-2010_005344.jpg",
+// "data/VOC2012_raw/cat-2010_005697.jpg",
+// "data/VOC2012_raw/cat-2011_001900.jpg"
+	nextImage();
 }
 
 
@@ -129,7 +167,8 @@ function nextImage() {
 		}
 	}
 
-	
+      // document.getElementById("rating-starts").disabled = true;
+      // setTimeout(function(){document.getElementById("rating-starts").disabled = false;},2000);
 
 }
 
