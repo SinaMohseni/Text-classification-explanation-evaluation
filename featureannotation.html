@@ -8,7 +8,7 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <link rel="stylesheet" href="./benchmark/styles/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+  <script src="./benchmark/scripts/workers.js"></script>
 </head>
 
 
@@ -16,60 +16,156 @@
 
 </br>
   <!-- <div id="nextbutton3"  href="./exptxt.html" > <button onclick="location.reload();location.href='./cnsnt.html'">Continue</button> </div> -->
-  <div id="nextbutton5"> <button onclick=read_radio() >Continue</button> </div>   
+  <button id="nextbutton-1" onclick=read_radio()> Continue</button> 
 
   <div id="formDiv">
     
     <div id="cnsnttextbox">
         <b>
-          <h1> Instructions:  Object Annotation in Images </h1>
+          <h1> Instructions:  Pet Segmentation in Images </h1>
+        </br>
+        </br>
+        </br>
+        <h2> We are building an AI system to recognize <u> pets in images from social media </u> to esmitate pets population in cities </h2>
+        </br>
+        <h2> Our AI system is trained to <u> detect cats and dogs</u> in images. </h2>
+        </br>
+        <h2> We need your help to <u> select areas in images that represent pets </u> to train our AI. </h2>
+        </br>
+        <h2> You <u> do not necessarily need to select the entire pet body </u> but the salient area that is most representative of pets. </h2>
         </br>
         </br>
         </br>
         </br>
+        <hr>
+        </br>
+        <h1> Instructions: </h1>
+        </br>
+        <h2> Selects Pets in Images: You main task is to <mark> select salient areas in the image that mostly represent pets </mark> in the image. <u> Not necessarily the entire pet! </u> </h2>
         </br>
         </br>
-            <h1> 1- Draw a line: </h1>
-        </br>
-          <h3> Click on ...: </h3>
+        <img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG" width="400">
         </br>
         </br>
-            <h1> 2- Clear and try again: </h1>
         </br>
-          <h3> Click next to : </h3>
+        <hr>
+        </br>
+        <h3> 1. Easily draw a line (left-click) around the area that mostly represents the pets: </h3>
+        </br>
+        <img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-2.PNG" width="400">
         </br>
         </br>
-      </b>
+        </br>
+        <hr>
+        </br>
+
+          <h3> 2.Click next for next image (total 15 images): </h3>
+          </br>
+          <img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-3.PNG" width="400">
+          </br>
+          </br>
+
+        </br>
+        <hr>
+        </br>
+
+         <h3>  3. After 15 images, you get the HIT code, past in the mechanical turk page: </h3>
+        </br>
+          <img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-4.PNG" width="400">
+        </br>
+        </br>
      
     </div>
 
   </div>
 
-  <div id="nextbutton4"> <button onclick=read_radio() >Continue</button> </div>   
+  <button id="nextbutton-2" onclick=read_radio() >Continue</button>
+
+
 
   <script type="text/javascript"> 
 
-    var user_select = "ImageAnnotation"
+    const urlParams = new URLSearchParams(window.location.search);  
+    const key = urlParams.get('key');
+    var user_task = "ImageAnnotation";
+    var mturk_ID = "";
+    var position = $(window).scrollTop();
 
+    // mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+    // screening_id('stay');
+
+
+    // request mturk id with mouse scroll event 
+    $(window).scroll(function() {
+        var scroll = $(window).scrollTop();
+        if (scroll > position) {
+          if (mturk_ID == null || mturk_ID == "") {
+            screening_id('stay');
+            mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+          }
+        } else {
+          if (mturk_ID == null || mturk_ID == "") {
+            mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+            screening_id('stay');
+          }
+        }
+        position = scroll;
+      });
+
+
+    function getParameterByName(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, '\\$&');
+      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
 
     function read_radio(){
-      // var radios = document.getElementsByName('category');
       
-      // for (var i = 0, length = radios.length; i < length; i++){
-      //    if (radios[i].checked){
-      //     user_select = radios[i].value
-      //     break;
-      //    }
-      // }
+      
 
-      setCookie("user_selection", user_select)
-      location.href='./benchmark/cnsnt.html'
+      user_task = "ImageAnnotation";
+
+      if (mturk_ID == null || mturk_ID == "") {
+       
+        mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+        if (mturk_ID != null & mturk_ID != "") {
+          result = screening_id('stay');
+          if (result == 'passed') alert("Make sure to fully read the instructions in this page!")
+        }
+
+      }else{
+        screening_id('proceed');
+      }
     }
     
+    function screening_id(action){
+        output = 'passed'
+        if (workers.includes(mturk_ID)) {
+          alert("You have done this HIT before; Sorry can't do it again!")
+          // document.getElementById("nextbutton-1").disabled = true;
+          // document.getElementById("nextbutton-2").disabled = true;
+          document.getElementById("nextbutton-1").innerHTML = "You Can't Continue"
+          document.getElementById("nextbutton-2").innerHTML = "You Can't Continue"
+          // window.close();
+          // var ww = window.open(window.location, '_self'); 
+          // ww.close();
+          output = 'failed'
+        } else if (action == 'proceed'){
+          setCookie("user_selection", [user_task,key,mturk_ID])
+          location.href='./benchmark/cnsnt.html'
+        }
+
+        return output
+    }
+
+
     function setCookie(cname, cvalue) {
       document.cookie = cname + "=" + cvalue + ";path=/";
     }
-
 
 
   </script>

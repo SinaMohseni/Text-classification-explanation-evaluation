@@ -3,19 +3,20 @@ var inkColor = "red" // "#1f77b4"
 var imgIndex = '';
 var fill_checkbox = 1
 
-  fill_area = d3.selectAll("input[name=fillarea]")          // Check box for cutting the tails
-      .style("margin", "0px 10px 0px 10px")
-      .style("padding", "0px 0px")
-      .attr("position", "relative")
-      .attr("checked", true)
-      .on("change", function() {
-                        if (this.checked) {
-                          fill_checkbox = 1;
-                        }else{
-                          fill_checkbox = 0;
-                        }
-                    }
-                       );
+
+fill_area = d3.selectAll("input[name=fillarea]")          // Check box for cutting the tails
+  .style("margin", "0px 10px 0px 10px")
+  .style("padding", "0px 0px")
+  .attr("position", "relative")
+  .attr("checked", true)
+  .on("change", function() {
+		    if (this.checked) {
+		      fill_checkbox = 1;
+		    }else{
+		      fill_checkbox = 0;
+		    }
+		}
+		);
 
 
 var path;
@@ -23,20 +24,19 @@ var color = "lightblue";
 x_old = 0;
 y_old = 0;
 
-
 var div1 = d3.select("body").append("talkbubble")   // Tooltip
-		.attr("class", "tooltip")
-		.style("opacity", 1)
-		.style("position", "absolute")
-		.style("text-align", "center")
-		.style("width", 100)
-		.style("height", 48)
-		.style("border-radius", "8px")   // "10% / 10%")
-		.style("padding", 2)
-		.style("font-size", 12)
-		.style("background", "lightblue") // "#1e90ff")
-		.style("border", 3)
-		.style("pointer-events", "none");
+	.attr("class", "tooltip")
+	.style("opacity", 1)
+	.style("position", "absolute")
+	.style("text-align", "center")
+	.style("width", 100)
+	.style("height", 48)
+	.style("border-radius", "8px")   // "10% / 10%")
+	.style("padding", 2)
+	.style("font-size", 12)
+	.style("background", "lightblue") // "#1e90ff")
+	.style("border", 3)
+	.style("pointer-events", "none");
 
    var output;
     d3.selection.prototype.moveToBack = function() {
@@ -47,6 +47,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
             }
         });
     };
+
   
   d3.selection.prototype.moveToFront = function() {
     return this.each(function(){
@@ -54,21 +55,25 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
     });
   };
 
-const study_length = 10;
+
+
+
+const study_length = 14;
 const training_imgs = 5; 
-const time_out = 20;
+const time_out = 2000;
 
 var results_json = [];
-var txtfiles = []
-var readfiles = []
+var txtfiles = [];
+var readfiles = [];
 var imageName;
-var folder_name = "VOC2012"
-// var folder_name = "udacity"
+var folder_name = "VOC_grad-cam";
+// var folder_name = "udacity" 
 var call_once = 0;
 var total_doc = study_length;
 var doc_num;
-current_time_s = 0
-last_time_s = 0
+current_time_s = 0;
+last_time_s = 0;
+
 
 function txtfilename(){
 	
@@ -80,8 +85,7 @@ function txtfilename(){
 	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
-	var txtdoc = []	
-
+	var txtdoc = []; 
 
 	// 	$.ajax({
 	//     url : folder,
@@ -101,7 +105,6 @@ function txtfilename(){
 	// 		nextImage();
 	//     }
 	// });
-
 
 	if (annotated_imgs.length >= ((parseInt(task_key_id.split(",")[1])+1)*study_length)  ){
 
@@ -192,6 +195,7 @@ function nextImage() {
 
 }
 
+
 function freezRating(id){
       document.getElementById(id).disabled = true; // disabled="disabled"
       setTimeout(function(){document.getElementById(id).disabled = false;},time_out);
@@ -247,7 +251,7 @@ function getCookie(cname) {
 
 function image_title(){
     obj = imageName.toString().split(".")[0].slice(0,-1)
-    explanation_title.text("Please rate how accurate the machine learning algorithm can identify the object in this image: ( "+ doc_num +" / "+total_doc+ " )");
+    explanation_title.text("Please rate 'how good' the AI is explaining the pet in this image: ( "+ doc_num +" / "+total_doc+ " )");
 }
 
 function showImage(image_name, update_txt) {
@@ -275,7 +279,7 @@ function showImage(image_name, update_txt) {
             
   //           }
   
-            var folder = "data/"+ folder_name +"_exp/";
+            // var folder = "data/"+ folder_name +"_exp/";
             // document.getElementById("test_img").src= folder+image_name;
             // document.getElementById("test_img").src= ".."+image_name;
             document.getElementById("test_img").src= image_name;
@@ -394,6 +398,8 @@ var rating = 0;
 // $("#nextbutton *").attr("disabled", "disabled").off('click');
 // $("#nextbutton").hasClass("disabledDiv");
 // $("#nextbutton").addClass("disabledDiv");
+
+
 
 $(document).ready(function() {
   $('input[type=radio][name=star]').change(function() {

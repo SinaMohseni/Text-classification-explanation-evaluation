@@ -10,15 +10,17 @@
   <link rel="stylesheet" href="./styles/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="./scripts/img_adrs.js"></script> 
 </head>
 
 <body>
-   <div id="nextbutton" > <button onclick="nextImage()">Next Image</button> </div>
+   <!-- <div id="nextbutton-1" > <button onclick="nextImage()">Next Image</button> </div> -->
+   <button id="nextbutton-1" onclick="nextImage()">Next Image</button>
    <div id="backbutton" > <button onclick="lastImage()">Previous Image</button> </div>
-   <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
+   <!-- <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div> -->
    </br>
    </br>
-   <div id="start" > <button onclick="start_over()">Start over</button> </div>
+   <!-- <div id="start" > <button onclick="start_over()">Start over</button> </div> -->
 
   <div id="chartDiv">
 
@@ -51,9 +53,10 @@
 
   </div>
 
-  <div id="nextbutton" > <button onclick="nextImage()">Next Image</button> </div>
+  <!-- <div id="nextbutton-2" > <button onclick="nextImage()">Next Image</button> </div> -->
+  <button id="nextbutton-2" onclick="nextImage()">Next Image</button>
    <div id="backbutton" > <button onclick="lastImage()">Previous Image</button> </div>
-   <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
+   <!-- <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div> -->
   
   <script id= maincode src="./scripts/image.js"></script> 
 </body>

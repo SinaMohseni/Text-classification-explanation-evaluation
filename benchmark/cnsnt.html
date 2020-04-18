@@ -131,28 +131,28 @@
 
         function link_address(){
 
-          var txt;
-          var mturk_ID = prompt("Please enter your AMT ID:", "");
+          // var txt;
+          // var mturk_ID = prompt("Please enter your AMT ID:", "");
 
-          if (mturk_ID == null || mturk_ID == "") {
-            txt = "User cancelled the prompt.";
+          // if (mturk_ID == null || mturk_ID == "") {
+          //   txt = "User cancelled the prompt.";
 
-          } else {
+          // } else {
 
-            console.log(mturk_ID);  //  --> save this in cookie
+            // console.log(mturk_ID);  //  --> save this in cookie
 
-            task_key = getCookie("user_selection") 
-            // console.log('Task: ', task_key.split(",")[0],"Key", task_key.split(",")[1])
+            task_key_id = getCookie("user_selection")    // user_task,key,mturk_ID
+            // console.log('Task: ', task_key_id.split(",")[0],"Key", task_key_id.split(",")[1])
 
-            user_task = task_key.split(",")[0]
+            user_task = task_key_id.split(",")[0]
 
             if (user_task == "ImageAnnotation") {
-              setCookie("task_key_id", [user_task,task_key.split(",")[1],mturk_ID])
+              setCookie("task_key_id", [user_task,task_key_id.split(",")[1],task_key_id.split(",")[2]])
               location.reload();
               location.href='./expimg.html';   // feed-forward
 
             }else if (user_task == "ImageRating") {
-              setCookie("task_key_id", [user_task,task_key.split(",")[1],mturk_ID])
+              setCookie("task_key_id", [user_task,task_key_id.split(",")[1],task_key_id.split(",")[2]])
               location.href='./benchmark/cnsnt.html'
               location.reload();
               location.href='./expqlty.html';   // feed-back
@@ -161,7 +161,7 @@
               location.reload();
               location.href='./unknownstudy.html';   // feed-forward
             }
-          } 
+          // } 
         }
 
         function getCookie(cname) {

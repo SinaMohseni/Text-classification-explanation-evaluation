@@ -1,3 +1,11 @@
+# 1- calculation: 
+# Genrating objects reference mask useing ref contur
+# Generating users weighted mask with user data
+
+# 2- visualizations: 
+# Generating user heatmaps for visualization
+# Genrating LIME heatmaps from visualizations
+
 
 # -*- coding: utf-8 -*- 
 
@@ -395,8 +403,10 @@ LIME_overlay = "./Image/LIME_overlay/"
 mask_folder = "./Image/user_mask/"
 res_folder = "./Image/json_res/"
 
+
 # shutil.rmtree(mask_folder)
 # os.remove(mask_folder, *, dir_fd=None)
+
 
 # Genrating objects reference mask useing ref contur
 # reference_mask(img_folder, res_folder+"ref.json",ref_mask);

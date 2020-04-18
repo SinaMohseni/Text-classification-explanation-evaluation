@@ -53,13 +53,21 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
     });
   };
 
+
+
+const study_length = 14;
+const training_imgs = 5; 
+const time_out = 20;
+
+
 var txtfiles = []
 var readfiles = []
 var imageName;
 // var folder_name = "VOC/raw_images"
-var folder_name = "org_img"
+// var folder_name = "org_img"
+var folder_name = "VOC_org"
 var call_once = 0;
-var total_doc;
+var total_doc = study_length;
 var doc_num;
 
 
@@ -67,10 +75,20 @@ function txtfilename(){
 	
 	// folder_name = getCookie("user_selection")  don't use cookies to get folder name 
 
-	var folder = "data/"+ folder_name +"/";
+	// var folder = "data/"+ folder_name +"/";
 	// var folder = folder_name;
+	
+
+	task_key_id = getCookie("task_key_id")
+	dataset_key = task_key_id.split(",")[1];
+	mturk_id = task_key_id.split(",")[2];
+
+
+	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0})
+
+	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
 	var txtdoc = []
-	console.log('this folder ', folder)
+
 	// $.ajax({
 	//     url : folder,
 	//     success: function (data) {
@@ -90,43 +108,22 @@ function txtfilename(){
 	//     }
 	// });
 
+	if (raw_imgs.length >= ((parseInt(task_key_id.split(",")[1])+1)*study_length)  ){
 
-	txtfiles =["data/VOC2012/cat-2007_000528.jpg",
-	"data/VOC2012_raw/cat-2007_000876.jpg",
-	"data/VOC2012_raw/cat-2007_003778.jpg",
-	"data/VOC2012_raw/cat-2008_000824.jpg",
-	"data/VOC2012_raw/cat-2008_000950.jpg",
-	"data/VOC2012_raw/cat-2008_001980.jpg",
-	"data/VOC2012_raw/cat-2008_002177.jpg",
-	"data/VOC2012_raw/cat-2008_002225.jpg",
-	"data/VOC2012_raw/cat-2008_002294.jpg",
-	"data/VOC2012_raw/cat-2008_002299.jpg",
-	"data/VOC2012_raw/cat-2008_002410.jpg",
-	"data/VOC2012_raw/cat-2008_002583.jpg",
-	"data/VOC2012_raw/cat-2008_003386.jpg",
-	"data/VOC2012_raw/cat-2008_003559.jpg",
-	"data/VOC2012_raw/cat-2008_004303.jpg",
-	"data/VOC2012_raw/cat-2008_005300.jpg",
-	"data/VOC2012_raw/cat-2008_005496.jpg",
-	"data/VOC2012_raw/cat-2008_005566.jpg",
-	"data/VOC2012_raw/cat-2008_005600.jpg",
-	"data/VOC2012_raw/cat-2008_006081.jpg",
-	"data/VOC2012_raw/cat-2008_006377.jpg",
-	"data/VOC2012_raw/cat-2008_006609.jpg",
-	"data/VOC2012_raw/cat-2008_007403.jpg",
-	"data/VOC2012_raw/cat-2008_007610.jpg",
-	"data/VOC2012_raw/cat-2009_000504.jpg",
-	"data/VOC2012_raw/cat-2009_000684.jpg",
-	"data/VOC2012_raw/cat-2009_001391.jpg",
-	"data/VOC2012_raw/cat-2009_002008.jpg",
-	"data/VOC2012_raw/cat-2009_003904.jpg",
-	"data/VOC2012_raw/cat-2010_000500.jpg",
-	"data/VOC2012_raw/cat-2010_000799.jpg"]
-// "data/VOC2012_raw/cat-2010_003299.jpg",
-// "data/VOC2012_raw/cat-2010_004712.jpg",
-// "data/VOC2012_raw/cat-2010_005344.jpg",
-// "data/VOC2012_raw/cat-2010_005697.jpg",
-// "data/VOC2012_raw/cat-2011_001900.jpg"
+		for (i=0;i<study_length;i++){
+			// task_key_id.split(",")[1]  // key	
+			txtfiles.push(raw_imgs[i+(task_key_id.split(",")[1]*study_length)])
+
+		}
+	}else{
+		
+		console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
+		console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", raw_imgs.length)
+		alert("Not Enough Images found!")
+	}
+	// console.log('raw_imgs', raw_imgs.length,((task_key_id.split(",")[1]+1)*10),txtfiles)	
+	last_time_s = Math.floor(Date.now() / 1000);
+
 	nextImage();
 }
 
@@ -147,30 +144,58 @@ function start_over(){
 
 function nextImage() {
 
-	if ((ct > 0) & (saved == 0)) save_json();
+	current_time_s = Math.floor(Date.now() / 1000)
+	tot_time = current_time_s - last_time_s;
+	last_time_s = current_time_s;
+	
+	if (doc_num == study_length) {
+		
+		document.getElementById("nextbutton-1").innerHTML = "Completion Code"
+		document.getElementById("nextbutton-2").innerHTML = "Completion Code"
+		
+		alert("You successfully finished this HIT! \n\n A long code (json file) will be printed in your new browser tab. Please copy the code it in the AMT page to submit the HIT! \n\n\n If you don't see the new tab; click on the new Completion Code button")
 
-	for (var i = 0; i < txtfiles.length ; i ++){
-	  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
-			readfiles.push(txtfiles[i])
-			
-			showImage(txtfiles[i], 0);
+		WriteFile(tot_time);
 
-			imageName = txtfiles[i].split("/").pop();
-			doc_num =i + 1;
-			image_title();
-			
-			d3.selectAll('path.line').remove();
-			highlight_data = []
-  			ct =0;
 
-			break;
+	}else{
+		if ((ct > 0) & (saved == 0)) save_json();
+
+		for (var i = 0; i < txtfiles.length ; i ++){
+		  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
+				readfiles.push(txtfiles[i])
+				
+				showImage(txtfiles[i], 0);
+
+				imageName = txtfiles[i].split("/").pop();
+				doc_num =i + 1;
+				image_title();
+				
+				d3.selectAll('path.line').remove();
+				highlight_data = []
+	  			ct =0;
+
+				break;
+			}
+		}
+
+		for (i=1;i<11;i++){
+			freezRating("star-"+i)
 		}
 	}
-
-      // document.getElementById("rating-starts").disabled = true;
-      // setTimeout(function(){document.getElementById("rating-starts").disabled = false;},2000);
+      
 
 }
+
+
+
+function freezRating(id){
+      document.getElementById(id).disabled = true; // disabled="disabled"
+      setTimeout(function(){document.getElementById(id).disabled = false;},time_out);
+      // ... dim colors ...
+    }
+
+
 
 function lastImage() {
 			
@@ -215,12 +240,12 @@ function getCookie(cname) {
 }
 
 function image_title(){
-	obj = imageName.toString().split(".")[0].slice(0,-1)
-    if (obj.length < 3){
-      explanation_title.text("Please highlight any reasons that the driver should be cautious in this scene: ( "+ doc_num+" / "+total_doc+ " )");
-    }else{
-      explanation_title.text("Please highlight the area related to \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
-    } 
+	  obj = imageName.toString().split("-")[0]
+ //    if (obj.length < 3){
+ //      explanation_title.text("Please highlight any reasons that the driver should be cautious in this scene: ( "+ doc_num+" / "+total_doc+ " )");
+ //    }else{
+      explanation_title.text("Please select the salient area(s) that explains \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
+    // } 
 }
 
 function showImage(image_name, update_txt) {
@@ -239,7 +264,6 @@ function showImage(image_name, update_txt) {
             $(".img_box").attr("width",this_img.width);
             $(".img_box").attr("margin","0 auto");
             }
-
 }
 
 
@@ -287,7 +311,7 @@ function dragstarted() {
 
     if (dx * dx + dy * dy > 20){
 		d.push([x0 = x1, y0 = y1]);
-        highlight_data[ct-1].push([x1,y1]);
+        highlight_data[ct-1].push([x1.toFixed(2),y1.toFixed(2)]);
     } 
     else d[d.length - 1] = [x1, y1];
     active.attr("d", line);
@@ -295,7 +319,7 @@ function dragstarted() {
 
 	d3.event.on("end", function(){
 		d.push(first_point);
-        highlight_data[ct-1].push([first_point[0],first_point[1]]);
+        highlight_data[ct-1].push([first_point[0].toFixed(2),first_point[1].toFixed(2)]);
         // console.log(highlight_data)
         active.attr("d", line);
 	});
@@ -343,11 +367,31 @@ d3.select('#palette')
 
 
 
+
+
+$(document).ready(function() {
+  $('input[type=radio][name=star]').change(function() {
+     // confirm(this.value)
+     rating = this.value
+     // document.getElementById("nextbutton").disabled = false;
+	$('#nextbutton-1').prop('disabled', false);
+	$('#nextbutton-2').prop('disabled', false);
+     // $("#nextbutton *").attr("disabled", "false");
+     // $("#nextbutton").prop("disabled", false); 
+     // $("#nextbutton").removeAttr("disabled");
+     // $("#nextbutton").removeClass("disabledDiv")
+     // $("#nextbutton").removeClass("disabledDiv");
+     // console.log("here")
+  });
+});
+
+
 function save_json(){  
 
-	
+	if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
+
 	for (var i=0;i<highlight_data.length;i++){
-		results_json.push({image: imageName, contour: i+1, points: highlight_data[i]})
+		results_json.push({i: this_image, c: i+1, p: highlight_data[i]})
 		// console.log(results_json)
 	}
 	saved = 1;
@@ -357,31 +401,18 @@ function WriteFile(){
 
 	if (saved == 0) save_json();
 
-	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
-	var a = document.createElement('a');
-	a.href = 'data:' + jsonContent;
-	a.download = 'results.json';
-	a.innerHTML = 'End Study';
-	a.click();
+	// var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	// var a = document.createElement('a');
+	// a.href = 'data:' + jsonContent;
+	// a.download = 'results.json';
+	// a.innerHTML = 'End Study';
+	// a.click();
+
+	var winPrint = window.open("about:blank", "_blank")//'', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0',"_blank"); 
+	winPrint.document.write(JSON.stringify(results_json)); 
+	winPrint.document.close(); 
 }
 
-// function saveIt(){  
-    
-//     var csvContent = "data:text/csv;charset=utf-8,";
-//     highlight_data.forEach(function(infoArray, index){   
-//          dataString = infoArray.join(",");
-//          csvContent += index < highlight_data.length ? dataString+ "\n" : dataString;
-//     });
-//     console.log(csvContent)
-//     var encodedUri = encodeURI(csvContent);
-//     var link = document.createElement("a");
-//     link.setAttribute("href", encodedUri);
-//     link.setAttribute("download", "Retraining_data.csv");
-//     document.body.appendChild(link);  
-
-//     link.click(); 
-//     saved = 1;
-// }
 
 function getWidthOfText(txt, fontname, fontsize){
     if(getWidthOfText.c === undefined){
