@@ -17,7 +17,6 @@ var fill_checkbox = 1
                     }
                        );
 
-
 var path;
 var color = "lightblue"
 x_old = 0
@@ -54,14 +53,13 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
   };
 
 
-
 const study_length = 14;
 const training_imgs = 5; 
 const time_out = 20;
 
 
-var txtfiles = []
-var readfiles = []
+var txtfiles = [];
+var readfiles = [];
 var imageName;
 // var folder_name = "VOC/raw_images"
 // var folder_name = "org_img"

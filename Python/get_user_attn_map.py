@@ -82,7 +82,6 @@ def read_user_data(img_folder, json_file,tot_user):
     for an_img in all_imgs:
 
         usr_img =  an_img["points"]
-
         # jpg_file = img_folder + an_img["image"];
         jpg_file_1 = img_folder + "cat-"+ an_img["image"] + ".jpg";
         jpg_file_2 = img_folder + "dog-"+ an_img["image"] + ".jpg";
@@ -158,6 +157,7 @@ def reference_mask(img_folder, ref_file,ref_mask):
         img_exp, user_mask = img_process(jpg_file,usr_img,1)
         
         ref_mask.append( [an_img["image"], user_mask] )      # ref_mask.append(user_mask)    
+        # ref_mask.append( [jpg_file, user_mask] )      # ref_mask.append(user_mask)    
 
         # cv2.imshow('image',img_exp)   
         # cv2.waitKey(0)                
@@ -186,13 +186,25 @@ def user_heatmap(img_folder,heatmap_folder,mask_folder):
     print ("\n User heatmap...")
     for this_img in ref_mask:
 
-        gray_mask_path = mask_folder + this_img[0]
-        raw_img_path = img_folder + this_img[0]
+        # gray_mask_path = mask_folder + this_img[0]
+        # raw_img_path = img_folder + this_img[0]
 
+        gray_mask_path_1 = mask_folder + "cat-"+ this_img[0] + ".jpg";
+        gray_mask_path_2 = mask_folder + "dog-"+ this_img[0] + ".jpg";
+        if os.path.exists(gray_mask_path_1):
+            gray_mask_path = gray_mask_path_1
+            raw_img_path = img_folder + "cat-"+ this_img[0] + ".jpg";
+        else: 
+            gray_mask_path = gray_mask_path_2
+            raw_img_path = img_folder + "dog-"+ this_img[0] + ".jpg";
+
+
+        print (gray_mask_path)
+        print (raw_img_path)
         gray_mask = cv2.imread(gray_mask_path,0);
         raw_img = cv2.imread(raw_img_path,3);
         
-        heatmap = cv2.applyColorMap(gray_mask,cv2.COLORMAP_JET)  # cv2.COLORMAP_AUTUMN COLORMAP_RAINBOW COLORMAP_JET
+        heatmap = cv2.applyColorMap(gray_mask,cv2.COLORMAP_JET)  # COLORMAP_TURBO  cv2.COLORMAP_AUTUMN COLORMAP_RAINBOW COLORMAP_JET
         # print this_img[1]
         # print heatmap
         masked_heatmap = cv2.bitwise_and(heatmap,heatmap,mask = this_img[1])
@@ -221,7 +233,7 @@ def user_heatmap(img_folder,heatmap_folder,mask_folder):
         # cv2.destroyAllWindows()
         # print len(raw_img), len(heatmap)
 
-        alpha = 0.3;
+        alpha = 0.5;
         blend_heatmap = cv2.addWeighted(raw_img,alpha,new_raw_img,1-alpha,0)
 
 
@@ -403,7 +415,7 @@ def user_mask(img_folder,res_folder):
     image_heatmap = []
     user_accuracy = []
 
-    tot_user = 1;
+    tot_user = 10;
     for i in range(1,tot_user+1):   # users loop 
             # contour_img(img_folder + "test.jpg")
         print ("user: P", i)
@@ -417,7 +429,7 @@ mask_folder = "../data/user_attn_maps/"              # Final binary human-attent
 res_folder = "../user-study/mturk-annotation-results/json/"
 
 # to save an overlay of user attention-map on raw image
-heatmap_folder = "./Image/user_heatmap/"
+heatmap_folder = "../data/user_attn_overlay/"
 
 LIME_mask = "./Image/LIME_mask/"
 LIME_overlay = "./Image/LIME_overlay/"
@@ -428,13 +440,13 @@ LIME_overlay = "./Image/LIME_overlay/"
 
 
 # Genrating objects reference mask useing ref contur
-reference_mask(img_folder, res_folder+"P1.json",ref_mask);
+reference_mask(img_folder, res_folder+"P2.json",ref_mask);
 
 # Generating users weighted mask with user data
-user_mask(img_folder,res_folder)
+# user_mask(img_folder,res_folder)
 
 # Generating user heatmaps for visualization
-# user_heatmap(img_folder,heatmap_folder,mask_folder);
+user_heatmap(img_folder,heatmap_folder,mask_folder);
 
 # Genrating LIME heatmaps from visualizations
 # LIME_heatmap(img_folder,LIME_overlay,LIME_mask);
