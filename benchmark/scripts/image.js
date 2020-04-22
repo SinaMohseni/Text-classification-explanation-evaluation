@@ -215,14 +215,13 @@ function lastImage() {
 
 	 		doc_num -= 1;
 			image_title();
-
-
-
 }
+
 
 var words_hash = []; 
 var words_array = [];
 var results_json = [];
+
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -239,6 +238,8 @@ function getCookie(cname) {
     return "";
 }
 
+
+
 function image_title(){
 	  obj = imageName.toString().split("-")[0]
  //    if (obj.length < 3){
@@ -247,6 +248,8 @@ function image_title(){
       explanation_title.text("Please select the salient area(s) that explains \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
     // } 
 }
+
+
 
 function showImage(image_name, update_txt) {
 
@@ -265,6 +268,7 @@ function showImage(image_name, update_txt) {
             $(".img_box").attr("margin","0 auto");
             }
 }
+
 
 
 var ct = 0;
