@@ -287,6 +287,7 @@ div.absolute {
   margin-bottom: 5%;
   margin-top: 5%;
 }
+
 /*
 #image{
   width: 50%;
@@ -297,11 +298,13 @@ img {
     height: auto;
 }
 
+
 #test_img{
   display: inline-block;
   /*margin-left: 20%;*/
   /*padding-left: 200px;*/
 }
+
 
 #img_exp{
   display: inline-block;

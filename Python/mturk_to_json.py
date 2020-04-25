@@ -1,4 +1,4 @@
-# Generating user attention map from mTurk studies
+# Generating individual user annotations records from mTurk records
 
 # -*- coding: utf-8 -*- 
 

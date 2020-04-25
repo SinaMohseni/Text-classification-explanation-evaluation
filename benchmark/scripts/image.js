@@ -22,6 +22,8 @@ var color = "lightblue"
 x_old = 0
 y_old = 0
 
+
+
 var div1 = d3.select("body").append("talkbubble")   // Tooltip
 		.attr("class", "tooltip")
 		.style("opacity", 1)

@@ -2,8 +2,6 @@
 
 # -*- coding: utf-8 -*- 
 
-print ("importing...")
-
 import re
 import glob
 import copy
@@ -13,7 +11,7 @@ import math
 import json
 import csv
 
-import os
+import os, shutil
 import os.path
 
 import codecs
@@ -34,9 +32,24 @@ import numpy as np
 # from skimage.io import imread
 # from skimage.segmentation import mark_boundaries
 import scipy.misc
-print ("OpenCV Version: ", cv2.__version__)
-print ("SciPy Version: ", scipy.__version__)
-print ("NumPy Version: ", np.__version__)
+# print ("OpenCV Version: ", cv2.__version__)
+# print ("SciPy Version: ", scipy.__version__)
+# print ("NumPy Version: ", np.__version__)
+
+
+
+
+def erase_folder(folder):
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
 
 
 
@@ -57,7 +70,6 @@ def read_json(json_file):
                         this_["points"].append(an_img["points"])
                         # new_user_list.append({"image":an_img["image"],"contour":1,"points": new_points })
 
-                    # del this_
                     break;
                     # print "\n ", this_["points"][0], "\n ",this_["points"][1]
                     
@@ -198,18 +210,11 @@ def user_heatmap(img_folder,heatmap_folder,mask_folder):
             gray_mask_path = gray_mask_path_2
             raw_img_path = img_folder + "dog-"+ this_img[0] + ".jpg";
 
-
-        print (gray_mask_path)
-        print (raw_img_path)
         gray_mask = cv2.imread(gray_mask_path,0);
         raw_img = cv2.imread(raw_img_path,3);
         
         heatmap = cv2.applyColorMap(gray_mask,cv2.COLORMAP_JET)  # COLORMAP_TURBO  cv2.COLORMAP_AUTUMN COLORMAP_RAINBOW COLORMAP_JET
-        # print this_img[1]
-        # print heatmap
         masked_heatmap = cv2.bitwise_and(heatmap,heatmap,mask = this_img[1])
-
-        # print len(raw_img), len(heatmap)
 
         new_raw_img = raw_img.copy()
         rows,cols,channels = masked_heatmap.shape
@@ -259,7 +264,6 @@ def LIME_heatmap(img_folder,LIME_overlay,LIME_mask):
         raw_img_path = img_folder + this_img[0]
 
         gray_mask = cv2.imread(gray_mask_path,0);
-        # print gray_mask.max()
         raw_img = cv2.imread(raw_img_path,3);
         raw_img = cv2.resize(raw_img, (299,299))
 
@@ -290,7 +294,6 @@ def LIME_heatmap(img_folder,LIME_overlay,LIME_mask):
         # cv2.imshow('frame2',new_raw_img)
         # cv2.waitKey(0)                
         # cv2.destroyAllWindows()
-        # print len(raw_img), len(heatmap)
 
         alpha = 0.4;
         blend_heatmap = cv2.addWeighted(raw_img,alpha,new_raw_img,1-alpha,0)
@@ -313,7 +316,7 @@ def write_user_exp(img_exp, jpg_file):
     cv2.imwrite('./Image/exp_user/exp_'+jpg_file+ '.jpg', img_exp)
 
 def img_process(jpg_file,usr_img,tot_user):
-    print (jpg_file)
+
     exp_img = cv2.imread(jpg_file,0)  # load in grayscale 
 
     size_y = exp_img.shape[1] 
@@ -325,7 +328,7 @@ def img_process(jpg_file,usr_img,tot_user):
     size_x = mask.shape[0]
     
     sketch_points = len(usr_img);
-    # print "sketch_size", sketch_points
+
 
     contours = []
     
@@ -333,7 +336,7 @@ def img_process(jpg_file,usr_img,tot_user):
         sketch_size = len(usr_img[j])
         new_usr_img = []
         for i in range(0,sketch_size):
-            # print (int(float(usr_img[j][i][1])),float(usr_img[j][i][1]), usr_img[j][i][1], usr_img[j])
+
             x_ = int(float(usr_img[j][i][1]))
             y_ = int(float(usr_img[j][i][0]))
             x_ = sorted([0, x_, size_x-1])[1]
@@ -377,7 +380,9 @@ def evaluate_explanations():
 
         gray_user_mask = cv2.imread(user_mask_path,0);
         gray_user_mask = cv2.resize(gray_user_mask, (299,299))
+
         LIME_exp_mask = cv2.imread(LIME_mask_path,0);
+        
         ref_mask_gray = cv2.resize(this_img[1], (299,299))
 
         TP = cv2.bitwise_and(gray_user_mask,gray_user_mask,mask = LIME_exp_mask).sum()
@@ -415,7 +420,7 @@ def user_mask(img_folder,res_folder):
     image_heatmap = []
     user_accuracy = []
 
-    tot_user = 10;
+    
     for i in range(1,tot_user+1):   # users loop 
             # contour_img(img_folder + "test.jpg")
         print ("user: P", i)
@@ -423,33 +428,40 @@ def user_mask(img_folder,res_folder):
         user_accuracy.append(images_accuracy)
    
 
-ref_mask = [];
-img_folder = "../data/VOC2012_raw/"                     # original raw images  #   "C:/work/datasets/VOC2012/rawJPEGImages"
-mask_folder = "../data/user_attn_maps/"              # Final binary human-attention mask 
-res_folder = "../user-study/mturk-annotation-results/json/"
-
-# to save an overlay of user attention-map on raw image
-heatmap_folder = "../data/user_attn_overlay/"
-
-LIME_mask = "./Image/LIME_mask/"
-LIME_overlay = "./Image/LIME_overlay/"
 
 
-# shutil.rmtree(mask_folder)
-# os.remove(mask_folder)
+batches = ['batch-1'] # ,'batch-2','batch-3','batch-4']
+
+for batch in batches:
+
+    print ('Batch: ', batch)
+    tot_user = 10;
+    ref_mask = [];
+    img_folder = "../data/VOC2012_raw/"                     # original raw images  #   "C:/work/datasets/VOC2012/rawJPEGImages" 
+    mask_folder = "../data/user_attn_maps/"+batch+"/"              # Final binary human-attention mask
+    res_folder = "../user-study/mturk-annotation-results/"+batch+"/json/"
+
+    # to save an overlay of user attention-map on raw image
+    heatmap_folder = "../data/user_attn_overlay/"+batch+"/"
+
+    LIME_mask = "./Image/LIME_mask/"
+    LIME_overlay = "./Image/LIME_overlay/"
 
 
-# Genrating objects reference mask useing ref contur
-reference_mask(img_folder, res_folder+"P2.json",ref_mask);
+    # Genrating objects reference mask useing ref contur
+    reference_mask(img_folder, res_folder+"ref.json",ref_mask);
 
-# Generating users weighted mask with user data
-# user_mask(img_folder,res_folder)
+    # Generating users weighted mask with user data
+    erase_folder(mask_folder)
+    user_mask(img_folder,res_folder)
 
-# Generating user heatmaps for visualization
-user_heatmap(img_folder,heatmap_folder,mask_folder);
+    # Generating user heatmaps for visualization
+    erase_folder(heatmap_folder)
+    user_heatmap(img_folder,heatmap_folder,mask_folder);
 
-# Genrating LIME heatmaps from visualizations
-# LIME_heatmap(img_folder,LIME_overlay,LIME_mask);
+    # Genrating LIME heatmaps from visualizations
+    # LIME_heatmap(img_folder,LIME_overlay,LIME_mask);
 
-# Calculating explanations score compared to user
-# Precision, Recall = evaluate_explanations();
+    # Calculating explanations score compared to user
+    # Precision, Recall = evaluate_explanations();
+
