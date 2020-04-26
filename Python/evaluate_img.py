@@ -37,9 +37,9 @@ import numpy as np
 # from skimage.io import imread
 # from skimage.segmentation import mark_boundaries
 import scipy.misc
-# print ("OpenCV Version: ", cv2.__version__)
-# print ("SciPy Version: ", scipy.__version__)
-# print ("NumPy Version: ", np.__version__)
+print ("OpenCV Version: ", cv2.__version__)
+print ("SciPy Version: ", scipy.__version__)
+print ("NumPy Version: ", np.__version__)
 
 
 
@@ -364,7 +364,67 @@ def img_process(jpg_file,usr_img,tot_user):
     return exp_img, mask
 
 
-def evaluate_explanations(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_folder,ref_mask
+def evaluate_MAE(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_folder,ref_mask
+    print ("\n Explanation Evaluation...")
+
+    # Calculate MSE        (threshold agnostic)
+
+  
+    '''
+    We are presenting three quantitative metrics to evaluation model attention maps and compare with human judgment.
+    The IoU metric is a threshold 
+    The AUPR is a threashold 
+
+
+    [MAE]
+    The final metric is a threshold agnostic metrics to calculate the error in model explanations in comparison to human-attention baseline.
+    In our human-attention evaluation, we first normalize both human attention and model attention values. 
+    Then, we calculate pixelwise MSE of model attention map in comparison to human-attention map.
+    Both huamn-attention and model-attention maps are normalized in values and only the case of complete equal overlap generates
+    zero MSE. 
+    On the other hand, the carse of no overlap between human and model attention create MSE error of 1.
+    Average MAE is reported for the entire test set in Table X.
+    '''
+    AE = []
+
+    # LIME = 255
+    # User = weighted (0..255)
+
+    for this_img in ref_mask:
+
+        # user_file = user_path + this_img[0]
+        # model_file = model_path + this_img[0]
+
+        jpg_file_1 = user_path + "cat-"+ this_img[0] + ".jpg";
+        jpg_file_2 = user_path + "dog-"+ this_img[0] + ".jpg";
+        if os.path.exists(jpg_file_1):
+            user_file = jpg_file_1
+            model_file = model_path + "cat-"+ this_img[0] + ".jpg";
+        else: 
+            user_file = jpg_file_2
+            model_file = model_path + "dog-"+ this_img[0] + ".jpg";
+
+
+        user_mask = cv2.imread(user_file,0);
+        user_mask = cv2.resize(user_mask, (224,224))
+        
+        model_mask = cv2.imread(model_file,0);
+        model_mask = cv2.resize(model_mask, (224,224))
+        
+
+        # normalize user_mask and model_mask
+        norm_usr_msk = np.true_divide(user_mask,(user_mask.sum())); 
+        norm_mdl_msk = np.true_divide(model_mask, (model_mask.sum()));
+        
+        this_AE = (abs(norm_usr_msk - norm_mdl_msk)).sum() / 2; # mean() axis=ax
+        # mse = ((norm_usr_msk - norm_mdl_msk)**2).sum() / 4;
+        AE.append(this_AE)
+    
+    return [sum(AE) / len(AE), AE]
+
+  
+
+def evaluate_AUPR(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_folder,ref_mask
     print ("\n Explanation Evaluation...")
     
     # Calculate AUPR       (threshold agnostic)
@@ -386,22 +446,103 @@ def evaluate_explanations(user_path,model_path,ref_mask):  # usr_mask_folder, mo
     The IoU metric is a threshold 
     The AUPR is a threashold 
 
-
-    [MAE]
-    The final metric is a threshold agnostic metrics to calculate the error in model explanations in comparison to human-attention baseline.
-    In our human-attention evaluation, we first normalize both human attention and model attention values. 
-    Then, we calculate pixelwise MSE of model attention map in comparison to human-attention map.
-    Both huamn-attention and model-attention maps are normalized in values and only the case of complete equal overlap generates
-    zero MSE. 
-    On the other hand, the carse of no overlap between human and model attention create MSE error of 1.
-    Average MAE is reported for the entire test set in Table X.
-
     [AUPR]
     To calcuate the AUPR for model attention maps, we used 10-point thresholding (0.1.0.2,0.3, ..., 0.9) to obtain
     single layer attention mask from the attention map.
     Using normalized human-attention map and obtained hard masks from model, we calcualate pixel-wise precision and reacll values
     for each image.
     Average AUPR is reported for the entire test set.
+    '''
+
+    PR = []
+
+
+    # LIME = 255
+    # User = weighted (0..255)
+
+    for this_img in ref_mask:
+
+        # user_file = user_path + this_img[0]
+        # model_file = model_path + this_img[0]
+
+        jpg_file_1 = user_path + "cat-"+ this_img[0] + ".jpg";
+        jpg_file_2 = user_path + "dog-"+ this_img[0] + ".jpg";
+        if os.path.exists(jpg_file_1):
+            user_file = jpg_file_1
+            model_file = model_path + "cat-"+ this_img[0] + ".jpg";
+        else: 
+            user_file = jpg_file_2
+            model_file = model_path + "dog-"+ this_img[0] + ".jpg";
+
+
+        user_mask = cv2.imread(user_file,0);
+        user_mask = cv2.resize(user_mask, (224,224))
+        
+        model_mask = cv2.imread(model_file,0);
+        model_mask = cv2.resize(model_mask, (224,224))
+        
+        # used for IoU        
+        ref_mask = cv2.resize(this_img[1], (224,224))
+
+
+        TP = cv2.bitwise_and(user_mask,user_mask,mask = model_mask).sum();
+
+        ref_mask_inv = cv2.bitwise_not(ref_mask)
+        FN = cv2.bitwise_and(model_mask,model_mask,mask = ref_mask_inv).sum()
+        
+        model_mask_inv = cv2.bitwise_not(model_mask)
+        FP = cv2.bitwise_and(user_mask,user_mask,mask = model_mask_inv).sum()
+
+        # cv2.imshow('TP',TP)
+        # cv2.imshow('FN',FN)
+        # cv2.imshow('FP',FP)
+        # cv2.waitKey(0)                
+        # cv2.destroyAllWindows()
+        # print ("TP: , FN: ,FP: ", TP, FN,FP) 
+        precision =  float(TP)/(TP + FP)
+        recall = float(TP)/(TP + FN)
+        print ("\n Precision: ", precision , "Recall :", recall)
+        PR.append([precision, recall])
+
+
+    all_precision=0
+    all_recall=0
+    
+    for this_PR in PR:
+        all_precision += this_PR[0]
+        all_recall += this_PR[1]
+
+    Precision = all_precision/len(PR)
+    Recall = all_recall/len(PR)
+    
+    print ("\n Average Precision: ", Precision , "Recall :", Recall)
+
+    return Precision, Recall
+
+
+
+
+def evaluate_IoU(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_folder,ref_mask
+    print ("\n Explanation Evaluation...")
+    
+    # Calculate AUPR       (threshold agnostic)
+    # Calculate MSE        (threshold agnostic)
+    # Calculate IoU 
+
+    # IoU: TP/(TP + FP + FN)
+    # Soft-IoU: TP/(TP + FP + FN)
+    # Precision: TP/(TP + FP)
+    # Recall: TP/(TP + FN)
+
+    # TP: mask(LIME,user_mask).sum()
+    # FP: user_mask - mask(LIME, user_mask).sum()
+    # FN: mask(LIME, ref_inv).sum()
+
+   
+    '''
+    We are presenting three quantitative metrics to evaluation model attention maps and compare with human judgment.
+    The IoU metric is a threshold 
+    The AUPR is a threashold 
 
     [IoU]
     IoU metric requires the overlap and union between two hard boundaries to calcutes sample quality.
@@ -454,7 +595,7 @@ def evaluate_explanations(user_path,model_path,ref_mask):  # usr_mask_folder, mo
         # cv2.imshow('FP',FP)
         # cv2.waitKey(0)                
         # cv2.destroyAllWindows()
-        # print ("TP: , FN: ,FP: ", TP, FN,FP)
+        # print ("TP: , FN: ,FP: ", TP, FN,FP) 
         precision =  float(TP)/(TP + FP)
         recall = float(TP)/(TP + FN)
         print ("\n Precision: ", precision , "Recall :", recall)
@@ -491,8 +632,6 @@ def user_mask(img_folder,res_folder):
    
 
 
-
-
 batches = ['batch-1'] # ,'batch-2','batch-3','batch-4']
 # ref_mask = [];
 
@@ -527,4 +666,9 @@ for batch in batches:
     # LIME_heatmap(img_folder,LIME_overlay,LIME_mask);
 
     # Calculating explanations score compared to user
-    Precision, Recall = evaluate_explanations(usr_mask_folder, model_mask_folder,ref_mask);
+    MAE_all, MAE = evaluate_MAE(usr_mask_folder, model_mask_folder,ref_mask);
+    print (MAE_all)
+    print (MAE)
+    # Precision, Recall = evaluate_AUPR(usr_mask_folder, model_mask_folder,ref_mask);
+    # Precision, Recall = evaluate_IoU(usr_mask_folder, model_mask_folder,ref_mask);
+    # 
