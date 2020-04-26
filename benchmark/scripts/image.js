@@ -55,8 +55,8 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
   };
 
 
-const study_length = 14;
-const training_imgs = 5; 
+const study_length = 14; //Number of images displayed to a user for the study
+const training_imgs = 5;  //TODO: UNUSED - Number of images to consider as training images. 
 const time_out = 20;
 
 
@@ -80,7 +80,7 @@ function txtfilename(){
 	
 
 	task_key_id = getCookie("task_key_id")
-	dataset_key = task_key_id.split(",")[1]; //TODO: why is the Cond missing? this is comming blanke null when launching the app locally
+	dataset_key = task_key_id.split(",")[1]; //TODO: How is this being used? What does the Key do? what are the bounds of the value?
 	mturk_id = task_key_id.split(",")[2];
 
 
@@ -397,7 +397,7 @@ function save_json(){
 	if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
 
 	for (var i=0;i<highlight_data.length;i++){
-		results_json.push({i: this_image, c: i+1, p: highlight_data[i]})
+		results_json.push({i: imageName, c: i+1, p: highlight_data[i]})
 		// console.log(results_json)
 	}
 	saved = 1;
