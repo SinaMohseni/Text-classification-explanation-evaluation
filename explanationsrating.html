@@ -71,7 +71,7 @@
         <hr>
         </br>
 
-         <h3>  3. After 15 images, you get the HIT code, past in the mechanical turk page: </h3>
+         <h3>  3. After 15 images, you get the HIT code, paste in the mechanical turk page: </h3>
         </br>
           <img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-3.PNG" width="400">
         </br>
@@ -108,9 +108,18 @@
 
       // user_task: 1- task name
       //              2- dataset key
+    //If a key is not entered in the URL, then generate a random key 0-4 inclusive
+    function checkKey(k){
+      console.log(k)
+      if (k === null){
+        return Math.floor(Math.random()*4)
+      } else{
+        return k
+      }
+    }
 
       const urlParams = new URLSearchParams(window.location.search);  
-      const key = urlParams.get('key');
+      const key = checkKey(urlParams.get('key'));
       user_task = "ImageRating"  
 
       setCookie("user_selection", [user_task,key])

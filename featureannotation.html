@@ -86,8 +86,19 @@
 
   <script type="text/javascript"> 
 
+    //If a key is not entered in the URL, then generate a random key 0-4 inclusive
+    function checkKey(k){
+      console.log(k)
+      if (k === null){
+        return Math.floor(Math.random()*4)
+      } else{
+        return k
+      }
+    }
+
     const urlParams = new URLSearchParams(window.location.search);  
-    const key = urlParams.get('key');
+    const key = checkKey(urlParams.get('key'));
+    console.log(key)
     var user_task = "ImageAnnotation";
     var mturk_ID = "";
     var position = $(window).scrollTop();

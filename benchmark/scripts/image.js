@@ -80,13 +80,14 @@ function txtfilename(){
 	
 
 	task_key_id = getCookie("task_key_id")
-	dataset_key = task_key_id.split(",")[1];
+	dataset_key = task_key_id.split(",")[1]; //TODO: why is the Cond missing? this is comming blanke null when launching the app locally
 	mturk_id = task_key_id.split(",")[2];
 
 
 	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
+	console.log(folder, task_key_id)
 	var txtdoc = []
 
 	// $.ajax({
@@ -108,13 +109,14 @@ function txtfilename(){
 	//     }
 	// });
 
-	if (raw_imgs.length >= ((parseInt(task_key_id.split(",")[1])+1)*study_length)  ){
-
+	if (raw_imgs.length >= ((parseInt(dataset_key)+1)*study_length)  ){
+console.log("here")
 		for (i=0;i<study_length;i++){
 			// task_key_id.split(",")[1]  // key	
-			txtfiles.push(raw_imgs[i+(task_key_id.split(",")[1]*study_length)])
+			txtfiles.push(raw_imgs[i+(dataset_key*study_length)])
 
 		}
+		console.log(txtfiles)
 	}else{
 		
 		console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
@@ -179,9 +181,9 @@ function nextImage() {
 			}
 		}
 
-		for (i=1;i<11;i++){
-			freezRating("star-"+i)
-		}
+		// for (i=1;i<11;i++){
+		// 	freezRating("star-"+i)
+		// }
 	}
       
 
