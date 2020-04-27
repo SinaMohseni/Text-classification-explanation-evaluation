@@ -56,7 +56,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 
 
 const study_length = 14; //Number of images displayed to a user for the study
-const training_imgs = 5;  //TODO: UNUSED - Number of images to consider as training images. 
+const training_imgs = 5;  //TODO: UNUSED - Number of images to consider as training images. [sina]: right, small sub-set for training and quality check 
 const time_out = 20;
 
 
@@ -81,6 +81,10 @@ function txtfilename(){
 
 	task_key_id = getCookie("task_key_id")
 	dataset_key = task_key_id.split(",")[1]; //TODO: How is this being used? What does the Key do? what are the bounds of the value?
+	// [sina]: the entire dataset is devided into smaller segments of 10~15 images; we a assign each segment to 10 workers for annotation.
+	// I task_key_id when posting jobs in mTurk by creating  (worker, data-segment) pairs.
+	// The dataset_key is how I divide the whole dataset into smaller segments.
+	
 	mturk_id = task_key_id.split(",")[2];
 
 
@@ -109,8 +113,9 @@ function txtfilename(){
 	//     }
 	// });
 
+
 	if (raw_imgs.length >= ((parseInt(dataset_key)+1)*study_length)  ){
-console.log("here")
+		console.log("here")
 		for (i=0;i<study_length;i++){
 			// task_key_id.split(",")[1]  // key	
 			txtfiles.push(raw_imgs[i+(dataset_key*study_length)])
