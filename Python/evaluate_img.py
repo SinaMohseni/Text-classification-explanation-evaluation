@@ -41,6 +41,8 @@ print ("OpenCV Version: ", cv2.__version__)
 print ("SciPy Version: ", scipy.__version__)
 print ("NumPy Version: ", np.__version__)
 
+# script to get user rating dic from mturk csv file
+from mturk_to_user_rating import get_ratings;
 
 
 
@@ -386,6 +388,7 @@ def evaluate_MAE(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_
     Average MAE is reported for the entire test set in Table X.
     '''
     AE = []
+    MAE = {}
 
     # LIME = 255
     # User = weighted (0..255)
@@ -419,10 +422,11 @@ def evaluate_MAE(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_
         this_AE = (abs(norm_usr_msk - norm_mdl_msk)).sum() / 2; # mean() axis=ax
         # mse = ((norm_usr_msk - norm_mdl_msk)**2).sum() / 4;
         AE.append(this_AE)
-    
-    return [sum(AE) / len(AE), AE]
+        # print ("this_AE", this_AE)
+        MAE[this_img[0]] = 1.0 - round(this_AE,3);
 
-  
+    return MAE     # [sum(AE) / len(AE), AE]
+
 
 def evaluate_AUPR(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_folder,ref_mask
     print ("\n Explanation Evaluation...")
@@ -616,7 +620,30 @@ def evaluate_IoU(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_
 
     return Precision, Recall
 
+def pair_two(pair_1,pair_2,batch):
+    print ('pair_1', pair_1, "\n")
+    print ('pair_2', pair_2, "\n")
 
+    rows = [];
+
+    for each in pair_1:
+        rows.append({'name':each, "exp_score":pair_1[each],"human_rating":pair_2[each]})
+    # name of csv file  
+    filename = "../user-study/evaluation-results/"+batch+"/pairs_ready.csv"
+    fields = ['name','exp_score','human_rating']
+
+    with open(filename, 'w',newline='') as csvfile:  
+        writer = csv.DictWriter(csvfile, fieldnames = fields)  
+        writer.writeheader()  
+        writer.writerows(rows) 
+
+    # writing to csv file  
+    # with open(filename, 'w') as csvfile:  
+    #     csvwriter = csv.writer(csvfile)  
+    #     csvwriter.writerow(fields)  
+    #     csvwriter.writerows(rows) 
+
+    return 0 
 
 def user_mask(img_folder,res_folder):
     print ("\n User Mask...")
@@ -654,21 +681,19 @@ for batch in batches:
     # Genrating objects reference mask useing ref contur
     reference_mask(img_folder, res_folder+"ref.json",ref_mask);
 
-    # Generating users weighted mask with user data
-    # erase_folder(usr_mask_folder)
-    # user_mask(img_folder,res_folder)
 
-    # Generating user heatmaps for visualization
-    # erase_folder(heatmap_folder)
-    # user_heatmap(img_folder,heatmap_folder,usr_mask_folder);
+    # 1-Calculating human-attentino MAE score 
+    # based on order of samples in "ref.json"
+    exp_score = evaluate_MAE(usr_mask_folder, model_mask_folder,ref_mask);
+    # print (MAE)
 
-    # Genrating LIME heatmaps from visualizations
-    # LIME_heatmap(img_folder,LIME_overlay,LIME_mask);
+    # 2- Calculating mean human-judgment for model explanations
+    human_rating = get_ratings(batch)
 
-    # Calculating explanations score compared to user
-    MAE_all, MAE = evaluate_MAE(usr_mask_folder, model_mask_folder,ref_mask);
-    print (MAE_all)
-    print (MAE)
+    # 3- Calculating segmentation-mask MAE score 
+    # MAE_all, MAE = evaluate_MAE(usr_mask_folder, model_mask_folder,ref_mask);
+
+    # 4- Calculating AUPR and IoU scores
     # Precision, Recall = evaluate_AUPR(usr_mask_folder, model_mask_folder,ref_mask);
     # Precision, Recall = evaluate_IoU(usr_mask_folder, model_mask_folder,ref_mask);
-    # 
+    pair_two(exp_score,human_rating,batch)
