@@ -381,6 +381,17 @@ d3.select('#clear').on('click', function(){
   d3.selectAll('path.line').remove();
   highlight_data = []
   ct =0;
+  console.log(results_json)
+  //Loop through all the data and remove any paths saved for this image
+  for(idx = 0; idx < results_json.length;idx++){
+	if(results_json[idx].i == imageName){
+		// console.log("clear path", results_json[idx]);
+		results_json.splice(idx,1);
+		idx--; //Once the element is removed, stay on this index to make sure you don't miss one since array is now shorter by one,
+	}
+  }
+  console.log(results_json)
+
 });
     
 var colorScale = d3.schemeCategory10; 
@@ -433,9 +444,8 @@ $(document).ready(function() {
 function save_json(){  
 
 	if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
-//todo Store the c value separate from save file so people can append contours after going forward and back
 	for (var i=0;i<highlight_data.length;i++){
-		results_json.push({i: imageName, c: i+1, p: highlight_data[i]})
+		results_json.push({i: imageName, p: highlight_data[i]})
 		// console.log(results_json)
 	}
 	saved = 1;
