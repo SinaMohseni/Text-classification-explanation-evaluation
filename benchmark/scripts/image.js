@@ -55,7 +55,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
   };
 
 
-const study_length = 14; //Number of images displayed to a user for the study
+const study_length = 3; //Number of images displayed to a user for the study was 14
 const training_imgs = 5;  //TODO: UNUSED - Number of images to consider as training images. 
 const time_out = 20;
 
@@ -68,7 +68,7 @@ var imageName;
 var folder_name = "VOC_org"
 var call_once = 0;
 var total_doc = study_length;
-var doc_num;
+var doc_num = 0;
 
 
 function txtfilename(){
@@ -129,20 +129,20 @@ console.log("here")
 	nextImage();
 }
 
+//We're not offering a start over button, so Jeremy commented this out
+// function start_over(){
 
-function start_over(){
-
-    if (confirm("Are you sure you want to start over?") == true) {
-	    results_json  = []
-		highlight_data = []
-		txtfiles = []
-		ct = 0;
-		saved = 1;
-		readfiles = []
-		txtfilename();
-		location.href="../expevl.html"
-	}
-}
+//     if (confirm("Are you sure you want to start over?") == true) {
+// 	    results_json  = []
+// 		highlight_data = []
+// 		txtfiles = []
+// 		ct = 0;
+// 		saved = 1;
+// 		readfiles = []
+// 		txtfilename();
+// 		location.href="../expevl.html"
+// 	}
+// }
 
 function nextImage() {
 
@@ -203,10 +203,10 @@ function lastImage() {
 			
 			if ((ct > 0) & (saved == 0)) save_json();
 
-	  		readfiles.pop()
-	  		this_article = readfiles.pop()
-	  		readfiles.push(this_article)
-	  		// console.log(this_article)
+	  		readfiles.pop() //throw away the current image
+	  		this_article = readfiles.pop() //get the previous image
+	  		readfiles.push(this_article) //put it back
+	  		console.log(this_article)
 
 	  		showImage(this_article, 0);
 	  		imageName = this_article.split("/").pop();
@@ -217,6 +217,9 @@ function lastImage() {
 
 	 		doc_num -= 1;
 			image_title();
+
+			console.log((results_json[1].p));
+			drawPathsFromStorage(results_json)
 }
 
 
@@ -316,6 +319,7 @@ function dragstarted() {
         dy = y1 - y0;
 
     if (dx * dx + dy * dy > 20){
+		console.log(highlight_data)
 		d.push([x0 = x1, y0 = y1]);
         highlight_data[ct-1].push([x1.toFixed(2),y1.toFixed(2)]);
     } 
@@ -332,7 +336,32 @@ function dragstarted() {
 
 }
 
+function drawPathsFromStorage(paths){
+	console.log(paths, imageName)
+	for (var idx = 0; idx < paths.length; idx++){
+		if(paths[idx].i == imageName){
+			drawPath(paths[idx].p);
+	}}
+}
 
+function drawPath(points){
+
+	var lineGenerator = d3.line();
+	points.push(points[0]) // append the first point to the end so it closes the mask
+
+	var pathData = lineGenerator(points);
+
+	var d = d3.select("#img_box")
+	  .append("path")
+	  .attr('d', pathData)
+	  .attr("class","line")
+	  .style("stroke", inkColor)
+      .style("opacity", 1)
+      .style("stroke-width", 2 + "px")
+      .style("stroke-linejoin", "round")
+      .style("fill", function(){if (fill_checkbox == 1) return inkColor; else return "none"; })
+      .style("fill-opacity",0.3);
+}
     
 // d3.select('#undo').on('click', function(){
 //   ct--;
@@ -376,9 +405,9 @@ d3.select('#palette')
 
 
 $(document).ready(function() {
-  $('input[type=radio][name=star]').change(function() {
+//   $('input[type=radio][name=star]').change(function() {
      // confirm(this.value)
-     rating = this.value
+    //  rating = this.value
      // document.getElementById("nextbutton").disabled = false;
 	$('#nextbutton-1').prop('disabled', false);
 	$('#nextbutton-2').prop('disabled', false);
@@ -388,7 +417,7 @@ $(document).ready(function() {
      // $("#nextbutton").removeClass("disabledDiv")
      // $("#nextbutton").removeClass("disabledDiv");
      // console.log("here")
-  });
+//   });
 });
 
 
@@ -407,6 +436,7 @@ function WriteFile(){
 
 	if (saved == 0) save_json();
 
+	//todo: uncomment this to save as a file.
 	// var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
 	// var a = document.createElement('a');
 	// a.href = 'data:' + jsonContent;
