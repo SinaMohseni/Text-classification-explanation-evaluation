@@ -32,11 +32,14 @@ import numpy as np
 # from skimage.io import imread
 # from skimage.segmentation import mark_boundaries
 import scipy.misc
+
 # print ("OpenCV Version: ", cv2.__version__)
 # print ("SciPy Version: ", scipy.__version__)
 # print ("NumPy Version: ", np.__version__)
 
 
+# script to get and save json files form mturk csv file
+from mturk_to_json import get_jsons;
 
 
 def erase_folder(folder):
@@ -430,11 +433,15 @@ def user_mask(img_folder,res_folder):
 
 
 
+
 batches = ['batch-1'] # ,'batch-2','batch-3','batch-4']
 
 for batch in batches:
 
     print ('Batch: ', batch)
+
+    # get_jsons(batch)
+
     tot_user = 10;
     ref_mask = [];
     img_folder = "../data/VOC2012_raw/"                     # original raw images  #   "C:/work/datasets/VOC2012/rawJPEGImages" 
@@ -458,10 +465,3 @@ for batch in batches:
     # Generating user heatmaps for visualization
     erase_folder(heatmap_folder)
     user_heatmap(img_folder,heatmap_folder,mask_folder);
-
-    # Genrating LIME heatmaps from visualizations
-    # LIME_heatmap(img_folder,LIME_overlay,LIME_mask);
-
-    # Calculating explanations score compared to user
-    # Precision, Recall = evaluate_explanations();
-

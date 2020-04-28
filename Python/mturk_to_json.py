@@ -21,8 +21,8 @@ import sys
 import pandas as pd
 
 
-in_folder = "../user-study/mturk-annotation-results/1.csv"
-out_folder = "../user-study/mturk-annotation-results/json/"
+in_folder = "../user-study/mturk-annotation-results/batch-1/1.csv"
+out_folder = "../user-study/mturk-annotation-results/batch-1/json/"
 
 entire_log = pd.read_csv(in_folder, doublequote=True, escapechar='\\')  # 
 
@@ -32,22 +32,19 @@ results = entire_log['Answer.surveycode']
 
 # print (results)
 
+def get_jsons: 
 
-i=0
-for each in results: 
-	i+=1;
-	each_json = json.loads(each)
-	each_json.pop(0)
-	for single in each_json:
-		single['image'] = single.pop('i')
-		single['counter'] = single.pop('c')
-		single['points'] = single.pop('p')
-	# obj = JSON.parse(json)[0];
-	# obj.id = obj._id;
-	# delete obj._id;
-	# json = JSON.stringify([obj]);
+	i=0
+	for each in results: 
+		i+=1;
+		each_json = json.loads(each)
+		each_json.pop(0)   # pop out the mtruk id record
+		for single in each_json:
+			single['image'] = single.pop('i')
+			single['counter'] = single.pop('c')
+			single['points'] = single.pop('p')
 
-	with open(out_folder+'P'+str(i)+'.json','w', encoding='utf-8') as f:
-		json.dump(each_json, f, ensure_ascii=False)
-	# print (each['Answer.work_duration'])
-	# print (each['Answer.surveycode'])
+		with open(out_folder+'P'+str(i)+'.json','w', encoding='utf-8') as f:
+			json.dump(each_json, f, ensure_ascii=False)
+
+	return 0
