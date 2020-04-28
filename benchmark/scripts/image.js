@@ -345,8 +345,6 @@ function dragstarted() {
 
 function drawPathsFromStorage(memEntries){
 	console.log(memEntries, imageName)
-	//todo: update a contour counter with number of global contours for this image already
-	//todo: consider making a sub-set of all the contours for an image and only looping through those instead of string comparing each index of memory. 
 	for (var idx = 0; idx < memEntries.length; idx++){
 		if(memEntries[idx].i == imageName){
 			drawPath(memEntries[idx].p);
@@ -455,13 +453,12 @@ function WriteFile(){
 
 	if (saved == 0) save_json();
 
-	//todo: uncomment this to save as a file.
-	// var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
-	// var a = document.createElement('a');
-	// a.href = 'data:' + jsonContent;
-	// a.download = 'results.json';
-	// a.innerHTML = 'End Study';
-	// a.click();
+	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	var a = document.createElement('a');
+	a.href = 'data:' + jsonContent;
+	a.download = 'results.json';
+	a.innerHTML = 'End Study';
+	a.click();
 
 	var winPrint = window.open("about:blank", "_blank")//'', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0',"_blank"); 
 	winPrint.document.write(JSON.stringify(results_json)); 
