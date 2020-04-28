@@ -423,7 +423,7 @@ function save_json(tot_time){
 	if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
 	// for (var i=0;i<highlight_data.length;i++){
 	// if (rating > 0) results_json.push({i: this_image, r: rating, d: tot_time})// contour: i+1, points: highlight_data[i]})
-	if (rating > 0) results_json.push({i: this_image, r: rating})// contour: i+1, points: highlight_data[i]})
+	if (rating > 0) results_json.push({i: imageName, r: rating})// contour: i+1, points: highlight_data[i]})
 	// console.log("rate", rating)
 	// }
 }
