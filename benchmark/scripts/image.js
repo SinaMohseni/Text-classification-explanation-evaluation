@@ -185,6 +185,7 @@ function nextImage() {
 				break;
 			}
 		}
+		drawPathsFromStorage(results_json)
 
 		// for (i=1;i<11;i++){
 		// 	freezRating("star-"+i)
@@ -341,11 +342,13 @@ function dragstarted() {
 
 }
 
-function drawPathsFromStorage(paths){
-	console.log(paths, imageName)
-	for (var idx = 0; idx < paths.length; idx++){
-		if(paths[idx].i == imageName){
-			drawPath(paths[idx].p);
+function drawPathsFromStorage(memEntries){
+	console.log(memEntries, imageName)
+	//todo: update a contour counter with number of global contours for this image already
+	//todo: consider making a sub-set of all the contours for an image and only looping through those instead of string comparing each index of memory. 
+	for (var idx = 0; idx < memEntries.length; idx++){
+		if(memEntries[idx].i == imageName){
+			drawPath(memEntries[idx].p);
 	}}
 }
 
@@ -429,7 +432,7 @@ $(document).ready(function() {
 function save_json(){  
 
 	if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
-
+//todo Store the c value separate from save file so people can append contours after going forward and back
 	for (var i=0;i<highlight_data.length;i++){
 		results_json.push({i: imageName, c: i+1, p: highlight_data[i]})
 		// console.log(results_json)
