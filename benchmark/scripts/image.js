@@ -84,6 +84,7 @@ function txtfilename(){
 	// [sina]: the entire dataset is devided into smaller segments of 10~15 images; we a assign each segment to 10 workers for annotation.
 	// I task_key_id when posting jobs in mTurk by creating  (worker, data-segment) pairs.
 	// The dataset_key is how I divide the whole dataset into smaller segments.
+	//[jeremy]: Not sure I'm following, maybe explain this to me in person?
 	
 	mturk_id = task_key_id.split(",")[2];
 
@@ -354,7 +355,7 @@ function drawPathsFromStorage(memEntries){
 
 function drawPath(points){
 
-	var lineGenerator = d3.line();
+	var lineGenerator = d3.line().curve(d3.curveBasis);
 	points.push(points[0]) // append the first point to the end so it closes the mask
 
 	var pathData = lineGenerator(points);
