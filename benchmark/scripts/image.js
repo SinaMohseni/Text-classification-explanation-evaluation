@@ -90,8 +90,9 @@ function txtfilename(){
 	// [sina]: the entire dataset is devided into smaller segments of 10~15 images; we a assign each segment to 10 workers for annotation.
 	// I task_key_id when posting jobs in mTurk by creating  (worker, data-segment) pairs.
 	// The dataset_key is how I divide the whole dataset into smaller segments.
+
 	//[jeremy]: Not sure I'm following, maybe explain this to me in person?
-	
+
 	mturk_id = task_key_id.split(",")[2];
 
 
@@ -130,8 +131,8 @@ function txtfilename(){
 		console.log(txtfiles)
 	}else{
 		
-		console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
-		console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", raw_imgs.length)
+		// console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
+		// console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", raw_imgs.length)
 		alert("Not Enough Images found!")
 	}
 	// console.log('raw_imgs', raw_imgs.length,((task_key_id.split(",")[1]+1)*10),txtfiles)	
@@ -267,8 +268,6 @@ function image_title(){
       explanation_title.text("Please select the salient area(s) that explains \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
     // } 
 }
-
-
 
 function showImage(image_name, update_txt) {
 

@@ -39,7 +39,7 @@ import scipy.misc
 
 
 # script to get and save json files form mturk csv file
-from mturk_to_json import get_jsons;
+from mturk_to_json import get_jsons
 
 
 def erase_folder(folder):
@@ -102,10 +102,10 @@ def read_user_data(img_folder, json_file,tot_user):
         jpg_file_2 = img_folder + "dog-"+ an_img["image"] + ".jpg";
         if os.path.exists(jpg_file_1):
             jpg_file = jpg_file_1
-            heatmap_path = mask_folder + "cat-" + an_img["image"] + ".jpg";
+            heatmap_path = attn_mask_folder + an_img["image"] + ".jpg";  # "cat-" +
         else: 
             jpg_file = jpg_file_2
-            heatmap_path = mask_folder + "dog-" + an_img["image"] + ".jpg";
+            heatmap_path = attn_mask_folder + an_img["image"] + ".jpg"; # "dog-" +
             
 
         img_exp, user_mask = img_process(jpg_file,usr_img,tot_user)
@@ -122,18 +122,78 @@ def read_user_data(img_folder, json_file,tot_user):
         # heatmap_path = mask_folder+an_img["image"]  # './Image/user_mask/'
 
         if os.path.exists(heatmap_path): # image_heatmap.size == imgs_count:
-
             update_heatmap_mask(heatmap_path, user_mask)
         else:
             print (heatmap_path)
-            # user_mask[:] = np.arange(255)
-            # scipy.misc.imsave(heatmap_path, user_mask)
             cv2.imwrite(heatmap_path, user_mask)
 
         
         result.append({"image": 0,"recall": 0,"precision": 0,"accuracy": 0})
 
     return result
+
+
+
+def segmentation_mask(ref_mask, seg_mask_folder):
+
+    result = []
+    
+    # all_imgs = read_json(json_file)    
+
+    # imgs_count = len(all_imgs)
+    for this_ref in ref_mask:
+        # usr_img =  an_img["points"]
+        # if os.path.exists(jpg_file_1):
+        #     seg_mask_path = seg_mask_folder + "cat-" + this_ref[0] + ".jpg";
+        # else: 
+        #     seg_mask_path = seg_mask_folder + "dog-" + this_ref[0] + ".jpg";
+
+        seg_mask_path = seg_mask_folder + this_ref[0] + ".jpg";
+        
+        if os.path.exists(seg_mask_path): # image_heatmap.size == imgs_count:
+            print ('already axists! ', seg_mask_path)
+            # update_heatmap_mask(heatmap_path, user_mask)
+        else:
+            print (seg_mask_path)
+            cv2.imwrite(seg_mask_path, this_ref[1])
+
+    # for an_img in all_imgs:
+
+
+
+    #     usr_img =  an_img["points"]
+    #     if os.path.exists(jpg_file_1):
+    #         jpg_file = jpg_file_1
+    #         heatmap_path = seg_mask_folder + "cat-" + an_img["image"] + ".jpg";
+    #     else: 
+    #         jpg_file = jpg_file_2
+    #         heatmap_path = seg_mask_folder + "dog-" + an_img["image"] + ".jpg";
+            
+
+    #     img_exp, user_mask = img_process(jpg_file,usr_img,tot_user)
+
+    #     # write_user_exp(img_exp, an_img["image"])
+
+    #     user_mask = mask_exact_obj(user_mask,an_img["image"]);
+
+
+    #     # cv2.imshow('image',img_exp)   
+    #     # cv2.waitKey(0)                
+    #     # cv2.destroyAllWindows()
+
+    #     # heatmap_path = mask_folder+an_img["image"]  # './Image/user_mask/'
+
+    #     if os.path.exists(heatmap_path): # image_heatmap.size == imgs_count:
+    #         update_heatmap_mask(heatmap_path, user_mask)
+    #     else:
+    #         print (heatmap_path)
+
+    #         cv2.imwrite(heatmap_path, user_mask)
+
+        
+    #     result.append({"image": 0,"recall": 0,"precision": 0,"accuracy": 0})
+
+    return 0
 
 def mask_exact_obj(user_mask,this_image):
     
@@ -197,15 +257,15 @@ def update_heatmap_mask(heatmap_path, user_mask):
 
     return 0
 
-def user_heatmap(img_folder,heatmap_folder,mask_folder):
+def user_heatmap(img_folder,heatmap_folder,attn_mask_folder):
     print ("\n User heatmap...")
     for this_img in ref_mask:
 
-        # gray_mask_path = mask_folder + this_img[0]
+        # gray_mask_path = attn_mask_folder + this_img[0]
         # raw_img_path = img_folder + this_img[0]
 
-        gray_mask_path_1 = mask_folder + "cat-"+ this_img[0] + ".jpg";
-        gray_mask_path_2 = mask_folder + "dog-"+ this_img[0] + ".jpg";
+        gray_mask_path_1 = attn_mask_folder + "cat-"+ this_img[0] + ".jpg";
+        gray_mask_path_2 = attn_mask_folder + "dog-"+ this_img[0] + ".jpg";
         if os.path.exists(gray_mask_path_1):
             gray_mask_path = gray_mask_path_1
             raw_img_path = img_folder + "cat-"+ this_img[0] + ".jpg";
@@ -361,64 +421,8 @@ def img_process(jpg_file,usr_img,tot_user):
 
     return exp_img, mask
 
-def evaluate_explanations():
-    print ("\n Explanation Evaluation...")
-    
-    # Precision: TP/(TP + FP)
-    # Recall: TP/(TP + FN)
 
-    # TP: mask(LIME,user_mask).sum()
-    # FP: user_mask - mask(LIME, user_mask).sum()
-    # FN: mask(LIME, ref_inv).sum()
-
-    # LIME = 255
-    # User = weighted (0..255)
-    
-    PR = []
-
-    for this_img in ref_mask:
-
-        user_mask_path = mask_folder + this_img[0]
-        LIME_mask_path = LIME_mask + "mask_"+ this_img[0] + ".jpg"
-
-        gray_user_mask = cv2.imread(user_mask_path,0);
-        gray_user_mask = cv2.resize(gray_user_mask, (299,299))
-
-        LIME_exp_mask = cv2.imread(LIME_mask_path,0);
-        
-        ref_mask_gray = cv2.resize(this_img[1], (299,299))
-
-        TP = cv2.bitwise_and(gray_user_mask,gray_user_mask,mask = LIME_exp_mask).sum()
-        ref_mask_gray_inv = cv2.bitwise_not(ref_mask_gray)
-        FN = cv2.bitwise_and(LIME_exp_mask,LIME_exp_mask,mask = ref_mask_gray_inv).sum()
-        LIME_exp_mask_inv = cv2.bitwise_not(LIME_exp_mask)
-        FP = cv2.bitwise_and(gray_user_mask,gray_user_mask,mask = LIME_exp_mask_inv).sum()
-
-        # cv2.imshow('TP',TP)
-        # cv2.imshow('FN',FN)
-        # cv2.imshow('FP',FP)
-        # cv2.waitKey(0)                
-        # cv2.destroyAllWindows()
-        print (TP, FN,FP)
-        precision =  float(TP)/(TP + FP)
-        recall = float(TP)/(TP + FN)
-        PR.append([precision, recall])
-
-    all_precision=0
-    all_recall=0
-    
-    for this_PR in PR:
-        all_precision += this_PR[0]
-        all_recall += this_PR[1]
-
-    Precision = all_precision/len(PR)
-    Recall = all_recall/len(PR)
-    
-    print ("\n Precision: ", Presicion , "Recall :", Recall)
-
-    return Precision, Recall
-
-def user_mask(img_folder,res_folder):
+def user_att_mask(img_folder,res_folder):
     print ("\n User Mask...")
     image_heatmap = []
     user_accuracy = []
@@ -431,9 +435,6 @@ def user_mask(img_folder,res_folder):
         user_accuracy.append(images_accuracy)
    
 
-
-
-
 batches = ['batch-1'] # ,'batch-2','batch-3','batch-4']
 
 for batch in batches:
@@ -444,8 +445,10 @@ for batch in batches:
 
     tot_user = 10;
     ref_mask = [];
-    img_folder = "../data/VOC2012_raw/"                     # original raw images  #   "C:/work/datasets/VOC2012/rawJPEGImages" 
-    mask_folder = "../data/user_attn_maps/"+batch+"/"              # Final binary human-attention mask
+    img_folder = "../data/VOC2012_raw/"                     # original raw images  
+    attn_mask_folder = "../data/user_attn_maps/"+batch+"/"              # Final binary human-attention mask
+    seg_mask_folder = "../data/user_seg_maps/"+batch+"/"              # Final binary human-attention mask
+    
     res_folder = "../user-study/mturk-annotation-results/"+batch+"/json/"
 
     # to save an overlay of user attention-map on raw image
@@ -458,10 +461,14 @@ for batch in batches:
     # Genrating objects reference mask useing ref contur
     reference_mask(img_folder, res_folder+"ref.json",ref_mask);
 
-    # Generating users weighted mask with user data
-    erase_folder(mask_folder)
-    user_mask(img_folder,res_folder)
+    # 1- Generating users weighted mask with user data
+    erase_folder(attn_mask_folder)
+    user_att_mask(img_folder,res_folder)
 
-    # Generating user heatmaps for visualization
-    erase_folder(heatmap_folder)
-    user_heatmap(img_folder,heatmap_folder,mask_folder);
+    # 2- Generating users weighted mask with user data
+    erase_folder(seg_mask_folder)
+    segmentation_mask(ref_mask,seg_mask_folder)
+
+    # 3- Generating user heatmaps for visualization
+    # erase_folder(heatmap_folder)
+    # user_heatmap(img_folder,heatmap_folder,attn_mask_folder);

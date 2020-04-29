@@ -21,18 +21,16 @@ import sys
 import pandas as pd
 
 
-in_folder = "../user-study/mturk-annotation-results/batch-1/1.csv"
-out_folder = "../user-study/mturk-annotation-results/batch-1/json/"
-
-entire_log = pd.read_csv(in_folder, doublequote=True, escapechar='\\')  # 
-
-results = entire_log['Answer.surveycode']
 
 
+def get_jsons(batch): 
 
-# print (results)
+	in_folder = "../user-study/mturk-annotation-results/"+batch+"/1.csv"
+	out_folder = "../user-study/mturk-annotation-results/"+batch+"/json/"
 
-def get_jsons: 
+	entire_log = pd.read_csv(in_folder, doublequote=True, escapechar='\\')  # 
+
+	results = entire_log['Answer.surveycode']
 
 	i=0
 	for each in results: 
