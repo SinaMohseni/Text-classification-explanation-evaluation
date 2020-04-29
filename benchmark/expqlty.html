@@ -22,7 +22,7 @@
 <body>
    <!-- <div id="nextbutton" > <button onclick="nextImage()">Next Image</button> </div> -->
    <button id="nextbutton-1" onclick="nextImage()">Next Image</button>
-   <div id="backbutton" > <button onclick="lastImage()">Previous Image</button> </div>
+   <button id="backbutton-1" onclick="lastImage()">Previous Image</button>
    <!-- <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div> -->
    <!-- <div id="exit_button-1" > <button class="save_button" onclick="WriteFile()">Get Results</button> </div> -->
    </br>
@@ -31,30 +31,26 @@
 
   <!-- </br> -->
 
-  <div id="chartDiv" style ="width: 80%">
+  <div id="chartDiv">
 
     <!-- <div id="panel">  -->
         <table>
             <tr>
-              <div id=panel style = "padding-top: 2%"></div>     
+              <div id="panel"></div> 
             </tr>
 
             <tr>              
                 <!-- <svg id="img_box1" class="img_box1">
                     <image id= "img_exp1" class="img_exp1" xlink:href="">
                 </svg>   -->   
-                <br>
-                <br>
-                <center> <i> Please wait 2 seconds before rating this heatmap explanation!</i> </center>
-
-                <br>
-                <div class = image >
-                  <img  id= test_img src="../template/edit.png" width="200">
-                </div>
-                <br>
-                <br>
+                <!-- <div class = "image" > -->
+                  <svg id="test_img_box" class="test_img_box">
+                    <image class="test_img" id= "test_img" xlink:href="">
+                  </svg>
+                <!-- </div> -->
             </tr>
             <tr>
+              <center> <i> Please wait 2 seconds before rating this heatmap explanation!</i> </center>    
               <div id='palette' style = "margin-top: 0%; text-align: center-top;margin-left: 2%;">
                 <!-- <div id="rating-details" class="col-md-12">How do you rate this classification? -->
                  <h3 style = "display: inline-block; vertical-align: middle; text-align: top;margin-top: 1px;margin-bottom: 40px;"> How do you rate this heatmap explanation? </h3>
@@ -115,7 +111,7 @@
 
   <!-- <div id="nextbutton" > <button onclick="nextImage()">Next Image</button> </div> -->
   <button id="nextbutton-2" onclick="nextImage()">Next Image</button>
-   <div id="backbutton" > <button onclick="lastImage()">Previous Image</button> </div>
+  <button id="backbutton-2" onclick="lastImage()">Previous Image</button>
 <!--    <div id="exit_button" > <button class="save_button" onclick="WriteFile()">Get Results</button> </div> -->
   
   <script id= maincode src="./scripts/imgqlty.js"></script> 

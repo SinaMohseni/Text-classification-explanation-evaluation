@@ -250,12 +250,33 @@ function getCookie(cname) {
 
 
 function image_title(){
-    obj = imageName.toString().split(".")[0].slice(0,-1)
-    explanation_title.text("Please rate 'how good' the AI is explaining the pet in this image: ( "+ doc_num +" / "+total_doc+ " )");
+    obj = imageName.toString().split("-")[0]
+    explanation_title.text("Please rate 'how good' the AI is explaining the \""+obj+"\" in this image: ( "+ doc_num +" / "+total_doc+ " )");
 }
 
 function showImage(image_name, update_txt) {
+	var this_img = new Image();  
 
+	this_img.src = image_name;
+	$("#test_img").attr("xlink:href",image_name);
+  
+	this_img.onload = function(){
+	  //Double image size
+	  var img_width = this_img.height*2;
+	  var img_height = this_img.width*2;
+	  // console.log("image size ",img_width, img_height);
+	  
+	  // scale the actual image size
+	  $("#test_img").attr("width", img_width); 
+	  $("#test_img").attr("height", img_height);
+  
+	  //update the box size to fit image
+	  $("#test_img_box").attr("width",img_width);
+	  $("#test_img_box").attr("height",img_height);
+	  $("#test_img_box").attr("style","display:block; margin: 0 auto;");
+	//   $("#test_img_box").attr("margin","0 auto");
+	}
+	  
   // var this_img = new Image();  
 
   // this_img.src = image_name;
@@ -282,7 +303,7 @@ function showImage(image_name, update_txt) {
             // var folder = "data/"+ folder_name +"_exp/";
             // document.getElementById("test_img").src= folder+image_name;
             // document.getElementById("test_img").src= ".."+image_name;
-            document.getElementById("test_img").src= image_name;
+            // document.getElementById("test_img").src= image_name;
 
 
 }
