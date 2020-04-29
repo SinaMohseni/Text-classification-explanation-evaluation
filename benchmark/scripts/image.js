@@ -74,7 +74,7 @@ for (let index = 0; index < isDrawnOn.length; index++) {
 	isDrawnOn[index] = false;
 }
 resolveNextButton()
-console.log(isDrawnOn)
+// console.log(isDrawnOn)
 
 
 function txtfilename(){
@@ -122,7 +122,6 @@ function txtfilename(){
 
 
 	if (raw_imgs.length >= ((parseInt(dataset_key)+1)*study_length)  ){
-		console.log("here")
 		for (i=0;i<study_length;i++){
 			// task_key_id.split(",")[1]  // key	
 			txtfiles.push(raw_imgs[i+(dataset_key*study_length)])
@@ -220,7 +219,7 @@ function lastImage() {
 	  		readfiles.pop() //throw away the current image
 	  		this_article = readfiles.pop() //get the previous image
 	  		readfiles.push(this_article) //put it back
-	  		console.log(this_article)
+	  		// console.log(this_article)
 
 	  		showImage(this_article, 0);
 	  		imageName = this_article.split("/").pop();
@@ -232,7 +231,7 @@ function lastImage() {
 	 		doc_num -= 1;
 			image_title();
 
-			console.log((results_json[1].p));
+			// console.log((results_json[1].p));
 			drawPathsFromStorage(results_json)
 			resolveNextButton();
 }
@@ -343,7 +342,7 @@ function dragstarted() {
         dy = y1 - y0;
 
     if (dx * dx + dy * dy > 20){
-		console.log(highlight_data)
+		// console.log(highlight_data)
 		d.push([x0 = x1, y0 = y1]);
         highlight_data[ct-1].push([x1.toFixed(2),y1.toFixed(2)]);
     } 
@@ -362,7 +361,7 @@ function dragstarted() {
 }
 
 function drawPathsFromStorage(memEntries){
-	console.log(memEntries, imageName)
+	// console.log(memEntries, imageName)
 	for (var idx = 0; idx < memEntries.length; idx++){
 		if(memEntries[idx].i == imageName){
 			drawPath(memEntries[idx].p);
@@ -399,7 +398,7 @@ d3.select('#clear').on('click', function(){
   resolveNextButton();
   highlight_data = []
   ct =0;
-  console.log(results_json)
+//   console.log(results_json)
   //Loop through all the data and remove any paths saved for this image
   for(idx = 0; idx < results_json.length;idx++){
 	if(results_json[idx].i == imageName){
@@ -408,7 +407,7 @@ d3.select('#clear').on('click', function(){
 		idx--; //Once the element is removed, stay on this index to make sure you don't miss one since array is now shorter by one,
 	}
   }
-  console.log(results_json)
+//   console.log(results_json)
 
 });
     
@@ -420,8 +419,9 @@ function resolveNextButton(){
 		document.getElementById("nextbutton-1").disabled = false;
 		document.getElementById("nextbutton-2").disabled = false;
 	}
-	console.log("resolving next button for",doc_num,"it's set to",isDrawnOn[doc_num-1],isDrawnOn)
+	// console.log("resolving next button for",doc_num,"it's set to",isDrawnOn[doc_num-1],isDrawnOn)
 
+	//if first image, don't let them go backward.
 	if(doc_num == 1){
 		document.getElementById("backbutton-1").disabled = true;
 		document.getElementById("backbutton-2").disabled = true;
