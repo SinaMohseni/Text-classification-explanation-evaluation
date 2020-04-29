@@ -69,6 +69,12 @@ var folder_name = "VOC_org"
 var call_once = 0;
 var total_doc = study_length;
 var doc_num = 0;
+var isDrawnOn = new Array(study_length);
+for (let index = 0; index < isDrawnOn.length; index++) {
+	isDrawnOn[index] = false;
+}
+resolveNextButton()
+console.log(isDrawnOn)
 
 
 function txtfilename(){
@@ -187,6 +193,7 @@ function nextImage() {
 			}
 		}
 		drawPathsFromStorage(results_json)
+		resolveNextButton()
 
 		// for (i=1;i<11;i++){
 		// 	freezRating("star-"+i)
@@ -227,6 +234,7 @@ function lastImage() {
 
 			console.log((results_json[1].p));
 			drawPathsFromStorage(results_json)
+			resolveNextButton();
 }
 
 
@@ -306,6 +314,7 @@ var svg = d3.select("#img_box")
         .on("start", dragstarted));
 
 function dragstarted() {
+	isDrawnOn[doc_num-1] = true;
 
 	saved = 0;
 	ct++;
@@ -347,6 +356,7 @@ function dragstarted() {
         highlight_data[ct-1].push([first_point[0].toFixed(2),first_point[1].toFixed(2)]);
         // console.log(highlight_data)
         active.attr("d", line);
+		resolveNextButton();
 	});
 
 }
@@ -385,6 +395,8 @@ function drawPath(points){
 
 d3.select('#clear').on('click', function(){
   d3.selectAll('path.line').remove();
+  isDrawnOn[doc_num-1]= false;
+  resolveNextButton();
   highlight_data = []
   ct =0;
   console.log(results_json)
@@ -400,6 +412,25 @@ d3.select('#clear').on('click', function(){
 
 });
     
+function resolveNextButton(){
+	if(!isDrawnOn[doc_num-1]){
+		document.getElementById("nextbutton-1").disabled = true;
+		document.getElementById("nextbutton-2").disabled = true;
+	} else {
+		document.getElementById("nextbutton-1").disabled = false;
+		document.getElementById("nextbutton-2").disabled = false;
+	}
+	console.log("resolving next button for",doc_num,"it's set to",isDrawnOn[doc_num-1],isDrawnOn)
+
+	if(doc_num == 1){
+		document.getElementById("backbutton-1").disabled = true;
+		document.getElementById("backbutton-2").disabled = true;
+	} else{
+		document.getElementById("backbutton-1").disabled = false;
+		document.getElementById("backbutton-2").disabled = false;
+	}
+}
+
 var colorScale = d3.schemeCategory10; 
     colorAr = [0,1];
 
@@ -431,12 +462,13 @@ d3.select('#palette')
 
 
 $(document).ready(function() {
+	resolveNextButton()
 //   $('input[type=radio][name=star]').change(function() {
      // confirm(this.value)
     //  rating = this.value
      // document.getElementById("nextbutton").disabled = false;
-	$('#nextbutton-1').prop('disabled', false);
-	$('#nextbutton-2').prop('disabled', false);
+	// $('#nextbutton-1').prop('disabled', false);
+	// $('#nextbutton-2').prop('disabled', false);
      // $("#nextbutton *").attr("disabled", "false");
      // $("#nextbutton").prop("disabled", false); 
      // $("#nextbutton").removeAttr("disabled");
