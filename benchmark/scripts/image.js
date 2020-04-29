@@ -68,7 +68,13 @@ var imageName;
 var folder_name = "VOC_org"
 var call_once = 0;
 var total_doc = study_length;
-var doc_num;
+var doc_num = 0;
+var isDrawnOn = new Array(study_length);
+for (let index = 0; index < isDrawnOn.length; index++) {
+	isDrawnOn[index] = false;
+}
+resolveNextButton()
+// console.log(isDrawnOn)
 
 
 function txtfilename(){
@@ -84,6 +90,8 @@ function txtfilename(){
 	// [sina]: the entire dataset is devided into smaller segments of 10~15 images; we a assign each segment to 10 workers for annotation.
 	// I task_key_id when posting jobs in mTurk by creating  (worker, data-segment) pairs.
 	// The dataset_key is how I divide the whole dataset into smaller segments.
+
+	//[jeremy]: Not sure I'm following, maybe explain this to me in person?
 
 	mturk_id = task_key_id.split(",")[2];
 
@@ -115,7 +123,6 @@ function txtfilename(){
 
 
 	if (raw_imgs.length >= ((parseInt(dataset_key)+1)*study_length)  ){
-		console.log("here")
 		for (i=0;i<study_length;i++){
 			// task_key_id.split(",")[1]  // key	
 			txtfiles.push(raw_imgs[i+(dataset_key*study_length)])
@@ -124,8 +131,8 @@ function txtfilename(){
 		console.log(txtfiles)
 	}else{
 		
-		console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
-		console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", raw_imgs.length)
+		// console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
+		// console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", raw_imgs.length)
 		alert("Not Enough Images found!")
 	}
 	// console.log('raw_imgs', raw_imgs.length,((task_key_id.split(",")[1]+1)*10),txtfiles)	
@@ -134,20 +141,20 @@ function txtfilename(){
 	nextImage();
 }
 
+//We're not offering a start over button, so Jeremy commented this out
+// function start_over(){
 
-function start_over(){
-
-    if (confirm("Are you sure you want to start over?") == true) {
-	    results_json  = []
-		highlight_data = []
-		txtfiles = []
-		ct = 0;
-		saved = 1;
-		readfiles = []
-		txtfilename();
-		location.href="../expevl.html"
-	}
-}
+//     if (confirm("Are you sure you want to start over?") == true) {
+// 	    results_json  = []
+// 		highlight_data = []
+// 		txtfiles = []
+// 		ct = 0;
+// 		saved = 1;
+// 		readfiles = []
+// 		txtfilename();
+// 		location.href="../expevl.html"
+// 	}
+// }
 
 function nextImage() {
 
@@ -185,6 +192,8 @@ function nextImage() {
 				break;
 			}
 		}
+		drawPathsFromStorage(results_json)
+		resolveNextButton()
 
 		// for (i=1;i<11;i++){
 		// 	freezRating("star-"+i)
@@ -208,9 +217,9 @@ function lastImage() {
 			
 			if ((ct > 0) & (saved == 0)) save_json();
 
-	  		readfiles.pop()
-	  		this_article = readfiles.pop()
-	  		readfiles.push(this_article)
+	  		readfiles.pop() //throw away the current image
+	  		this_article = readfiles.pop() //get the previous image
+	  		readfiles.push(this_article) //put it back
 	  		// console.log(this_article)
 
 	  		showImage(this_article, 0);
@@ -222,6 +231,10 @@ function lastImage() {
 
 	 		doc_num -= 1;
 			image_title();
+
+			// console.log((results_json[1].p));
+			drawPathsFromStorage(results_json)
+			resolveNextButton();
 }
 
 
@@ -264,14 +277,22 @@ function showImage(image_name, update_txt) {
   $(".img_exp").attr("xlink:href",image_name);
 
   this_img.onload = function(){
+	//Double image size
+	var img_width = this_img.height*2;
+	var img_height = this_img.width*2;
+	// console.log("image size ",img_width, img_height);
+	
+	// scale the actual image size
+	$(".img_exp").attr("width", img_width); 
+	$(".img_exp").attr("height", img_height);
 
-			  	var img_width = this_img.height;
-				var img_height = this_img.width;
-			// console.log("image size ",img_width, img_height);
-            $(".img_box").attr("height",this_img.height);
-            $(".img_box").attr("width",this_img.width);
-            $(".img_box").attr("margin","0 auto");
-            }
+	//update the box size to fit image
+	$(".img_box").attr("width",img_width);
+	$(".img_box").attr("height",img_height);
+	$(".img_box").attr("margin","0 auto");
+
+	
+	}
 }
 
 
@@ -291,6 +312,7 @@ var svg = d3.select("#img_box")
         .on("start", dragstarted));
 
 function dragstarted() {
+	isDrawnOn[doc_num-1] = true;
 
 	saved = 0;
 	ct++;
@@ -319,6 +341,7 @@ function dragstarted() {
         dy = y1 - y0;
 
     if (dx * dx + dy * dy > 20){
+		// console.log(highlight_data)
 		d.push([x0 = x1, y0 = y1]);
         highlight_data[ct-1].push([x1.toFixed(2),y1.toFixed(2)]);
     } 
@@ -331,11 +354,37 @@ function dragstarted() {
         highlight_data[ct-1].push([first_point[0].toFixed(2),first_point[1].toFixed(2)]);
         // console.log(highlight_data)
         active.attr("d", line);
+		resolveNextButton();
 	});
 
 }
 
+function drawPathsFromStorage(memEntries){
+	// console.log(memEntries, imageName)
+	for (var idx = 0; idx < memEntries.length; idx++){
+		if(memEntries[idx].i == imageName){
+			drawPath(memEntries[idx].p);
+	}}
+}
 
+function drawPath(points){
+
+	var lineGenerator = d3.line().curve(d3.curveBasis);
+	points.push(points[0]) // append the first point to the end so it closes the mask
+
+	var pathData = lineGenerator(points);
+
+	var d = d3.select("#img_box")
+	  .append("path")
+	  .attr('d', pathData)
+	  .attr("class","line")
+	  .style("stroke", inkColor)
+      .style("opacity", 1)
+      .style("stroke-width", 2 + "px")
+      .style("stroke-linejoin", "round")
+      .style("fill", function(){if (fill_checkbox == 1) return inkColor; else return "none"; })
+      .style("fill-opacity",0.3);
+}
     
 // d3.select('#undo').on('click', function(){
 //   ct--;
@@ -344,10 +393,43 @@ function dragstarted() {
 
 d3.select('#clear').on('click', function(){
   d3.selectAll('path.line').remove();
+  isDrawnOn[doc_num-1]= false;
+  resolveNextButton();
   highlight_data = []
   ct =0;
+//   console.log(results_json)
+  //Loop through all the data and remove any paths saved for this image
+  for(idx = 0; idx < results_json.length;idx++){
+	if(results_json[idx].i == imageName){
+		// console.log("clear path", results_json[idx]);
+		results_json.splice(idx,1);
+		idx--; //Once the element is removed, stay on this index to make sure you don't miss one since array is now shorter by one,
+	}
+  }
+//   console.log(results_json)
+
 });
     
+function resolveNextButton(){
+	if(!isDrawnOn[doc_num-1]){
+		document.getElementById("nextbutton-1").disabled = true;
+		document.getElementById("nextbutton-2").disabled = true;
+	} else {
+		document.getElementById("nextbutton-1").disabled = false;
+		document.getElementById("nextbutton-2").disabled = false;
+	}
+	// console.log("resolving next button for",doc_num,"it's set to",isDrawnOn[doc_num-1],isDrawnOn)
+
+	//if first image, don't let them go backward.
+	if(doc_num == 1){
+		document.getElementById("backbutton-1").disabled = true;
+		document.getElementById("backbutton-2").disabled = true;
+	} else{
+		document.getElementById("backbutton-1").disabled = false;
+		document.getElementById("backbutton-2").disabled = false;
+	}
+}
+
 var colorScale = d3.schemeCategory10; 
     colorAr = [0,1];
 
@@ -379,28 +461,28 @@ d3.select('#palette')
 
 
 $(document).ready(function() {
-  $('input[type=radio][name=star]').change(function() {
+	resolveNextButton()
+//   $('input[type=radio][name=star]').change(function() {
      // confirm(this.value)
-     rating = this.value
+    //  rating = this.value
      // document.getElementById("nextbutton").disabled = false;
-	$('#nextbutton-1').prop('disabled', false);
-	$('#nextbutton-2').prop('disabled', false);
+	// $('#nextbutton-1').prop('disabled', false);
+	// $('#nextbutton-2').prop('disabled', false);
      // $("#nextbutton *").attr("disabled", "false");
      // $("#nextbutton").prop("disabled", false); 
      // $("#nextbutton").removeAttr("disabled");
      // $("#nextbutton").removeClass("disabledDiv")
      // $("#nextbutton").removeClass("disabledDiv");
      // console.log("here")
-  });
+//   });
 });
 
 
 function save_json(){  
 
 	if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
-
 	for (var i=0;i<highlight_data.length;i++){
-		results_json.push({i: imageName, c: i+1, p: highlight_data[i]})
+		results_json.push({i: imageName, p: highlight_data[i]})
 		// console.log(results_json)
 	}
 	saved = 1;
@@ -410,12 +492,12 @@ function WriteFile(){
 
 	if (saved == 0) save_json();
 
-	// var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
-	// var a = document.createElement('a');
-	// a.href = 'data:' + jsonContent;
-	// a.download = 'results.json';
-	// a.innerHTML = 'End Study';
-	// a.click();
+	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	var a = document.createElement('a');
+	a.href = 'data:' + jsonContent;
+	a.download = 'results.json';
+	a.innerHTML = 'End Study';
+	a.click();
 
 	var winPrint = window.open("about:blank", "_blank")//'', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0',"_blank"); 
 	winPrint.document.write(JSON.stringify(results_json)); 

@@ -3,7 +3,7 @@ body {
   margin-top:2%;
 }
 
-*{ margin: 0; }
+/* *{ margin: 0; } */
 
 h1{
   font-weight: bold;
@@ -135,13 +135,13 @@ width: 40%;
 #nextbutton-1 {
   display: inline-block;
   float:right;
-  margin-right: 10%
+  /* margin-right: 10% */
 }
 
 #nextbutton-2 {
   display: inline-block;
   float:right;
-  margin-right: 10%
+  /* margin-right: 10% */
 }
 
 p{
@@ -260,9 +260,8 @@ div.absolute {
 #chartDiv{
   /*display: table;*/
   margin: 0 auto;
-  margin-top: 5%;
-  margin-bottom: 5%;
-  margin-right: : 20%;
+  margin-top: 3%;
+  margin-bottom: 3%;
   background: white;
   /*width: 100%*/
      /*margin-top:2%;
@@ -301,8 +300,11 @@ img {
 
 #test_img{
   display: inline-block;
-  /*margin-left: 20%;*/
-  /*padding-left: 200px;*/
+  margin-left: 20%;
+  max-width: 400px;
+  /*width: 400px;*/
+  padding-left: 200px;
+
 }
 
 

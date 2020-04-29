@@ -23,17 +23,15 @@
 
     <div id="cnsnttextbox">
         <b>
-          <h1> Instructions:  Pet Segmentation in Images </h1>
+          <h1> Pet Features in Images </h1>
         </br>
         </br>
         </br>
-        <h2> We are building an AI system to recognize <u> pets in images from social media </u> to esmitate pets population in cities </h2>
-        </br>
-        <h2> Our AI system is trained to <u> detect cats and dogs</u> in images. </h2>
-        </br>
-        <h2> We need your help to <u> select areas in images that represent pets </u> to train our AI. </h2>
-        </br>
-        <h2> You <u> do not necessarily need to select the entire pet body </u> but the salient area that is most representative of pets. </h2>
+        <p> We are building an AI system to recognize <u> pets in images from social media </u> to esmitate pet populations in cities </p>
+        <p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p>
+        <!-- todo: is "pixels" too specific? Is there a more general word? -->
+        <p> We need your help to <u> select pixels that best represent pets</u> in order to train our AI. </p>
+        <!-- <p> You <u> do not necessarily need to select the entire pet body </u> but the salient area that is most representative of pets. </p> -->
         </br>
         </br>
         </br>
@@ -42,7 +40,8 @@
         </br>
         <h1> Instructions: </h1>
         </br>
-        <h2> Selects Pets in Images: You main task is to <mark> select salient areas in the image that mostly represent pets </mark> in the image. <u> Not necessarily the entire pet! </u> </h2>
+        <h2> Select Pet Features in Images: <br>Your main task is to <mark> hightlight areas in the image that mostly represent pets.</mark></h2>
+        <p> This could be a paw, a nose, the whole body etc. Your goal is to <mark>select the areas</mark> of the image <mark> that help <u>you recognize</u></mark> the pet. You do not need to select the entire pet in every image, only the most important areas!</p>
         </br>
         </br>
         <img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG" width="400">
@@ -51,7 +50,8 @@
         </br>
         <hr>
         </br>
-        <h3> 1. Easily draw a line (left-click) around the area that mostly represents the pets: </h3>
+        <h3> 1. With your mouse, highlight the area(s) you think most represents the pet(s) with a <em>left-click and drag</em>. </h3>
+        <p> Select as many areas as you think describe the animal and if you make a mistake click [Clear] to start fresh</p>
         </br>
         <img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-2.PNG" width="400">
         </br>
@@ -60,7 +60,7 @@
         <hr>
         </br>
 
-          <h3> 2.Click next for next image (total 15 images): </h3>
+          <h3> 2.Click [Next Image] to Continue (total 15 images): </h3>
           </br>
           <img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-3.PNG" width="400">
           </br>
@@ -70,7 +70,7 @@
         <hr>
         </br>
 
-         <h3>  3. After 15 images, you get the HIT code, past in the mechanical turk page: </h3>
+         <h3>  3. After 15 images, your HIT code is displayed, you must <mark>copy and paste</mark> this in the mechanical turk page for credit: </h3>
         </br>
           <img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-4.PNG" width="400">
         </br>
