@@ -271,14 +271,22 @@ function showImage(image_name, update_txt) {
   $(".img_exp").attr("xlink:href",image_name);
 
   this_img.onload = function(){
+	//Double image size
+	var img_width = this_img.height*2;
+	var img_height = this_img.width*2;
+	// console.log("image size ",img_width, img_height);
+	
+	// scale the actual image size
+	$(".img_exp").attr("width", img_width); 
+	$(".img_exp").attr("height", img_height);
 
-			  	var img_width = this_img.height;
-				var img_height = this_img.width;
-			// console.log("image size ",img_width, img_height);
-            $(".img_box").attr("height",this_img.height);
-            $(".img_box").attr("width",this_img.width);
-            $(".img_box").attr("margin","0 auto");
-            }
+	//update the box size to fit image
+	$(".img_box").attr("width",img_width);
+	$(".img_box").attr("height",img_height);
+	$(".img_box").attr("margin","0 auto");
+
+	
+	}
 }
 
 
