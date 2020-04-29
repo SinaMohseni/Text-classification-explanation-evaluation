@@ -106,10 +106,10 @@ def read_user_data(img_folder, json_file,tot_user):
         jpg_file_2 = img_folder + "dog-"+ an_img["image"] + ".jpg";
         if os.path.exists(jpg_file_1):
             jpg_file = jpg_file_1
-            heatmap_path = usr_mask_folder + "cat-" + an_img["image"] + ".jpg";
+            heatmap_path = attn_mask_folder + "cat-" + an_img["image"] + ".jpg";
         else: 
             jpg_file = jpg_file_2
-            heatmap_path = usr_mask_folder + "dog-" + an_img["image"] + ".jpg";
+            heatmap_path = attn_mask_folder + "dog-" + an_img["image"] + ".jpg";
             
 
         img_exp, user_mask = img_process(jpg_file,usr_img,tot_user)
@@ -201,67 +201,6 @@ def update_heatmap_mask(heatmap_path, user_mask):
 
     return 0
 
-def user_heatmap(img_folder,heatmap_folder,usr_mask_folder):
-    print ("\n User heatmap...")
-    for this_img in ref_mask:
-
-        # gray_mask_path = mask_folder + this_img[0]
-        # raw_img_path = img_folder + this_img[0]
-
-        gray_mask_path_1 = usr_mask_folder + "cat-"+ this_img[0] + ".jpg";
-        gray_mask_path_2 = usr_mask_folder + "dog-"+ this_img[0] + ".jpg";
-        if os.path.exists(gray_mask_path_1):
-            gray_mask_path = gray_mask_path_1
-            raw_img_path = img_folder + "cat-"+ this_img[0] + ".jpg";
-        else: 
-            gray_mask_path = gray_mask_path_2
-            raw_img_path = img_folder + "dog-"+ this_img[0] + ".jpg";
-
-        gray_mask = cv2.imread(gray_mask_path,0);
-        raw_img = cv2.imread(raw_img_path,3);
-        
-        heatmap = cv2.applyColorMap(gray_mask,cv2.COLORMAP_JET)  # COLORMAP_TURBO  cv2.COLORMAP_AUTUMN COLORMAP_RAINBOW COLORMAP_JET
-        masked_heatmap = cv2.bitwise_and(heatmap,heatmap,mask = this_img[1])
-
-        new_raw_img = raw_img.copy()
-        rows,cols,channels = masked_heatmap.shape
-        roi = new_raw_img[0:rows, 0:cols ]
-        
-        gray_mask_inv = cv2.bitwise_not(gray_mask)
-        # Now black-out the area of logo in ROI
-        img1_bg = cv2.bitwise_and(roi,roi,mask = gray_mask_inv)
-        # Take only region of logo from logo image.
-        img2_fg = cv2.bitwise_and(masked_heatmap,masked_heatmap,mask = gray_mask)
-        # Put logo in ROI and modify the main image
-        dst = cv2.add(img1_bg,img2_fg)
-        # raw_img[0:rows, 0:cols ] = dst
-        
-        new_raw_img[0:rows, 0:cols ] = dst
-        
-        # cv2.imshow('frame0',dst)
-        # cv2.imshow('frame1',raw_img)
-        # cv2.imshow('frame2',new_raw_img)
-        # cv2.waitKey(0)                
-        # cv2.destroyAllWindows()
-        # print len(raw_img), len(heatmap)
-
-        alpha = 0.5;
-        blend_heatmap = cv2.addWeighted(raw_img,alpha,new_raw_img,1-alpha,0)
-
-
-        # blend_heatmap = cv2.addWeighted(raw_img,0.6,masked_heatmap,0.6,0)
-        
-        user_heatmap_path = heatmap_folder + this_img[0].split(".")[0] + ".png"
-
-        # scipy.misc.imsave(user_heatmap_path, blend_heatmap)
-        cv2.imwrite(user_heatmap_path, blend_heatmap)  # 
-        # cv2.imshow('frame',blend_heatmap)
-        # cv2.waitKey(0)                
-        # cv2.destroyAllWindows()
-
-
-
-    return 0
 
 def LIME_heatmap(img_folder,LIME_overlay,LIME_mask):
     print ("\n LIME heatmap...")
@@ -366,17 +305,15 @@ def img_process(jpg_file,usr_img,tot_user):
     return exp_img, mask
 
 
-def evaluate_MAE(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_folder,ref_mask
-    print ("\n Explanation Evaluation...")
-
+def evaluate_MAE(user_path,model_path,ref_mask): 
+    print ("\n MAE Evaluation...")
+    
     # Calculate MSE        (threshold agnostic)
-
-  
+    # based on order of samples in "ref.json"
     '''
     We are presenting three quantitative metrics to evaluation model attention maps and compare with human judgment.
     The IoU metric is a threshold 
     The AUPR is a threashold 
-
 
     [MAE]
     The final metric is a threshold agnostic metrics to calculate the error in model explanations in comparison to human-attention baseline.
@@ -387,48 +324,72 @@ def evaluate_MAE(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_
     On the other hand, the carse of no overlap between human and model attention create MSE error of 1.
     Average MAE is reported for the entire test set in Table X.
     '''
+
     AE = []
     MAE = {}
+    attn_FP = {};
+    attn_FN = {};
 
     # LIME = 255
     # User = weighted (0..255)
+
 
     for this_img in ref_mask:
 
         # user_file = user_path + this_img[0]
         # model_file = model_path + this_img[0]
 
-        jpg_file_1 = user_path + "cat-"+ this_img[0] + ".jpg";
-        jpg_file_2 = user_path + "dog-"+ this_img[0] + ".jpg";
-        if os.path.exists(jpg_file_1):
-            user_file = jpg_file_1
+        # jpg_file_2 = user_path + this_img[0] + ".jpg";  # "dog-"+
+        # jpg_file_1 = user_path + this_img[0] + ".jpg";  # "cat-"+ 
+        model_file = model_path + "cat-"+ this_img[0] + ".jpg";
+        if os.path.exists(model_file):
+            # user_file = jpg_file_1
             model_file = model_path + "cat-"+ this_img[0] + ".jpg";
         else: 
-            user_file = jpg_file_2
+            # user_file = jpg_file_2
             model_file = model_path + "dog-"+ this_img[0] + ".jpg";
 
-
+        user_file = user_path + this_img[0] + ".jpg"; 
+        
         user_mask = cv2.imread(user_file,0);
         user_mask = cv2.resize(user_mask, (224,224))
         
         model_mask = cv2.imread(model_file,0);
         model_mask = cv2.resize(model_mask, (224,224))
-        
+            
 
         # normalize user_mask and model_mask
         norm_usr_msk = np.true_divide(user_mask,(user_mask.sum())); 
         norm_mdl_msk = np.true_divide(model_mask, (model_mask.sum()));
+        this_AE = (abs(norm_usr_msk - norm_mdl_msk)).sum() / 2; 
+
+
+        ref_mask_inv = cv2.bitwise_not(this_img[1])  # reference 
+        FP_model = cv2.bitwise_and(norm_mdl_msk,norm_mdl_msk,mask = ref_mask_inv)
+        FP_user = cv2.bitwise_and(norm_usr_msk,norm_usr_msk,mask = ref_mask_inv)
+        this_FP = (abs(FP_model - FP_user)).sum()/2;
+
+        FN_model = cv2.bitwise_and(norm_mdl_msk,norm_mdl_msk,mask = this_img[1])   # reference 
+        FN_user = cv2.bitwise_and(norm_usr_msk,norm_usr_msk,mask = this_img[1])   # reference 
+        this_FN = (abs(FN_model - FN_user)).sum()/2;
+
+        # Now black-out the area of logo in ROI
+        # img1_bg = cv2.bitwise_and(roi,roi,mask = gray_mask_inv)
+        # Take only region of logo from logo image.
+        # img2_fg = cv2.bitwise_and(heatmap,heatmap,mask = gray_mask)
         
-        this_AE = (abs(norm_usr_msk - norm_mdl_msk)).sum() / 2; # mean() axis=ax
-        # mse = ((norm_usr_msk - norm_mdl_msk)**2).sum() / 4;
-        AE.append(this_AE)
-        # print ("this_AE", this_AE)
         MAE[this_img[0]] = 1.0 - round(this_AE,3);
+        attn_FN[this_img[0]] = round(this_FN,3);
+        attn_FP[this_img[0]] = round(this_FP,3);
+        
+        # tot = 1.0 - (attn_FN[this_img[0]] + attn_FP[this_img[0]])/2
+        # print ("this_FP, FN,1-TOT, MAE: ", round(this_FP,3),round(this_FN,3),round(tot,3),MAE[this_img[0]])
 
-    return MAE     # [sum(AE) / len(AE), AE]
+    return MAE,attn_FP,attn_FN
 
 
-def evaluate_AUPR(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_folder,ref_mask
+
+def evaluate_AUPR(user_path,model_path,ref_mask): 
     print ("\n Explanation Evaluation...")
     
     # Calculate AUPR       (threshold agnostic)
@@ -526,12 +487,12 @@ def evaluate_AUPR(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask
 
 
 
-def evaluate_IoU(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_folder,ref_mask
-    print ("\n Explanation Evaluation...")
+def evaluate_IoU(user_path,model_path,ref_mask): 
+    print ("\n IoU Evaluation...")
     
     # Calculate AUPR       (threshold agnostic)
     # Calculate MSE        (threshold agnostic)
-    # Calculate IoU 
+    # Calculate IoU        (threshold dependent)
 
     # IoU: TP/(TP + FP + FN)
     # Soft-IoU: TP/(TP + FP + FN)
@@ -555,93 +516,83 @@ def evaluate_IoU(user_path,model_path,ref_mask):  # usr_mask_folder, model_mask_
     single layer localization masks.
     '''
 
-    PR = []
-
+    
+    AE = []
+    MAE = {}
+    attn_FP = {};
+    attn_FN = {};
 
     # LIME = 255
     # User = weighted (0..255)
+
 
     for this_img in ref_mask:
 
         # user_file = user_path + this_img[0]
         # model_file = model_path + this_img[0]
 
-        jpg_file_1 = user_path + "cat-"+ this_img[0] + ".jpg";
-        jpg_file_2 = user_path + "dog-"+ this_img[0] + ".jpg";
-        if os.path.exists(jpg_file_1):
-            user_file = jpg_file_1
+        # jpg_file_2 = user_path + this_img[0] + ".jpg";  # "dog-"+
+        # jpg_file_1 = user_path + this_img[0] + ".jpg";  # "cat-"+ 
+        model_file = model_path + "cat-"+ this_img[0] + ".jpg";
+        if os.path.exists(model_file):
+            # user_file = jpg_file_1
             model_file = model_path + "cat-"+ this_img[0] + ".jpg";
         else: 
-            user_file = jpg_file_2
+            # user_file = jpg_file_2
             model_file = model_path + "dog-"+ this_img[0] + ".jpg";
 
+        user_file = user_path + this_img[0] + ".jpg";  # "cat-"+ 
+        # print (model_file)
+        # print (user_file)
 
         user_mask = cv2.imread(user_file,0);
         user_mask = cv2.resize(user_mask, (224,224))
         
         model_mask = cv2.imread(model_file,0);
         model_mask = cv2.resize(model_mask, (224,224))
+            
+
+        # normalize user_mask and model_mask
+        norm_usr_msk = np.true_divide(user_mask,(user_mask.sum())); 
+        norm_mdl_msk = np.true_divide(model_mask, (model_mask.sum()));
+        this_AE = (abs(norm_usr_msk - norm_mdl_msk)).sum() / 2; 
+
+
+        ref_mask_inv = cv2.bitwise_not(this_img[1])  # reference 
+        FP_model = cv2.bitwise_and(norm_mdl_msk,norm_mdl_msk,mask = ref_mask_inv)
+        FP_user = cv2.bitwise_and(norm_usr_msk,norm_usr_msk,mask = ref_mask_inv)
+        this_FP = (abs(FP_model - FP_user)).sum()/2;
+
+        FN_model = cv2.bitwise_and(norm_mdl_msk,norm_mdl_msk,mask = this_img[1])   # reference 
+        FN_user = cv2.bitwise_and(norm_usr_msk,norm_usr_msk,mask = this_img[1])   # reference 
+        this_FN = (abs(FN_model - FN_user)).sum()/2;
+
         
-        # used for IoU        
-        ref_mask = cv2.resize(this_img[1], (224,224))
-
-
-        TP = cv2.bitwise_and(user_mask,user_mask,mask = model_mask).sum();
-
-        ref_mask_inv = cv2.bitwise_not(ref_mask)
-        FN = cv2.bitwise_and(model_mask,model_mask,mask = ref_mask_inv).sum()
+        MAE[this_img[0]] = 1.0 - round(this_AE,3);
+        attn_FN[this_img[0]] = round(this_FN,3);
+        attn_FP[this_img[0]] = round(this_FP,3);
         
-        model_mask_inv = cv2.bitwise_not(model_mask)
-        FP = cv2.bitwise_and(user_mask,user_mask,mask = model_mask_inv).sum()
+        # tot = 1.0 - (attn_FN[this_img[0]] + attn_FP[this_img[0]])/2
+        # print ("this_FP, FN,1-TOT, MAE: ", round(this_FP,3),round(this_FN,3),round(tot,3),MAE[this_img[0]])
 
-        # cv2.imshow('TP',TP)
-        # cv2.imshow('FN',FN)
-        # cv2.imshow('FP',FP)
-        # cv2.waitKey(0)                
-        # cv2.destroyAllWindows()
-        # print ("TP: , FN: ,FP: ", TP, FN,FP) 
-        precision =  float(TP)/(TP + FP)
-        recall = float(TP)/(TP + FN)
-        print ("\n Precision: ", precision , "Recall :", recall)
-        PR.append([precision, recall])
+    return MAE,attn_FP,attn_FN    
 
-
-    all_precision=0
-    all_recall=0
-    
-    for this_PR in PR:
-        all_precision += this_PR[0]
-        all_recall += this_PR[1]
-
-    Precision = all_precision/len(PR)
-    Recall = all_recall/len(PR)
-    
-    print ("\n Average Precision: ", Precision , "Recall :", Recall)
-
-    return Precision, Recall
-
-def pair_two(pair_1,pair_2,batch):
-    print ('pair_1', pair_1, "\n")
-    print ('pair_2', pair_2, "\n")
+def pair_two(attn_score,mask_score, human_rating,attn_FP,attn_FN,batch):
+        # (pair_1,pair_2,pair_3,batch):
 
     rows = [];
 
-    for each in pair_1:
-        rows.append({'name':each, "exp_score":pair_1[each],"human_rating":pair_2[each]})
+    for each in attn_score:
+        rows.append({'name':each, "exp_score":attn_score[each],"mask_score":mask_score[each],"human_rating":human_rating[each], "attn_FP":attn_FP[each],"attn_FN":attn_FN[each]})
+
     # name of csv file  
     filename = "../user-study/evaluation-results/"+batch+"/pairs_ready.csv"
-    fields = ['name','exp_score','human_rating']
+    fields = ['name','exp_score','mask_score','human_rating','attn_FP','attn_FN']
 
     with open(filename, 'w',newline='') as csvfile:  
         writer = csv.DictWriter(csvfile, fieldnames = fields)  
         writer.writeheader()  
-        writer.writerows(rows) 
-
-    # writing to csv file  
-    # with open(filename, 'w') as csvfile:  
-    #     csvwriter = csv.writer(csvfile)  
-    #     csvwriter.writerow(fields)  
-    #     csvwriter.writerows(rows) 
+        writer.writerows(rows)
 
     return 0 
 
@@ -660,7 +611,7 @@ def user_mask(img_folder,res_folder):
 
 
 batches = ['batch-1'] # ,'batch-2','batch-3','batch-4']
-# ref_mask = [];
+
 
 for batch in batches:
 
@@ -669,12 +620,13 @@ for batch in batches:
     ref_mask = [];
     img_folder = "../data/VOC2012_raw/"                                       # original raw images
     model_mask_folder =  "../data/VOC2012_mask/" 
-    usr_mask_folder = "../data/user_attn_maps/"+batch+"/"                         # Final binary human-attention mask
+    attn_mask_folder = "../data/user_attn_maps/"+batch+"/"                         # Final binary human-attention mask
+    seg_mask_folder = "../data/user_seg_maps/"+batch+"/"                         # Final binary human-attention mask
     res_folder = "../user-study/mturk-annotation-results/"+batch+"/json/"
     # to save an overlay of user attention-map on raw image
     heatmap_folder = "../data/user_attn_overlay/"+batch+"/"
 
-    model_mask = "../data/VOC2012_mask/"                                       # "./Image/LIME_mask/"
+    # model_mask = "../data/VOC2012_mask/"                                       # "./Image/LIME_mask/"
     # model_overlay = "./Image/LIME_overlay/"
 
 
@@ -683,17 +635,18 @@ for batch in batches:
 
 
     # 1-Calculating human-attentino MAE score 
-    # based on order of samples in "ref.json"
-    exp_score = evaluate_MAE(usr_mask_folder, model_mask_folder,ref_mask);
-    # print (MAE)
+    [attn_score,attn_FP,attn_FN] = evaluate_MAE(attn_mask_folder, model_mask_folder,ref_mask);
 
     # 2- Calculating mean human-judgment for model explanations
     human_rating = get_ratings(batch)
 
     # 3- Calculating segmentation-mask MAE score 
-    # MAE_all, MAE = evaluate_MAE(usr_mask_folder, model_mask_folder,ref_mask);
+    [mask_score,mask_FP,mask_FN] = evaluate_MAE(seg_mask_folder, model_mask_folder,ref_mask);
 
     # 4- Calculating AUPR and IoU scores
+    Precision, Recall = evaluate_IoU(usr_mask_folder, model_mask_folder,ref_mask);
     # Precision, Recall = evaluate_AUPR(usr_mask_folder, model_mask_folder,ref_mask);
-    # Precision, Recall = evaluate_IoU(usr_mask_folder, model_mask_folder,ref_mask);
-    pair_two(exp_score,human_rating,batch)
+
+    # generate csv tables of all results for statistical analysis 
+    # "exp_score":pair_1[each],"mask_score":pair_2[each],"human_rating":pair_3[each]
+    pair_two(attn_score,mask_score, human_rating,attn_FP,attn_FN,batch)
