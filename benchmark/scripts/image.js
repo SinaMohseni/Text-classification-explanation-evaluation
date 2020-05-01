@@ -73,7 +73,7 @@ var isDrawnOn = new Array(study_length);
 for (let index = 0; index < isDrawnOn.length; index++) {
 	isDrawnOn[index] = false;
 }
-resolveNextButton()
+resolveProgressButtons()
 // console.log(isDrawnOn)
 
 
@@ -193,7 +193,7 @@ function nextImage() {
 			}
 		}
 		drawPathsFromStorage(results_json)
-		resolveNextButton()
+		resolveProgressButtons()
 
 		// for (i=1;i<11;i++){
 		// 	freezRating("star-"+i)
@@ -234,7 +234,7 @@ function lastImage() {
 
 			// console.log((results_json[1].p));
 			drawPathsFromStorage(results_json)
-			resolveNextButton();
+			resolveProgressButtons();
 }
 
 
@@ -354,7 +354,7 @@ function dragstarted() {
         highlight_data[ct-1].push([first_point[0].toFixed(2),first_point[1].toFixed(2)]);
         // console.log(highlight_data)
         active.attr("d", line);
-		resolveNextButton();
+		resolveProgressButtons();
 	});
 
 }
@@ -394,7 +394,7 @@ function drawPath(points){
 d3.select('#clear').on('click', function(){
   d3.selectAll('path.line').remove();
   isDrawnOn[doc_num-1]= false;
-  resolveNextButton();
+  resolveProgressButtons();
   highlight_data = []
   ct =0;
 //   console.log(results_json)
@@ -410,7 +410,7 @@ d3.select('#clear').on('click', function(){
 
 });
     
-function resolveNextButton(){
+function resolveProgressButtons(){
 	if(!isDrawnOn[doc_num-1]){
 		document.getElementById("nextbutton-1").disabled = true;
 		document.getElementById("nextbutton-2").disabled = true;
@@ -461,7 +461,7 @@ d3.select('#palette')
 
 
 $(document).ready(function() {
-	resolveNextButton()
+	resolveProgressButtons()
 //   $('input[type=radio][name=star]').change(function() {
      // confirm(this.value)
     //  rating = this.value

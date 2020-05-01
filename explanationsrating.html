@@ -89,55 +89,101 @@
 
   <script type="text/javascript"> 
 
-    var user_task = "ImageRating"
+//If a key is not entered in the URL, then generate a random key 0-4 inclusive
+function checkKey(k){
+  console.log(k)
+  if (k === null){
+    return Math.floor(Math.random()*4)
+  } else{
+    return k
+  }
+}
 
-    function getParameterByName(name, url) {
-      if (!url) url = window.location.href;
-      name = name.replace(/[\[\]]/g, '\\$&');
-      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-          results = regex.exec(url);
-      if (!results) return null;
-      if (!results[2]) return '';
-      return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
+const urlParams = new URLSearchParams(window.location.search);  
+const key = checkKey(urlParams.get('key'));
+console.log(key)
+var user_task = "ImageRating";
+var mturk_ID = "";
+var position = $(window).scrollTop();
 
-    function read_radio(){
-      // var radios = document.getElementsByName('category');
-      
-      // for (var i = 0, length = radios.length; i < length; i++){
-      //    if (radios[i].checked){
-      //     user_task = radios[i].value
-      //     break;
-      //    }
-      // }
+// mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+// screening_id('stay');
 
-      // user_task: 1- task name
-      //              2- dataset key
-    //If a key is not entered in the URL, then generate a random key 0-4 inclusive
-    function checkKey(k){
-      console.log(k)
-      if (k === null){
-        return Math.floor(Math.random()*4)
-      } else{
-        return k
+
+// request mturk id with mouse scroll event 
+$(window).scroll(function() {
+    var scroll = $(window).scrollTop();
+    if (scroll > position) {
+      if (mturk_ID == null || mturk_ID == "") {
+        screening_id('stay');
+        mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+      }
+    } else {
+      if (mturk_ID == null || mturk_ID == "") {
+        mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+        screening_id('stay');
       }
     }
+    position = scroll;
+  });
 
-      const urlParams = new URLSearchParams(window.location.search);  
-      const key = checkKey(urlParams.get('key'));
-      user_task = "ImageRating"  
 
-      setCookie("user_selection", [user_task,key])
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function read_radio(){
+  
+  
+
+  user_task = "ImageRating";
+
+  if (mturk_ID == null || mturk_ID == "") {
+   
+    mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+    if (mturk_ID != null & mturk_ID != "") {
+      result = screening_id('stay');
+      if (result == 'passed') alert("Make sure to fully read the instructions in this page!")
+    }
+
+  }else{
+    screening_id('proceed');
+  }
+}
+
+function screening_id(action){
+    output = 'passed'
+    if (workers.includes(mturk_ID)) {
+      alert("You have done this HIT before; Sorry can't do it again!")
+      // document.getElementById("nextbutton-1").disabled = true;
+      // document.getElementById("nextbutton-2").disabled = true;
+      document.getElementById("nextbutton-1").innerHTML = "You Can't Continue"
+      document.getElementById("nextbutton-2").innerHTML = "You Can't Continue"
+      // window.close();
+      // var ww = window.open(window.location, '_self'); 
+      // ww.close();
+      output = 'failed'
+    } else if (action == 'proceed'){
+      setCookie("user_selection", [user_task,key,mturk_ID])
       location.href='./benchmark/cnsnt.html'
     }
-    
-    function setCookie(cname, cvalue) {
-      document.cookie = cname + "=" + cvalue + ";path=/";
-    }
+
+    return output
+}
 
 
+function setCookie(cname, cvalue) {
+  document.cookie = cname + "=" + cvalue + ";path=/";
+}
 
-  </script>
+
+</script>
   </br>
   
   </br>  

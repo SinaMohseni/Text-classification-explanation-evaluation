@@ -64,16 +64,19 @@ const time_out = 2000;
 
 var results_json = [];
 var txtfiles = [];
-var readfiles = [];
 var imageName;
 var folder_name = "VOC_grad-cam";
 // var folder_name = "udacity" 
 var call_once = 0;
-var total_doc = study_length;
-var doc_num;
+var doc_num = 1;
 current_time_s = 0;
 last_time_s = 0;
-
+var isDrawnOn = new Array(study_length);
+for (let index = 0; index < isDrawnOn.length; index++) {
+	isDrawnOn[index] = false;
+}
+resolveProgressButtons()
+// console.log(isDrawnOn)
 
 function txtfilename(){
 	
@@ -85,8 +88,6 @@ function txtfilename(){
 	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
-	var txtdoc = []; 
-
 	// 	$.ajax({
 	//     url : folder,
 	//     success: function (data) {
@@ -107,7 +108,6 @@ function txtfilename(){
 	// });
 
 	if (annotated_imgs.length >= ((parseInt(task_key_id.split(",")[1])+1)*study_length)  ){
-
 		for (i=0;i<study_length;i++){
 			// task_key_id.split(",")[1]  // key	
 			txtfiles.push(annotated_imgs[i+(task_key_id.split(",")[1]*study_length)])
@@ -119,9 +119,9 @@ function txtfilename(){
 		// console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", annotated_imgs.length)
 		alert("Not Enough Images found!")
 	}
-	// console.log('annotated_imgs', annotated_imgs.length,((task_key_id.split(",")[1]+1)*10),txtfiles)	
+	// console.log('annotated_imgs', annotated_imgs.length,((task_key_id.split(",")[1]+1)*study_length),txtfiles)	
 	last_time_s = Math.floor(Date.now() / 1000);
-	nextImage();
+	// nextImage();
 }
 
 
@@ -132,7 +132,7 @@ function start_over(){
 		highlight_data = []
 		txtfiles = []
 		ct = 0;
-		readfiles = []
+		txtfiles = []
 		txtfilename();
 		location.href="../expevl.html"
 	}
@@ -154,31 +154,17 @@ function nextImage() {
 
 	}else{
 
-		document.getElementById("nextbutton-1").disabled = true;
-		document.getElementById("nextbutton-2").disabled = true;
+		// document.getElementById("nextbutton-1").disabled = true;
+		// document.getElementById("nextbutton-2").disabled = true;
 		// $('#my-input-id').prop('disabled', false);
-		save_json(tot_time);     // if ((ct > 0) & (saved == 0)) save_json();
+		// save_json(tot_time);     // if ((ct > 0) & (saved == 0)) save_json();
 
-	    $('input[name=star]').prop('checked', false);
-
-		for (var i = 0; i < txtfiles.length ; i ++){
-		  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
-				readfiles.push(txtfiles[i])
-				
-				showImage(txtfiles[i], 0);
-	            rating = 0; 
-
-				imageName = txtfiles[i].split("/").pop();
-				doc_num =i + 1;
-				image_title();
-				
-				d3.selectAll('path.line').remove();
-				highlight_data = []
-	  			ct =0;
-
-				break;
-			}
-		}
+		doc_num++;
+	    getStarsFromMem()// $('input[name=star]').prop('checked', false);
+		updateTitle();
+		showImage(txtfiles[doc_num-1],0)
+		// console.log(txtfiles)
+		resolveProgressButtons()
 
 
 		for (i=1;i<11;i++){
@@ -205,27 +191,65 @@ function freezRating(id){
 function lastImage() {
 			
 			// save_json();       // if ((ct > 0) & (saved == 0)) save_json();
-
-            $('input[name=star]').prop('checked', false);
-            rating = 0;
-
-	  		readfiles.pop()
-	  		this_article = readfiles.pop()
-	  		readfiles.push(this_article)
+			
+			// save_json(tot_time);
+        	doc_num--;
+  
+	  		this_article = txtfiles[doc_num-1]
 	  		console.log("this_article: ", this_article)
 
 	  		showImage(this_article, 0);
 	  		imageName = this_article.split("/").pop();
+// console.log(imageName)
+	  		// d3.selectAll('path.line').remove();
+	  		// highlight_data = []
+			// ct =0;
+			getStarsFromMem()
+			updateTitle();
 
-	  		d3.selectAll('path.line').remove();
-	  		highlight_data = []
-  			ct =0;
-
-	 		doc_num -= 1;
-			image_title();
+			resolveProgressButtons()
 
 
 
+}
+
+function getStarsFromMem(){
+
+	console.log(doc_num, results_json[doc_num]);
+	
+	// rating = 0;
+	if (doc_num >= results_json.length) {
+		console.log("not yet rated",doc_num)
+		$('input[name=star]').prop('checked', false);
+		rating = 0 //reset stars
+	}else{
+		rating = results_json[doc_num].r
+		for (let stars = 0; stars < rating; stars++) {
+			//todo: update stars
+			console.log("star")
+			$('.star-'+(stars+1)).prop('checked', true);
+		}
+	}
+}
+
+function resolveProgressButtons(){
+	if(!isDrawnOn[doc_num-1]){
+		document.getElementById("nextbutton-1").disabled = true;
+		document.getElementById("nextbutton-2").disabled = true;
+	} else {
+		document.getElementById("nextbutton-1").disabled = false;
+		document.getElementById("nextbutton-2").disabled = false;
+	}
+	// console.log("resolving next button for",doc_num,"it's set to",isDrawnOn[doc_num-1],isDrawnOn)
+
+	//if first image, don't let them go backward.
+	if(doc_num == 1){
+		document.getElementById("backbutton-1").disabled = true;
+		document.getElementById("backbutton-2").disabled = true;
+	} else{
+		document.getElementById("backbutton-1").disabled = false;
+		document.getElementById("backbutton-2").disabled = false;
+	}
 }
 
 var words_hash = []; 
@@ -249,9 +273,13 @@ function getCookie(cname) {
 }
 
 
-function image_title(){
+function updateTitle(){
+	imageName = txtfiles[doc_num-1].split("/").pop();
+	// imageName = this_article.split("/").pop();
+
+	// console.log(doc_num,imageName,txtfiles)
     obj = imageName.toString().split("-")[0]
-    explanation_title.text("Please rate 'how good' the AI is explaining the \""+obj+"\" in this image: ( "+ doc_num +" / "+total_doc+ " )");
+    explanation_title.text("Please rate 'how good' the AI is explaining the \""+obj+"\" in this image: ( "+ doc_num +" / "+study_length+ " )");
 }
 
 function showImage(image_name, update_txt) {
@@ -309,62 +337,62 @@ function showImage(image_name, update_txt) {
 }
 
 
-var ct = 0;
-var str = "line"
-var first_point;
+// var ct = 0;
+// var str = "line"
+// var first_point;
 
-var line = d3.line()
-    .curve(d3.curveBasis);
+// var line = d3.line()
+//     .curve(d3.curveBasis);
 
-var svg = d3.select("#img_box")
-    .call(d3.drag()
-        .container(function() { return this; })
-        .subject(function() { var p = [d3.event.x, d3.event.y]; return [p, p]; })
-        .on("start", dragstarted));
+// var svg = d3.select("#img_box")
+//     .call(d3.drag()
+//         .container(function() { return this; })
+//         .subject(function() { var p = [d3.event.x, d3.event.y]; return [p, p]; })
+//         .on("start", dragstarted));
 
-function dragstarted() {
+// function dragstarted() {
 
-	ct++;
-	highlight_data.push([])
+// 	ct++;
+// 	highlight_data.push([])
 
-	xy0 = d3.mouse(this);                     
-    first_point = xy0;
+// 	xy0 = d3.mouse(this);                     
+//     first_point = xy0;
 
-  var d = d3.event.subject,
-      active = svg.append("path").datum(d)
-      .attr("id", str.concat(ct) )
-	  .attr("class","line")
-      .style("stroke", inkColor)
-      .style("opacity", 1)
-      .style("stroke-width", 2 + "px")
-      .style("stroke-linejoin", "round")
-      .style("fill", function(){if (fill_checkbox == 1) return inkColor; else return "none"; })
-      .style("fill-opacity",0.3),
-      x0 = d3.event.x,
-      y0 = d3.event.y;
+//   var d = d3.event.subject,
+//       active = svg.append("path").datum(d)
+//       .attr("id", str.concat(ct) )
+// 	  .attr("class","line")
+//       .style("stroke", inkColor)
+//       .style("opacity", 1)
+//       .style("stroke-width", 2 + "px")
+//       .style("stroke-linejoin", "round")
+//       .style("fill", function(){if (fill_checkbox == 1) return inkColor; else return "none"; })
+//       .style("fill-opacity",0.3),
+//       x0 = d3.event.x,
+//       y0 = d3.event.y;
 
-  d3.event.on("drag", function() {
-    var x1 = d3.event.x,
-        y1 = d3.event.y,
-        dx = x1 - x0,
-        dy = y1 - y0;
+//   d3.event.on("drag", function() {
+//     var x1 = d3.event.x,
+//         y1 = d3.event.y,
+//         dx = x1 - x0,
+//         dy = y1 - y0;
 
-    if (dx * dx + dy * dy > 20){
-		d.push([x0 = x1, y0 = y1]);
-        highlight_data[ct-1].push([x1,y1]);
-    } 
-    else d[d.length - 1] = [x1, y1];
-    active.attr("d", line);
-  });
+//     if (dx * dx + dy * dy > 20){
+// 		d.push([x0 = x1, y0 = y1]);
+//         highlight_data[ct-1].push([x1,y1]);
+//     } 
+//     else d[d.length - 1] = [x1, y1];
+//     active.attr("d", line);
+//   });
 
-	d3.event.on("end", function(){
-		d.push(first_point);
-        highlight_data[ct-1].push([first_point[0],first_point[1]]);
-        // console.log(highlight_data)
-        active.attr("d", line);
-	});
+// 	d3.event.on("end", function(){
+// 		d.push(first_point);
+//         highlight_data[ct-1].push([first_point[0],first_point[1]]);
+//         // console.log(highlight_data)
+//         active.attr("d", line);
+// 	});
 
-}
+// }
 
 
     
@@ -423,31 +451,76 @@ var rating = 0;
 
 
 $(document).ready(function() {
-  $('input[type=radio][name=star]').change(function() {
-     // confirm(this.value)
-     rating = this.value
+	console.log(rating)
+	$('input[type=radio][name=star]').change(function() {
+		current_time_s = Math.floor(Date.now() / 1000)
+			tot_time = current_time_s - last_time_s;
+			last_time_s = current_time_s;
+		isDrawnOn[doc_num-1] = true;
+		rating = this.value
+		save_json(tot_time);
+		console.log(this.value)
+		resolveProgressButtons()
+	});
+
      // document.getElementById("nextbutton").disabled = false;
-	$('#nextbutton-1').prop('disabled', false);
-	$('#nextbutton-2').prop('disabled', false);
+	// $('#nextbutton-1').prop('disabled', false);
+	// $('#nextbutton-2').prop('disabled', false);
      // $("#nextbutton *").attr("disabled", "false");
      // $("#nextbutton").prop("disabled", false); 
      // $("#nextbutton").removeAttr("disabled");
      // $("#nextbutton").removeClass("disabledDiv")
      // $("#nextbutton").removeClass("disabledDiv");
      // console.log("here")
-  });
+
+//   for (var i = 0; i < txtfiles.length ; i ++){
+// 	console.log('looping')
+// 	//   if ( $.inArray(txtfiles[i], readfiles) == -1 ){
+// 		// readfiles.push(txtfiles[i])
+		
+// 		showImage(txtfiles[i], 0);
+// 		// rating = 0; 
+
+// 		imageName = txtfiles[i].split("/").pop();
+// 		// doc_num =i + 1;
+// 		image_title();
+		
+// 		break;
+// 	// }
+// }
+console.log(txtfiles)
+showImage(txtfiles[0])
+updateTitle();
 });
 
-
-function save_json(tot_time){  
-
+function save_json(tot_time){
+	results_json.splice(doc_num,1);
 	if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
-	// for (var i=0;i<highlight_data.length;i++){
-	// if (rating > 0) results_json.push({i: this_image, r: rating, d: tot_time})// contour: i+1, points: highlight_data[i]})
-	if (rating > 0) results_json.push({i: imageName, r: rating})// contour: i+1, points: highlight_data[i]})
-	// console.log("rate", rating)
+		results_json.push({i: imageName, r: rating})
+		// console.log(results_json)
+	saved = 1;
+	// if (isDrawnOn[doc_num-1]) {
+
+	// // if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
+	// // for (var i=0;i<highlight_data.length;i++){
+	// // if (rating > 0) results_json.push({i: this_image, r: rating, d: tot_time})// contour: i+1, points: highlight_data[i]})
+	// // for (let index = 1; index < results_json.length; index++) {
+	// // 	if(results_json[index].i == imageName){
+	// 		results_json[doc_num] = {i = imageName, r = rating}
+	// 		break;
+	// 	}
 	// }
+	console.log("data not found for", imageName,"adding new entry to", results_json)
+	// results_json.push({i: imageName, r: rating})
+	console.log(results_json[1].i, "updated")
+
+
+
 }
+	// if (rating > 0) // contour: i+1, points: highlight_data[i]})
+	// console.log("rate", results_json)
+	// }
+
 
 function WriteFile(tot_time){
     
