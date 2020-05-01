@@ -116,6 +116,9 @@ margin-left: 5%;
 width: 40%;	
 }
 
+button{
+  padding: 1em;
+}
 #exit_button-1 {
 	display: inline-block;
   float: left;
@@ -317,6 +320,15 @@ img {
 }
 
 
+#clear{
+
+  display: block;
+  padding: .3em 3em;
+  margin: 0 auto;
+  border-radius: 5px;
+  font-size: larger;
+
+}
 div.stars {
 
 /*  width: 270px;*/
