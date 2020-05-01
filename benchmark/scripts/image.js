@@ -265,7 +265,9 @@ function image_title(){
  //    if (obj.length < 3){
  //      explanation_title.text("Please highlight any reasons that the driver should be cautious in this scene: ( "+ doc_num+" / "+total_doc+ " )");
  //    }else{
-      explanation_title.text("Please select the salient area(s) that explains \""+obj+"\" in this image: ( "+ doc_num+" / "+total_doc+ " )");
+	// explanation_title.text("( "+ doc_num+" / "+total_doc+ " ) Please select the salient area(s) in this image that explain ").append("mark").text("\""+obj+"\"");
+	  explanation_title.text("Please select the salient area(s) that explain \"").append("mark").text(obj);
+	  explanation_title.append("text").text("\" in this image: ( "+ doc_num+" / "+study_length+ " )");
     // } 
 }
 

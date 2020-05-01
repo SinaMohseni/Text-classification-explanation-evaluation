@@ -279,7 +279,9 @@ function updateTitle(){
 
 	// console.log(doc_num,imageName,txtfiles)
     obj = imageName.toString().split("-")[0]
-    explanation_title.text("Please rate 'how good' the AI is explaining the \""+obj+"\" in this image: ( "+ doc_num +" / "+study_length+ " )");
+	// explanation_title.text("Please rate 'how good' the AI is explaining the \""+obj+"\" in this image: ( "+ doc_num +" / "+study_length+ " )");
+	explanation_title.text("Please select the salient area(s) that explain \"").append("mark").text(obj);
+	  explanation_title.append("text").text("\" in this image: ( "+ doc_num+" / "+study_length+ " )");
 }
 
 function showImage(image_name, update_txt) {
