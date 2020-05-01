@@ -339,7 +339,7 @@ def evaluate_MAE(user_path,model_path,ref_mask):
         # user_file = user_path + this_img[0]
         # model_file = model_path + this_img[0]
 
-        # jpg_file_2 = user_path + this_img[0] + ".jpg";  # "dog-"+
+        # jpg_file_2 = user_path + this_img[0] + ".jpg";  # "dog-"+ 
         # jpg_file_1 = user_path + this_img[0] + ".jpg";  # "cat-"+ 
         model_file = model_path + "cat-"+ this_img[0] + ".jpg";
         if os.path.exists(model_file):

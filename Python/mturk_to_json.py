@@ -1,8 +1,9 @@
-# Generating individual user annotations records from mTurk records
+# Generating user-annotations records from mTurk records
+
+
+
 
 # -*- coding: utf-8 -*- 
-
-
 import re
 import glob
 import copy

@@ -115,8 +115,8 @@ function txtfilename(){
 		}
 	}else{
 		
-		console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
-		console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", annotated_imgs.length)
+		// console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
+		// console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", annotated_imgs.length)
 		alert("Not Enough Images found!")
 	}
 	// console.log('annotated_imgs', annotated_imgs.length,((task_key_id.split(",")[1]+1)*10),txtfiles)	

@@ -1,11 +1,8 @@
-# Generating averaged human-judgment for  records from mTurk records
+# Generating human-judgment from mTurk records
 # TODO: Remove each participant’s mean of its results
 
 
-
 # -*- coding: utf-8 -*- 
-
-
 import re
 import glob
 import copy

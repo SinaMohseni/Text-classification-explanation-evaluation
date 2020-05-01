@@ -71,13 +71,6 @@ var annotated_imgs = ["data/VOC_grad-cam/cat-2007_000528.jpg",
 "data/VOC_grad-cam/dog-2011_000202.jpg"]
 
 
-// Key: 0: cats
-// Key: 1: cats and dogs
-// Key: 2 dogs
-
-// Key: 0,1,2: cats
-// Key: 3: cats and dogs
-// Key: 4,5,6 dogs
 
 var raw_imgs = ["data/VOC_org/cat-2007_000528.jpg",
 "data/VOC_org/cat-2007_000876.jpg",
@@ -150,12 +143,3 @@ var raw_imgs = ["data/VOC_org/cat-2007_000528.jpg",
 "data/VOC_org/dog-2010_003257.jpg", 
 "data/VOC_org/dog-2010_004970.jpg", 
 "data/VOC_org/dog-2011_000202.jpg"]
-
-
-// Key: 0: cats
-// Key: 1: cats and dogs
-// Key: 2 dogs
-
-// Key: 0,1,2: cats
-// Key: 3: cats and dogs
-// Key: 4,5,6 dogs
