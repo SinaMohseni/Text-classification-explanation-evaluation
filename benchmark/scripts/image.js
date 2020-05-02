@@ -55,7 +55,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
   };
 
 
-const study_length = 2; //Number of images displayed to a user for the study
+const study_length = 14; //Number of images displayed to a user for the study
 const training_imgs = 5;  //TODO: UNUSED - Number of images to consider as training images. [sina]: right, small sub-set for training and quality check 
 const time_out = 20;
 let task_start_time = Math.floor(Date.now() / 1000); //set a start time for the task
