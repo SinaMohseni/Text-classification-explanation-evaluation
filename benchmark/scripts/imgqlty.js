@@ -58,9 +58,11 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 
 
 
-const study_length = 14;
-const training_imgs = 5; 
-const time_out = 2000;
+const training_imgs = 4;  // Number of images to consider as training images. 
+const main_images = 10;    // Number of main images to be annotated.
+//Number of images displayed to a user for the study.
+const study_length = training_imgs + main_images; 
+const time_out = 0; // 2000
 let task_start_time = Math.floor(Date.now() / 1000); //set a start time for the task
 
 var results_json = [];
@@ -86,8 +88,8 @@ function txtfilename(){
 	mturk_id = task_key_id.split(",")[2];
 	tutorial_time = parseInt(getCookie("tutorial_time"))
 
-
-	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0,d1:tutorial_time,d2:-1})
+	// mturk_id, dataset_key, tutorial_duration, task_duration
+	results_json.push({i:task_key_id.split(",")[2], r: task_key_id.split(",")[1] ,d:0,d1:tutorial_time,d2:-1})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
 	// 	$.ajax({
@@ -109,19 +111,20 @@ function txtfilename(){
 	//     }
 	// });
 
-	if (annotated_imgs.length >= ((parseInt(task_key_id.split(",")[1])+1)*study_length)  ){
-		for (i=0;i<study_length;i++){
-			// task_key_id.split(",")[1]  // key	
-			txtfiles.push(annotated_imgs[i+(task_key_id.split(",")[1]*study_length)])
-
+	// annotated_imgs:       This is the list of main images for user rating
+	// annotated_check_imgs: This is the list of attention check images for rating task
+	if (annotated_imgs.length >= ((parseInt(task_key_id.split(",")[1])+1)*main_images)  ){
+		for (i=0;i<training_imgs;i++){
+			txtfiles.push(annotated_check_imgs[i])
+		}
+		for (i=0;i<main_images;i++){
+			txtfiles.push(annotated_imgs[i+(task_key_id.split(",")[1]*main_images)])
 		}
 	}else{
 		
-		// console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
-		// console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", annotated_imgs.length)
 		alert("Not Enough Images found!")
 	}
-	// console.log('annotated_imgs', annotated_imgs.length,((task_key_id.split(",")[1]+1)*study_length),txtfiles)	
+
 	last_time_s = Math.floor(Date.now() / 1000);
 	// nextImage();
 }
@@ -439,20 +442,6 @@ d3.select('#palette')
 
 var rating = 0;
 
-// $('#nextbutton').prop('disabled', false);
-// document.getElementById("nextbutton").removeAttribute('disabled');
-// $("#nextbutton").removeAttr('disabled');
-
-// document.getElementById("nextbutton-1").disabled = true;
-
-// $("#nextbutton *").attr("disabled", "disabled").off('click');
-
-
-// $("#nextbutton *").attr("disabled", "disabled").off('click');
-// $("#nextbutton").hasClass("disabledDiv");
-// $("#nextbutton").addClass("disabledDiv");
-
-
 
 $(document).ready(function() {
 	console.log(rating)
@@ -467,32 +456,8 @@ $(document).ready(function() {
 		resolveProgressButtons()
 	});
 
-     // document.getElementById("nextbutton").disabled = false;
-	// $('#nextbutton-1').prop('disabled', false);
-	// $('#nextbutton-2').prop('disabled', false);
-     // $("#nextbutton *").attr("disabled", "false");
-     // $("#nextbutton").prop("disabled", false); 
-     // $("#nextbutton").removeAttr("disabled");
-     // $("#nextbutton").removeClass("disabledDiv")
-     // $("#nextbutton").removeClass("disabledDiv");
-     // console.log("here")
-
-//   for (var i = 0; i < txtfiles.length ; i ++){
-// 	console.log('looping')
-// 	//   if ( $.inArray(txtfiles[i], readfiles) == -1 ){
-// 		// readfiles.push(txtfiles[i])
-		
-// 		showImage(txtfiles[i], 0);
-// 		// rating = 0; 
-
-// 		imageName = txtfiles[i].split("/").pop();
-// 		// doc_num =i + 1;
-// 		image_title();
-		
-// 		break;
-// 	// }
-// }
-console.log(txtfiles)
+ 
+// console.log(txtfiles)
 showImage(txtfiles[0])
 updateTitle();
 });

@@ -55,8 +55,10 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
   };
 
 
-const study_length = 14; //Number of images displayed to a user for the study
-const training_imgs = 5;  //TODO: UNUSED - Number of images to consider as training images. [sina]: right, small sub-set for training and quality check 
+const training_imgs = 4;  // Number of images to consider as training images. 
+const main_images = 10;    // Number of main images to be annotated.
+//Number of images displayed to a user for the study.
+const study_length = training_imgs + main_images; 
 const time_out = 20;
 let task_start_time = Math.floor(Date.now() / 1000); //set a start time for the task
 
@@ -80,24 +82,15 @@ resolveProgressButtons()
 
 function txtfilename(){
 	
-	// folder_name = getCookie("user_selection")  don't use cookies to get folder name 
-
-	// var folder = "data/"+ folder_name +"/";
-	// var folder = folder_name;
-	
 
 	task_key_id = getCookie("task_key_id")
-	dataset_key = task_key_id.split(",")[1]; //TODO: How is this being used? What does the Key do? what are the bounds of the value?
-	// [sina]: the entire dataset is devided into smaller segments of 10~15 images; we a assign each segment to 10 workers for annotation.
-	// I task_key_id when posting jobs in mTurk by creating  (worker, data-segment) pairs.
-	// The dataset_key is how I divide the whole dataset into smaller segments.
-
-	//[jeremy]: Not sure I'm following, maybe explain this to me in person?
+	dataset_key = task_key_id.split(",")[1]; 
 
 	mturk_id = task_key_id.split(",")[2];
 	tutorial_time = parseInt(getCookie("tutorial_time"))
 
-	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0,d1:tutorial_time,d2:-1})
+	// mturk_id, dataset_key, tutorial_duration, task_duration 
+	results_json.push({i: task_key_id.split(",")[2], r:task_key_id.split(",")[1] ,d:0,d1:tutorial_time,d2:-1})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
 	console.log(folder, task_key_id)
@@ -122,40 +115,24 @@ function txtfilename(){
 	//     }
 	// });
 
-
-	if (raw_imgs.length >= ((parseInt(dataset_key)+1)*study_length)  ){
-		for (i=0;i<study_length;i++){
-			// task_key_id.split(",")[1]  // key	
-			txtfiles.push(raw_imgs[i+(dataset_key*study_length)])
-
-		}
-		console.log(txtfiles)
-	}else{
+	// raw_imgs:       This is the list of main annotation images 
+	// raw_check_imgs: This is the list of attention check images for annotation task
 		
-		// console.log('Task: ', task_key_id.split(",")[0],"Key:", task_key_id.split(",")[1],'id: ', task_key_id.split(",")[2])
-		// console.log( (parseInt(task_key_id.split(",")[1])+1)*study_length, "is smaller thatn", raw_imgs.length)
+	if (raw_imgs.length >= ((parseInt(dataset_key)+1)*main_images)  ){
+		for (i=0;i<training_imgs;i++){
+			txtfiles.push(raw_check_imgs[i])
+		}
+		for (i=0;i<main_images;i++){
+			txtfiles.push(raw_imgs[i+(dataset_key*main_images)])
+		}
+	}else{
 		alert("Not Enough Images found!")
 	}
-	// console.log('raw_imgs', raw_imgs.length,((task_key_id.split(",")[1]+1)*10),txtfiles)	
 	last_time_s = Math.floor(Date.now() / 1000);
 
 	nextImage();
 }
 
-//We're not offering a start over button, so Jeremy commented this out
-// function start_over(){
-
-//     if (confirm("Are you sure you want to start over?") == true) {
-// 	    results_json  = []
-// 		highlight_data = []
-// 		txtfiles = []
-// 		ct = 0;
-// 		saved = 1;
-// 		readfiles = []
-// 		txtfilename();
-// 		location.href="../expevl.html"
-// 	}
-// }
 
 function nextImage() {
 
@@ -263,13 +240,8 @@ function getCookie(cname) {
 
 function image_title(){
 	  obj = imageName.toString().split("-")[0]
- //    if (obj.length < 3){
- //      explanation_title.text("Please highlight any reasons that the driver should be cautious in this scene: ( "+ doc_num+" / "+total_doc+ " )");
- //    }else{
-	// explanation_title.text("( "+ doc_num+" / "+total_doc+ " ) Please select the salient area(s) in this image that explain ").append("mark").text("\""+obj+"\"");
 	  explanation_title.text("Please select the salient area(s) that explain \"").append("mark").text(obj);
 	  explanation_title.append("text").text("\" in this image: ( "+ doc_num+" / "+study_length+ " )");
-    // } 
 }
 
 function showImage(image_name, update_txt) {
@@ -465,19 +437,6 @@ d3.select('#palette')
 
 $(document).ready(function() {
 	resolveProgressButtons()
-//   $('input[type=radio][name=star]').change(function() {
-     // confirm(this.value)
-    //  rating = this.value
-     // document.getElementById("nextbutton").disabled = false;
-	// $('#nextbutton-1').prop('disabled', false);
-	// $('#nextbutton-2').prop('disabled', false);
-     // $("#nextbutton *").attr("disabled", "false");
-     // $("#nextbutton").prop("disabled", false); 
-     // $("#nextbutton").removeAttr("disabled");
-     // $("#nextbutton").removeClass("disabledDiv")
-     // $("#nextbutton").removeClass("disabledDiv");
-     // console.log("here")
-//   });
 });
 
 
@@ -486,7 +445,6 @@ function save_json(){
 	if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
 	for (var i=0;i<highlight_data.length;i++){
 		results_json.push({i: imageName, p: highlight_data[i]})
-		// console.log(results_json)
 	}
 	saved = 1;
 }

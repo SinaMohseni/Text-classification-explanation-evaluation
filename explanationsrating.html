@@ -9,7 +9,7 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <link rel="stylesheet" href="./benchmark/styles/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="./benchmark/scripts/workers.js"></script>
+  <script src="./benchmark/scripts/workers.json"></script>
 </head>
 
 
@@ -101,7 +101,7 @@
     function backSlide(){cntrl.back()}
     //This is not a perfect system, but it does slow them down some. 
     function waitNSee(){
-      setTimeout(function(){cntrl.saw()},5000)
+      setTimeout(function(){cntrl.saw()},0 )   // 5000
       //bypass Timer: Toggle on the line below
       // cntrl.saw()
     }
@@ -111,7 +111,6 @@
 
 //If a key is not entered in the URL, then generate a random key 0-4 inclusive
 function checkKey(k){
-  console.log(k)
   if (k === null){
     return Math.floor(Math.random()*4)
   } else{
@@ -121,7 +120,7 @@ function checkKey(k){
 
 const urlParams = new URLSearchParams(window.location.search);  
 const key = checkKey(urlParams.get('key'));
-console.log(key)
+
 var user_task = "ImageRating";
 var mturk_ID = "";
 var position = $(window).scrollTop();
@@ -179,23 +178,36 @@ function read_radio(){
 
 function screening_id(action){
     output = 'passed'
-    if (workers.includes(mturk_ID)) {
-      alert("You have done this HIT before; Sorry can't do it again!")
-      // document.getElementById("nextbutton-1").disabled = true;
-      // document.getElementById("nextbutton-2").disabled = true;
-      document.getElementById("nextbutton-1").innerHTML = "You Can't Continue"
-      document.getElementById("nextbutton-2").innerHTML = "You Can't Continue"
-      // window.close();
-      // var ww = window.open(window.location, '_self'); 
-      // ww.close();
-      output = 'failed'
-    } else if (action == 'proceed'){
-      let tutorial_end_time = Math.floor(Date.now() / 1000);
-      let total_tutorial_time = tutorial_end_time-tutorial_start_time
-      setCookie("user_selection", [user_task,key,mturk_ID])
-      setCookie("tutorial_time", total_tutorial_time)
-      location.href='./benchmark/cnsnt.html'
-    }
+    $.getJSON("./benchmark/scripts/workers.json", function(workers) {
+        
+        console.log(mturk_ID,key,workers[mturk_ID])
+
+        if (mturk_ID in workers) {
+            if (workers[mturk_ID].includes(parseInt(key))){
+                alert("You have done this HIT before; Sorry can't do it again!")
+                document.getElementById("nextbutton-1").innerHTML = "You Can't Continue"
+                document.getElementById("nextbutton-2").innerHTML = "You Can't Continue"
+                // window.close();
+                // var ww = window.open(window.location, '_self'); 
+                // ww.close();
+                output = 'failed'
+            }else{
+              let tutorial_end_time = Math.floor(Date.now() / 1000);
+              let total_tutorial_time = tutorial_end_time-tutorial_start_time
+              setCookie("user_selection", [user_task,key,mturk_ID])
+              setCookie("tutorial_time", total_tutorial_time)
+              location.href='./benchmark/cnsnt.html'
+            }
+
+        } else if (action == 'proceed'){
+          let tutorial_end_time = Math.floor(Date.now() / 1000);
+          let total_tutorial_time = tutorial_end_time-tutorial_start_time
+          setCookie("user_selection", [user_task,key,mturk_ID])
+          setCookie("tutorial_time", total_tutorial_time)
+          location.href='./benchmark/cnsnt.html'
+        }
+
+    });
 
     return output
 }

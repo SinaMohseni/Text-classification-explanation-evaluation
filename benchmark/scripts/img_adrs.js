@@ -1,7 +1,14 @@
-var annotated_imgs = ["data/VOC_grad-cam/cat-2007_000528.jpg",
+// both attention check images (raw and annotated) should be the same images;
+// Both main annotated and raw image should be in the same order;
+
+var annotated_check_imgs = [
+"data/VOC_grad-cam/cat-2007_000528.jpg",
 "data/VOC_grad-cam/cat-2007_000876.jpg",
 "data/VOC_grad-cam/cat-2007_003778.jpg",
-"data/VOC_grad-cam/cat-2008_000824.jpg",
+"data/VOC_grad-cam/cat-2008_000824.jpg"
+]
+
+var annotated_imgs = [
 "data/VOC_grad-cam/cat-2008_000950.jpg",
 "data/VOC_grad-cam/cat-2008_001980.jpg",
 "data/VOC_grad-cam/cat-2008_002177.jpg",
@@ -72,10 +79,15 @@ var annotated_imgs = ["data/VOC_grad-cam/cat-2007_000528.jpg",
 
 
 
-var raw_imgs = ["data/VOC_org/cat-2007_000528.jpg",
+
+var raw_check_imgs = [
+"data/VOC_org/cat-2007_000528.jpg",
 "data/VOC_org/cat-2007_000876.jpg",
 "data/VOC_org/cat-2007_003778.jpg",
-"data/VOC_org/cat-2008_000824.jpg",
+"data/VOC_org/cat-2008_000824.jpg"]
+
+
+var raw_imgs = [
 "data/VOC_org/cat-2008_000950.jpg",
 "data/VOC_org/cat-2008_001980.jpg",
 "data/VOC_org/cat-2008_002177.jpg",
