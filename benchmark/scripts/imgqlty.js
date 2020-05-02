@@ -61,6 +61,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 const study_length = 14;
 const training_imgs = 5; 
 const time_out = 2000;
+let task_start_time = Math.floor(Date.now() / 1000); //set a start time for the task
 
 var results_json = [];
 var txtfiles = [];
@@ -83,9 +84,10 @@ function txtfilename(){
 	task_key_id = getCookie("task_key_id")
 	dataset_key = task_key_id.split(",")[1];
 	mturk_id = task_key_id.split(",")[2];
+	tutorial_time = parseInt(getCookie("tutorial_time"))
 
 
-	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0})
+	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0,d1:tutorial_time,d2:-1})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
 	// 	$.ajax({
@@ -528,6 +530,10 @@ function WriteFile(tot_time){
     
 	save_json(tot_time);
 
+	//calculate task end time in seconds
+	let task_end_time = Math.floor(Date.now() / 1000);
+	let task_total_time = task_end_time - task_start_time;
+	results_json[0].d2 = task_total_time; //update the end time in the json before writing to file.
 		
 
 
