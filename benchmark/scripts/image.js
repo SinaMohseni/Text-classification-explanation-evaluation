@@ -55,9 +55,10 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
   };
 
 
-const study_length = 14; //Number of images displayed to a user for the study
+const study_length = 2; //Number of images displayed to a user for the study
 const training_imgs = 5;  //TODO: UNUSED - Number of images to consider as training images. [sina]: right, small sub-set for training and quality check 
 const time_out = 20;
+let task_start_time = Math.floor(Date.now() / 1000); //set a start time for the task
 
 
 var txtfiles = [];
@@ -94,9 +95,9 @@ function txtfilename(){
 	//[jeremy]: Not sure I'm following, maybe explain this to me in person?
 
 	mturk_id = task_key_id.split(",")[2];
+	tutorial_time = parseInt(getCookie("tutorial_time"))
 
-
-	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0})
+	results_json.push({i: "mturk_id", r: task_key_id.split(",")[2],d:0,d1:tutorial_time,d2:-1})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
 	console.log(folder, task_key_id)
@@ -493,6 +494,11 @@ function save_json(){
 function WriteFile(){
 
 	if (saved == 0) save_json();
+
+	//calculate task end time in seconds
+	let task_end_time = Math.floor(Date.now() / 1000);
+	let task_total_time = task_end_time - task_start_time;
+	results_json[0].d2 = task_total_time; //update the end time in the json before writing to file.
 
 	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
 	var a = document.createElement('a');
