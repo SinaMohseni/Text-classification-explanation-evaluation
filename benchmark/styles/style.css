@@ -104,6 +104,14 @@ a{
  }
 
 
+ .progress{
+
+  font-size: small;
+  float: right;
+  color: #666666;
+  margin: 0px;
+
+ }
 #chartDiv{
 margin-bottom: 1%;
 }
@@ -294,10 +302,19 @@ div.absolute {
 #image{
   width: 50%;
 }*/
-img {
+/* img {
     width: 50%;
     margin-left: 10%;
     height: auto;
+} */
+
+.slide-img{
+
+  display: block;
+  margin: 0 auto;
+  min-width: 400px;
+  max-width: 50%;
+
 }
 
 
