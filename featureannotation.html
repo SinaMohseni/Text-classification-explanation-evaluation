@@ -86,6 +86,7 @@
 
   <script src="benchmark/scripts/procedureController.js"></script>
   <script type="text/javascript">
+    let tutorial_start_time = Math.floor(Date.now() / 1000);
     let slides = ['<h1> Pet Features in Images </h1><p>Hello! Welcome to our task, you will find the introduction and instructions in this slideshow.</p><h1> Background: </h1><p> We are building an AI system to recognize <u>pets in images from social media</u> to estimate pet populations in cities.</p><p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p><!-- todo: is "pixels" too specific? Is there a more general word? --><p> <mark>We need your help to <u> select pixels that best represent pets</u></mark> in order to train our AI. </p><!-- <p> You <u> do not necessarily need to select the entire pet body </u> but the salient area that is most representative of pets. </p> --></br>',
 '<h1> Instructions: </h1><p>Select Pet Features in Images: Your main task is to <mark> hightlight areas in the image that mostly represent pets.</mark></p><p> This could be a paw, a nose, the whole body etc. Your goal is to <mark>select the areas</mark> of the image <mark> that help <u>you recognize</u></mark> the pet. You do not need to select the entire pet in every image, only the most important areas!</p></br></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG">',
 '<h1> Instructions: </h1><p>With your mouse, highlight the area(s) you think most represents the pet(s) with a <mark><em>left-click and drag</em></mark>.</p><p> Select as many areas as you think describe the animal and if you make a mistake click <mark>[Clear Selections]</mark> to start fresh</p></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-2.png">',
@@ -186,7 +187,10 @@
           // ww.close();
           output = 'failed'
         } else if (action == 'proceed'){
+          let tutorial_end_time = Math.floor(Date.now() / 1000);
+          let total_tutorial_time = tutorial_end_time-tutorial_start_time
           setCookie("user_selection", [user_task,key,mturk_ID])
+          setCookie("tutorial_time", total_tutorial_time)
           location.href='./benchmark/cnsnt.html'
         }
 

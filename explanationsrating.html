@@ -89,6 +89,7 @@
 
   <script src="benchmark/scripts/procedureController.js"></script>
   <script type="text/javascript">
+  let tutorial_start_time = Math.floor(Date.now() / 1000);
     let slides = ['<h1> Pet Recognition AI </h1><p>Hello! Welcome to our task, you will find the introduction and instructions in this slideshow.</p><h1> Background: </h1><p> We are building an AI system to recognize <u> pets in images from social media </u> to esmitate pet populations in cities </p><p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p><p><mark>We need your help to <u>evaluate the "goodness" of our AI</u></mark> by reviewing it\'s output for 15 images. </p><p> Our <u>AI describes where it found a pet</u> by highlighting areas of the image. </p>',
 '<h1> Instructions: </h1><h3>Review our AI\'s Explanations:</3><p>Your main task is to <mark><u> review and rate the heatmaps</u></mark> which explain what parts the AI used to make it\'s decision: </p><p>The areas in red were the most important for identifying the pet whereas the areas in blue have little significance.</p><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/heatmap.PNG">',
 '<h1> Instructions: </h1><h3>Rate AI explanations for each image: </h3><strong><ul><li>Is the correct area selected?</li><li>Does it match your expectations?</li><li>Would you use the same areas to make your desicion?</li> <!-- todo: this is similar to the one above...--></ul></strong><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-1.PNG" >',
@@ -189,7 +190,10 @@ function screening_id(action){
       // ww.close();
       output = 'failed'
     } else if (action == 'proceed'){
+      let tutorial_end_time = Math.floor(Date.now() / 1000);
+      let total_tutorial_time = tutorial_end_time-tutorial_start_time
       setCookie("user_selection", [user_task,key,mturk_ID])
+      setCookie("tutorial_time", total_tutorial_time)
       location.href='./benchmark/cnsnt.html'
     }
 
