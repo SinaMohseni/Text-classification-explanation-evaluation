@@ -86,18 +86,17 @@
   <script src="benchmark/scripts/procedureController.js"></script>
   <script type="text/javascript">
     let tutorial_start_time = Math.floor(Date.now() / 1000);
-    let slides = ['<h1> Pet Features in Images </h1><p>Hello! Welcome to our task, you will find the introduction and instructions in this slideshow.</p><h1> Background: </h1><p> We are building an AI system to recognize <u>pets in images from social media</u> to estimate pet populations in cities.</p><p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p><!-- todo: is "pixels" too specific? Is there a more general word? --><p> <mark>We need your help to <u> select pixels that best represent pets</u></mark> in order to train our AI. </p><!-- <p> You <u> do not necessarily need to select the entire pet body </u> but the salient area that is most representative of pets. </p> --></br>',
-'<h1> Instructions: </h1><p>Select Pet Features in Images: Your main task is to <mark> hightlight areas in the image that mostly represent pets.</mark></p><p> This could be a paw, a nose, the whole body etc. Your goal is to <mark>select the areas</mark> of the image <mark> that help <u>you recognize</u></mark> the pet. You do not need to select the entire pet in every image, only the most important areas!</p></br></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG">',
-'<h1> Instructions: </h1><p>With your mouse, highlight the area(s) you think most represents the pet(s) with a <mark><em>left-click and drag</em></mark>.</p><p> Select as many areas as you think describe the animal and if you make a mistake click <mark>[Clear Selections]</mark> to start fresh</p></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-2.png">',
-'<h1> Instructions: </h1><p>Click [Next Image] to Continue (total 15 images):</p><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-3.PNG">',
-'<h1> Instructions: </h1><h3>After 15 images, your HIT code is displayed, you must <mark>copy and paste</mark> this in the mechanical turk page for credit: </h3></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-4.PNG">']
+    let slides = ['<h1> Pet Features in Images </h1><p>Welcome, please read the instructions in this slideshow.</p><h2> Background: </h2><p> We are building an AI system to recognize <u>pets in images from social media</u> to estimate pet populations in cities.</p><p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p><!-- todo: is "pixels" too specific? Is there a more general word? --><p> <mark>We need your help to <u> select image areas that best represent pets</u></mark> in order to train our AI. </p><!-- <p> You <u> do not necessarily need to select the entire pet body </u> but the salient area that is most representative of pets. </p> --></br>',
+'<h1> Instructions </h1><p>Select Pet Features in Images: Your main task is to <mark> hightlight the areas in the image that best describe pets.</mark></p><p> This could be a paw, a nose, the whole body etc. Your goal is to <mark>select the areas</mark> of the image <mark> that help <u>you recognize</u></mark> the pet. You do not need to select the entire pet in every image, only the most recognizable areas!</p></br></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG">',
+'<h1> Controls </h1><p>Use your mouse to draw around pets:</p><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-2.png">',
+'<h1> Finishing </h1><h3>After 15 images, your HIT code is displayed, you must <mark>copy and paste</mark> this in the mechanical turk page for credit: </h3></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-4.PNG">']
     cntrl = new Progress("cnsnttextbox",slides,read_radio);
     cntrl.updatePage(); // clear the page and load from object
     function nextSlide(){cntrl.next();waitNSee()}
     function backSlide(){cntrl.back()}
     //This is not a perfect system, but it does slow them down some. 
     function waitNSee(){
-      setTimeout(function(){cntrl.saw()},0)  // ,5000)
+      setTimeout(function(){cntrl.saw()},5000)  // ,5000)
       //bypass Timer: Toggle on the line below
       // cntrl.saw()
     }

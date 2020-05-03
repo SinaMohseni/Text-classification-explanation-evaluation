@@ -90,18 +90,18 @@
   <script src="benchmark/scripts/procedureController.js"></script>
   <script type="text/javascript">
   let tutorial_start_time = Math.floor(Date.now() / 1000);
-    let slides = ['<h1> Pet Recognition AI </h1><p>Hello! Welcome to our task, you will find the introduction and instructions in this slideshow.</p><h1> Background: </h1><p> We are building an AI system to recognize <u> pets in images from social media </u> to esmitate pet populations in cities </p><p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p><p><mark>We need your help to <u>evaluate the "goodness" of our AI</u></mark> by reviewing it\'s output for 15 images. </p><p> Our <u>AI describes where it found a pet</u> by highlighting areas of the image. </p>',
-'<h1> Instructions: </h1><h3>Review our AI\'s Explanations:</3><p>Your main task is to <mark><u> review and rate the heatmaps</u></mark> which explain what parts the AI used to make it\'s decision: </p><p>The areas in red were the most important for identifying the pet whereas the areas in blue have little significance.</p><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/heatmap.PNG">',
-'<h1> Instructions: </h1><h3>Rate AI explanations for each image: </h3><strong><ul><li>Is the correct area selected?</li><li>Does it match your expectations?</li><li>Would you use the same areas to make your desicion?</li> <!-- todo: this is similar to the one above...--></ul></strong><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-1.PNG" >',
-'<h1> Instructions: </h1><h3>Click [Next Image] to Contiune: </h3><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-2.PNG" >',
-'<h1> Instructions: </h1><h3>After reviewing the images, your HIT code is displayed, you must <mark>copy and paste</mark> this in the mechanical turk page for credit: </h3><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-3.PNG" >']
+    let slides = ['<h1> Pet Recognition AI </h1><p>Welcome, please read the instructions in this slideshow.</p><h2> Background: </h2><p> We are building an AI system to recognize <u> pets in images from social media </u> to esmitate pet populations in cities </p><p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p><p><mark>We need your help to <u>evaluate the "goodness" of our AI</u></mark> by reviewing it\'s output for 15 images. </p><p> Our <u>AI describes where it found a pet</u> by highlighting areas of the image. </p>',
+'<h1> Task </h1><h3>Review our AI\'s Explanations:</3><p>Your main task is to <mark><u> review and rate the heatmaps</u></mark> which explain what parts the AI used to make it\'s decision: </p><p>The areas in red were the most important for identifying the pet whereas the areas in blue have little significance.</p><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/heatmap.PNG">',
+'<h1> Instructions </h1><p>On a scale from 1-10, Rate the AI explanations for each image.</p><strong><p>Consider:<ul><li>Is the correct area selected?</li><li>Does it match your expectations?</li><li>Would you use the same areas to make your desicion?</li> <!-- todo: this is similar to the one above...--></ul></p></strong><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-1.PNG" >',
+'<h1> Interface </h1><h3>Click [Next Image] to Contiune: </h3><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-2.PNG" >',
+'<h1> Finishing </h1><h3>After reviewing the images, your HIT code is displayed, you must <mark>copy and paste</mark> this in the mechanical turk page for credit: </h3><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-3.PNG" >']
     cntrl = new Progress("cnsnttextbox",slides,read_radio);
     cntrl.updatePage(); // clear the page and load from object
     function nextSlide(){cntrl.next();waitNSee()}
     function backSlide(){cntrl.back()}
     //This is not a perfect system, but it does slow them down some. 
     function waitNSee(){
-      setTimeout(function(){cntrl.saw()},0 )   // 5000
+      setTimeout(function(){cntrl.saw()},5000 )   // 5000
       //bypass Timer: Toggle on the line below
       // cntrl.saw()
     }
