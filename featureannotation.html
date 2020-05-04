@@ -92,11 +92,11 @@
 '<h1> Finishing </h1><h3>After 15 images, your HIT code is displayed, you must <mark>copy and paste</mark> this in the mechanical turk page for credit: </h3></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-4.PNG">']
     cntrl = new Progress("cnsnttextbox",slides,read_radio);
     cntrl.updatePage(); // clear the page and load from object
-    function nextSlide(){cntrl.next();waitNSee()}
+    function nextSlide(){screening_id('stay');cntrl.next();waitNSee()}  // check mturk_ID before leaving the first page
     function backSlide(){cntrl.back()}
     //This is not a perfect system, but it does slow them down some. 
     function waitNSee(){
-      setTimeout(function(){cntrl.saw()},5000)  // ,5000)
+      setTimeout(function(){cntrl.saw()},2000) // ,5000)
       //bypass Timer: Toggle on the line below
       // cntrl.saw()
     }
@@ -173,6 +173,10 @@
     }
     
     function screening_id(action){
+      if (mturk_ID == null || mturk_ID == "") {
+      mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+      } 
+
         output = 'passed'
         $.getJSON("./benchmark/scripts/workers.json", function(workers) {
           
@@ -182,6 +186,8 @@
               alert("You have done this HIT before; Sorry can't do it again!")
               document.getElementById("nextbutton-1").innerHTML = "You Can't Continue"
               document.getElementById("nextbutton-2").innerHTML = "You Can't Continue"
+              document.getElementById('nextbutton-1').disabled = true;  // disable this button
+              document.getElementById("nextbutton-2").disabled = true;  // disable this button
               // window.close();
               // var ww = window.open(window.location, '_self'); 
               // ww.close();

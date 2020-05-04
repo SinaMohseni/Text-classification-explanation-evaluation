@@ -62,7 +62,7 @@ const training_imgs = 4;  // Number of images to consider as training images.
 const main_images = 10;    // Number of main images to be annotated.
 //Number of images displayed to a user for the study.
 const study_length = training_imgs + main_images; 
-const time_out = 0; // 2000
+const time_out = 2000;
 let task_start_time = Math.floor(Date.now() / 1000); //set a start time for the task
 
 var results_json = [];
@@ -479,9 +479,9 @@ function save_json(tot_time){
 	// 		break;
 	// 	}
 	// }
-	console.log("data not found for", imageName,"adding new entry to", results_json)
+	// console.log("data not found for", imageName,"adding new entry to", results_json)
 	// results_json.push({i: imageName, r: rating})
-	console.log(results_json[1].i, "updated")
+	// console.log(results_json[1].i, "updated")
 
 
 

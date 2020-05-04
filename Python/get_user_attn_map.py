@@ -42,7 +42,17 @@ import scipy.misc
 from mturk_to_json import get_jsons
 
 
+
+def files_name(folder):
+
+    for filename in os.listdir(folder):
+        print ('"data/VOC_org/'+filename+'",')
+
+
+
+
 def erase_folder(folder):
+
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
         try:
@@ -457,17 +467,19 @@ for batch in batches:
     LIME_mask = "./Image/LIME_mask/"
     LIME_overlay = "./Image/LIME_overlay/"
 
-
+    test_folder = "../data/test/"  
+    files_name(test_folder)
+    
     # Genrating objects reference mask useing ref contur
-    reference_mask(img_folder, res_folder+"ref.json",ref_mask);
+    # reference_mask(img_folder, res_folder+"ref.json",ref_mask);
 
     # 1- Generating users weighted mask with user data
-    erase_folder(attn_mask_folder)
-    user_att_mask(img_folder,res_folder)
+    # erase_folder(attn_mask_folder)
+    # user_att_mask(img_folder,res_folder)
 
     # 2- Generating users weighted mask with user data
-    erase_folder(seg_mask_folder)
-    segmentation_mask(ref_mask,seg_mask_folder)
+    # erase_folder(seg_mask_folder)
+    # segmentation_mask(ref_mask,seg_mask_folder)
 
     # 3- Generating user heatmaps for visualization
     # erase_folder(heatmap_folder)
