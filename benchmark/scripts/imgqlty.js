@@ -89,7 +89,7 @@ function txtfilename(){
 	tutorial_time = parseInt(getCookie("tutorial_time"))
 
 	// mturk_id, dataset_key, tutorial_duration, task_duration
-	results_json.push({i:task_key_id.split(",")[2], r: task_key_id.split(",")[1] ,d:0,d1:tutorial_time,d2:-1})
+	results_json.push({i:task_key_id.split(",")[2], r: task_key_id.split(",")[1], t:1, d:0,d1:tutorial_time,d2:-1})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
 	// 	$.ajax({

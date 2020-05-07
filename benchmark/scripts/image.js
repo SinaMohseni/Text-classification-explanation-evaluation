@@ -55,8 +55,8 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
   };
 
 
-const training_imgs = 4;  // Number of images to consider as training images. 
-const main_images = 10;    // Number of main images to be annotated.
+const training_imgs = 1;  // Number of images to consider as training images. 
+const main_images = 3;    // Number of main images to be annotated.
 //Number of images displayed to a user for the study.
 const study_length = training_imgs + main_images; 
 const time_out = 20;
@@ -90,7 +90,7 @@ function txtfilename(){
 	tutorial_time = parseInt(getCookie("tutorial_time"))
 
 	// mturk_id, dataset_key, tutorial_duration, task_duration 
-	results_json.push({i: task_key_id.split(",")[2], r:task_key_id.split(",")[1] ,d:0,d1:tutorial_time,d2:-1})
+	results_json.push({i: task_key_id.split(",")[2], r:task_key_id.split(",")[1], t:0, d:0,d1:tutorial_time,d2:-1})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
 	console.log(folder, task_key_id)
