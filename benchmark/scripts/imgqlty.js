@@ -151,11 +151,11 @@ function nextImage() {
 	
 	if (doc_num == study_length) {
 		
-		alert("End of this HIT! \n\n Code is printed in a new tab. Please copy the code it in the AMT page to finish the HIT! \n\n You can also click on Download Results")
+		// alert("End of this HIT! \n\n Code is printed in a new tab. Please copy the code it in the AMT page to finish the HIT! \n\n You can also click on Download Results")
 
 		WriteFile(tot_time);
-		document.getElementById("nextbutton-1").innerHTML = "Download Results"
-		document.getElementById("nextbutton-2").innerHTML = "Download Results"
+		document.getElementById("nextbutton-1").innerHTML = "Finish and Submit Data"
+		document.getElementById("nextbutton-2").innerHTML = "Finish and Submit Data"
 
 	}else{
 
@@ -509,6 +509,8 @@ function WriteFile(tot_time){
 	  json : JSON.stringify(results_json)
   }
 });
+location.href='./finish.html';
+
 	// var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
 	// var a = document.createElement('a');
 	// a.href = 'data:' + jsonContent;
