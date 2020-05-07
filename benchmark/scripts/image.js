@@ -458,16 +458,26 @@ function WriteFile(){
 	let task_total_time = task_end_time - task_start_time;
 	results_json[0].d2 = task_total_time; //update the end time in the json before writing to file.
 
-	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
-	var a = document.createElement('a');
-	a.href = 'data:' + jsonContent;
-	a.download = 'results.json';
-	a.innerHTML = 'End Study';
-	a.click();
+	// var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	
+		console.log(results_json)
+		$.ajax({
+	  type : "POST",
+	  url : "json.php",
+	  data : {
+		  json : JSON.stringify(results_json)
+	  }
+	});
+  
+	// var a = document.createElement('a');
+	// a.href = 'data:' + jsonContent;
+	// a.download = 'results.json';
+	// a.innerHTML = 'End Study';
+	// a.click();
 
-	var winPrint = window.open("about:blank", "_blank")//'', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0',"_blank"); 
-	winPrint.document.write(JSON.stringify(results_json)); 
-	winPrint.document.close(); 
+	// var winPrint = window.open("about:blank", "_blank")//'', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0',"_blank"); 
+	// winPrint.document.write(JSON.stringify(results_json)); 
+	// winPrint.document.close(); 
 }
 
 
