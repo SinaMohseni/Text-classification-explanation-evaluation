@@ -2,7 +2,6 @@
 
 
 
-
 # -*- coding: utf-8 -*- 
 import re
 import glob
@@ -26,25 +25,35 @@ import pandas as pd
 
 def get_jsons(batch): 
 
-	in_folder = "../user-study/mturk-annotation-results/"+batch+"/1.csv"
+	in_folder = "../user-study/mturk-annotation-results/"+batch+"/mturk.csv"
 	out_folder = "../user-study/mturk-annotation-results/"+batch+"/json/"
 
 	entire_log = pd.read_csv(in_folder, doublequote=True, escapechar='\\')  # 
 
 	results = entire_log['Answer.surveycode']
 
+
 	i=0
 	for each in results: 
-		i+=1;
-		each_json = json.loads(each)
-		each_json.pop(0)   # pop out the mtruk id record
-		for single in each_json:
-			single['image'] = single.pop('i')
-			single['counter'] = single.pop('c')
-			single['points'] = single.pop('p')
+		try:
+			print ('P: ',i)
+			each_json = json.loads(each)
+			try:
+				each_json.pop(0)   # pop out the mtruk id record
+				for single in each_json:
+					single['image'] = single.pop('i')
+					# single['counter'] = single.pop('c')
+					single['points'] = single.pop('p')
 
-		with open(out_folder+'P'+str(i)+'.json','w', encoding='utf-8') as f:
-			json.dump(each_json, f, ensure_ascii=False)
+				i+=1;
+				with open(out_folder+'P'+str(i)+'.json','w', encoding='utf-8') as f:
+					json.dump(each_json, f, ensure_ascii=False)
+
+			except:
+				print ('Error: ', each_json, each)    # pop out the mtruk id record
+
+		except ValueError:
+			print ("No response: ", i," ") # , each)
 
 	return 0
 
@@ -67,7 +76,7 @@ def get_workers(batch):
 	entire_log = pd.read_csv(in_folder, doublequote=True, escapechar='\\')  # 
 	results = entire_log['Answer.surveycode']
 	# all_workers = {}     # {image_xx: [ rating1, rating2,..., rating_n]}
-	duplicates = 0
+	duplicates = 0;
 	for each in results: 
 
 		each_json = json.loads(each)
@@ -80,7 +89,7 @@ def get_workers(batch):
 			all_workers[this_worker['r']] = [int(-2)] # this_worker['r']
 			# all_workers[this_worker['i']].append(int(this_worker['r']))
 		
-	print ("\n total duplicates: ",duplicates)
+	print ("\n total duplicate annotatots: ",duplicates)
 
 	with open('../benchmark/scripts/workers_new.json','w', encoding='utf-8') as f:
 		json.dump(all_workers, f, ensure_ascii=False)
@@ -88,5 +97,5 @@ def get_workers(batch):
 	return all_workers;
 
 
-batchs = 'batch-1';
-get_workers(batchs)
+# batchs = 'batch-1';
+# get_workers(batchs)
