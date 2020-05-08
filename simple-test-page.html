@@ -1,14 +1,89 @@
 <html>
-<head><title>Hello
-</title></head>
+
+<head>
+    <title>Hello</title>
+</head>
+
 <body>
-    <h1>this is the body</h1>
-    <div class="content">Current page <span id="num">$$</span></div>
-    <button id="nextbutton-1" onclick="next()">next Image</button>
     <button id="backbutton-1" onclick="back()">Previous Image</button>
-<button id="aciton" onclick="action()">Resolve this page</button>
-    <button id="nextbutton-2" onclick="next()">next Image</button>
+    <button id="nextbutton-1" onclick="next()">next Image</button>
+    <h1>this is the body</h1>
+    <div class="content">
+        <div id="instruction">This is the <span id="num">$$</span> page top</div>
+        <div id="content">The page content shown to the user and updates </div>
+        <div id="pallet">This is the tools and <button id="aciton" onclick="action()">Resolve this page</button>for
+            rating or annotating.</div>
+        <div id="test-space"></div>
+    </div>
     <button id="backbutton-2" onclick="back()">Previous Image</button>
+    <button id="nextbutton-2" onclick="next()">next Image</button>
 </body>
 <script src="./benchmark/scripts/procedureController.js"></script>
+<script type="text/javascript">
+    /*simple-test-page.html testing functions for tessting object*/
+    
+    //Simple remapping functions to target the process controller for handleing these requests.
+    function next() {
+        cntrl.next();
+    }
+
+    function back() {
+        cntrl.back();
+    }
+
+    //Function for What happens when the end of the Progress object has been reached.
+    function progressFinished() {
+        window.location = "https://www.google.com"
+    }
+
+    //representative of adding or changing data by the user and updating the progress object accordingly.
+    function action() {
+        t = new SetOfRandomNumbers(4)
+        t.refill();
+        cntrl.saveData(t, true)
+        cntrl.updatePage();
+    }
+
+    //How do you display the data that was saved in the controller?
+    function resolveDataFromStorage(data) {
+        // console.log("you want me to resolve the user's responces with this?", data)
+        if (Array.isArray(data)) {
+            let allTheStuff = "";
+            for (let index = 0; index < data.length; index++) {
+                allTheStuff = allTheStuff + data[index].stuff
+            }
+            document.getElementById("test-space").innerHTML = allTheStuff;
+        } else {
+            document.getElementById("test-space").innerHTML = data.stuff;
+        }
+    }
+
+    //As needed, what does a blank page look like before the user has manipulated it?
+    function freshPage() {
+        document.getElementById("pallet").innerHTML =
+            'This is the tools and <button id="aciton" onclick="action()">Resolve this page</button>for rating or annotating.'
+    }    
+    
+    //Page data
+    d = ['<h1> Instructions: </h1> </br><h2> Select Pet Features in Images: <br>Your main task is to <mark> hightlight areas in the image that mostly represent pets.</mark></h2><p> This could be a paw, a nose, the whole body etc. Your goal is to <mark>select the areas</mark> of the image <mark> that help <u>you recognize</u></mark> the pet. You do not need to select the entire pet in every image, only the most important areas!</p></br></br><img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG" width="400">',
+        2, 3, 4, 5, 6
+    ];
+    cntrl = new Progress("content", d, progressFinished);
+    
+    //-->>>Start things off by updating the page!<<<--
+    cntrl.updatePage();
+
+    
+    //*just a random array builder object to act as filler user data. (ie making a rating or a selection)
+    function SetOfRandomNumbers(length) {
+        this.stuff = new Array(length);
+        this.refill = function () {
+            for (let index = 0; index < this.stuff.length; index++) {
+                this.stuff[index] = Math.floor(Math.random() * 50);
+            }
+            console.log("array refilled as ", this.stuff);
+        }
+    }
+</script>
+
 </html>
