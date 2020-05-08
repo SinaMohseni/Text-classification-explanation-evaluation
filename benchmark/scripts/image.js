@@ -55,8 +55,8 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
   };
 
 
-const training_imgs = 1;  // Number of images to consider as training images. 
-const main_images = 3;    // Number of main images to be annotated.
+const training_imgs = 4;  // Number of images to consider as training images. 
+const main_images = 10;    // Number of main images to be annotated.
 //Number of images displayed to a user for the study.
 const study_length = training_imgs + main_images; 
 const time_out = 20;
