@@ -13,25 +13,376 @@
 </head>
 
 <body>
-   <div id="nextbutton" > <button onclick="nextArticle()">Next Article</button> </div>
-   <div id="backbutton" > <button onclick="lastArticle()">Previous Article</button> </div>
-   <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
-   </br>
-   </br>
-   <div id="start" > <button onclick="start_over()">Start over</button> </div>
+  <button id="backbutton-1" onclick="lastArticle()">Previous Article</button>
+  <button id="nextbutton-1" onclick="nextArticle()">Next Article</button>
+   <!-- <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div> -->
+   <!-- <div id="start" > <button onclick="start_over()">Start over</button> </div> -->
 
-  <div id="chartDiv" ></div>
+  <div id="chartDiv">
+    <button id='clear' >Clear Selections</button>
 
-  <div>
-        <p> Comment box: </p>
-        <textarea id="TextArea" name="S1" rows="4"></textarea> 
   </div>
 
-  </br>
-  <div id="nextbutton2" > <button onclick="nextArticle()">Next Article</button> </div>
-  <div id="backbutton2" > <button onclick="lastArticle()">Previous Article</button> </div>
-  <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
-  </br>
-  <script id= maincode src="./scripts/text.js"></script>   
+
+  <button id="nextbutton-2" onclick="nextArticle()">Next Article</button>
+  <button id="backbutton-2" onclick="lastArticle()">Previous Article</button>
+  <!-- <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div> -->
+  <script src="./scripts/procedureController.js"></script>
+  <!-- <script id= maincode src="./scripts/text.js"></script> -->
+  <script type="text/javascript">
+    //Simple remapping functions to target the process controller for handleing these requests.
+    function nextArticle() {
+      if (cntrl.i < cntrl.total-1){
+            cntrl.i++;
+            updatePage();
+        }else{
+            cntrl.writeToFile(cntrl.conditionNum);
+            cntrl.callBackMethod()
+        }
+    }
+
+    function lastArticle() {
+      if (cntrl.i > 0){
+            cntrl.i--;
+            updatePage();
+        }
+    }
+
+    //Function for What happens when the end of the Progress object has been reached.
+    function progressFinished() {
+        let allTime =0;
+        // console.log(cntrl.userData[0][0])
+        for (let index = 0; index < cntrl.total; index++) {
+            allTime += cntrl.timeOnPage[index];
+        }
+        setCookie("testTime", allTime)
+        // window.location = "https://www.google.com"
+    }
+
+    //representative of adding or changing data by the user and updating the progress object accordingly.
+    function action() {
+        t = new SetOfRandomNumbers(4)
+        t.refill();
+        cntrl.saveData(t, false)
+        cntrl.updatePage();
+    }
+
+    function reset(){
+        cntrl.saveData([],true);
+        cntrl.unsaw();
+    }
+
+    //How do you display the data that was saved in the controller?
+    function resolveDataFromStorage(data) {
+        // console.log("you want me to resolve the user's responces with this?", data)
+        if (Array.isArray(data)) {
+            let allTheStuff = "";
+            for (let index = 0; index < data.length; index++) {
+                allTheStuff = allTheStuff + data[index].stuff
+            }
+            document.getElementById("test-space").innerHTML = allTheStuff;
+        } else {
+            document.getElementById("test-space").innerHTML = data.stuff;
+        }
+    }
+
+    //As needed, what does a blank page look like before the user has manipulated it?
+    function freshPage() {
+        // document.getElementById("pallet").innerHTML =
+            'This is the tools and <button id="aciton" onclick="action()">Resolve this page</button>for rating or annotating.<button id="clear" onclick="reset()">clear stuff?</button>'
+    }    
+    
+    function updatePage(){
+      showText(cntrl.d[cntrl.i])
+      function showText(update_txt) {
+	
+	var myElement = document.createElement('chartDiv');
+	myElement.style.userSelect = 'none';
+	
+	d3.dragDisable(window)
+
+	for (var i = 0; i < 500; i++) {
+	    svg.selectAll(".explanation-"+i.toString()).remove(); 
+	    svg.selectAll(".boxes-"+i.toString()).remove(); 
+    }
+	svg.selectAll(".words").remove(); 
+    // var output = document.getElementById("TextArea").value;
+    // var output = sample_txt;
+	
+	if (update_txt == 0){
+		words_hash = []; 
+		words_array = [];
+		var line_array = output.split("\n");
+		
+		for (var i = 0; i < line_array.length; i++) {
+			this_line = line_array[i].split(" ");
+			words_array.push("nextline");
+
+			for (var j = 0; j < this_line.length; j++) {
+				words_array.push(this_line[j])
+			}
+		}
+		
+
+
+		for (var i = 0; i < words_array.length; i++){
+			words_hash.push({word : words_array[i],
+							x : 0,
+							y : 0,
+							w : 0})
+		}
+	}
+
+				var letter_length = getWidthOfText(" ", "sans-serif", "12px"); 
+				var box_height = 20;
+				var x_pos = explanation_x; //  + clearance;
+				var y_pos = explanation_y + box_height + clearance/3;
+				var next_line = 25;
+				var line_counter = 0;
+				var box_words_alignment = 11;
+				var exp_margin = 20;
+
+				words_box = svg.selectAll(".boxes")
+									.data(words_hash).enter().append("g").attr("class", "words");		
+
+				words_box.append("rect")
+					.attr("class",function(d,i){return "boxes-"+i.toString()})
+					.each(function (d,i) {
+						letters = d.word.split("")
+
+						if (d.word == "nextline") {
+							line_counter += 1;
+							x_pos = explanation_x + clearance;
+							y_pos = explanation_y + box_height + clearance/3 + line_counter*next_line;
+
+							// d.word = ""
+
+							d.x = x_pos;
+							d.y = y_pos;
+							d.w = getWidthOfText("", "sans-serif", "12px")
+							x_pos = x_pos + d.w + letter_length;
+
+						// }else if ( $.inArray("\n", letters) > -1 ) {
+						// 	line_counter += 1;
+						// 	x_pos = explanation_x + clearance/3;
+						// 	y_pos = explanation_y + box_height + clearance/3 + line_counter*next_line;
+
+						// 	d.word = ""
+
+						}else if ((x_pos + (letters.length * letter_length)) > (explanation_x + explanation_width - exp_margin)){
+							line_counter += 1;
+							x_pos = explanation_x + clearance/3;
+							y_pos = explanation_y + box_height + clearance/3 + line_counter*next_line;
+
+							d.x = x_pos;
+							d.y = y_pos;
+							d.w = getWidthOfText(d.word, "sans-serif", "12px")
+							x_pos = x_pos + d.w + letter_length;
+
+						}else{
+
+							d.x = x_pos;
+							d.y = y_pos;
+							d.w = getWidthOfText(d.word, "sans-serif", "12px")
+							x_pos = x_pos + d.w + letter_length;
+						}
+
+					})
+					.attr("x", function(d,i){
+						return d.x;})  
+					.attr("y", function(d,i){
+						return d.y - box_words_alignment;})  // + d.count*clearance + clearance })
+					.attr("width", function(d){
+						return d.w;})
+					.attr("height", box_height)
+					.attr("fill", function(d,i){ 
+			       		if (update_txt == 0) d.highlight = 0;
+			       		if (d.highlight == 1) return "yellow"; 
+			       		if (d.highlight == 2) return "lightgreen"; 
+						return "white";
+					})
+					.attr("opacity", function(d,i) { 
+						if (d.highlight == 1){
+							return 1;	
+						}else if (d.highlight == 2) {
+							return 1;	
+						}else{
+							return 0;
+						}
+					});
+			    
+
+				var dragall = 0;
+				var last_sample = 0;
+				
+				svg.on("mouseup", function(d){ dragall = 0})
+
+				words_box.append("text")
+					.attr("class","explanation")
+					.attr("class",function(d,i){return "explanation-"+ i.toString()})
+					.style("font-size", "12px")
+				    .attr("x", function(d,i){
+								return d.x})  
+				    .attr("y", function(d,i){
+								return d.y;})  // + d.count*clearance + clearance })
+				    .attr("dy", ".35em")
+				    .text(function(d) {
+				    	if (d.word == "nextline") {
+				    	return "";	
+				    	}else{
+				    	return d.word; 	
+				    	}
+				    	
+				    })
+				    .on("mouseover", function(d){
+						var this_sample = d3.select(this).attr('class').split("-")[1]
+						if (d.highlight == 0){
+							svg.selectAll(".boxes-" + this_sample.toString())
+								.attr("fill","yellow")
+								.attr("opacity", 0.3);
+						}
+						svg.selectAll(".boxes-" + this_sample.toString()).moveToBack();
+						
+					})
+					.on("mousemove", function(d){
+						var this_sample = d3.select(this).attr('class').split("-")[1]
+						if ((dragall == 1) & (this_sample != last_sample)){							
+
+							if (d.highlight == 1){
+								// svg.selectAll(".boxes-" + this_sample.toString())
+								// 	.attr("fill","lightgreen");
+
+								// d.highlight = 2;
+
+								// svg.selectAll(".boxes-" + this_sample.toString())
+								// 	.attr("opacity", 0);
+								
+								// d.highlight = 0;
+
+							}else if (d.highlight == 2){
+								// svg.selectAll(".boxes-" + this_sample.toString())
+								// 	.attr("opacity", 0);
+								// d.highlight = 0;
+							}else{
+								d.highlight = 1;
+								svg.selectAll(".boxes-" + this_sample.toString())
+									.attr("fill","yellow")
+									.attr("opacity", 1);
+								// console.log({article: articleName, word: d.word, action: "add"})
+								// results_json.push({article: articleName, word: d.word, action: "add"})
+								saved = 0;
+								exp_data.push(d.word)
+							}
+							 window.getSelection().removeAllRanges();
+							 last_sample = this_sample 
+						}
+					})
+					.on("mousedown", function(d){ 
+
+						dragall = 1;
+						var this_sample = d3.select(this).attr('class').split("-")[1]
+						// if (this_sample == last_sample){
+						
+							if (d.highlight == 1){
+								// svg.selectAll(".boxes-" + this_sample.toString())
+								// 	.attr("fill","lightgreen");
+
+								// d.highlight = 2;
+
+								svg.selectAll(".boxes-" + this_sample.toString())
+									.attr("opacity", 0);
+								d.highlight = 0;
+								dragall = 0;
+								// console.log({article: articleName, word: d.word, action: "remove"})
+								// results_json.push({article: articleName, word: d.word, action: "remove"})
+								index = exp_data.indexOf(d.word);
+								if (index > -1) {
+								    exp_data.splice(index, 1);
+								}
+								// exp_data.push(d.word)
+								saved = 0
+
+							}else if (d.highlight == 2){
+								// svg.selectAll(".boxes-" + this_sample.toString())
+								// 	.attr("opacity", 0);
+								
+								// d.highlight = 0;
+
+							}else{
+								d.highlight = 1;
+								svg.selectAll(".boxes-" + this_sample.toString())
+									.attr("fill","yellow")
+									.attr("opacity", 1);
+									// console.log({article: articleName, word: d.word, action: "add"})
+									// results_json.push({article: articleName, word: d.word, action: "add"})
+									exp_data.push(d.word)
+									saved = 0
+							}
+							 window.getSelection().removeAllRanges();
+						// }else{
+						// dragall = 1;	
+						// }
+						
+					})
+					.on("mouseup", function(d){ dragall = 0})
+					.on("mouseout", function(d){
+						var this_sample = d3.select(this).attr('class').split("-")[1]
+						if (d.highlight > 0){
+							svg.selectAll(".boxes-" + this_sample.toString())
+						}else{
+							svg.selectAll(".boxes-" + this_sample.toString())
+								.attr("opacity", 0);
+						}
+					});
+			
+				height =y_pos; 
+				svg.selectAll(".explanation_frame").attr("height", height); 
+				svg.attr("height", height + 100); 
+}
+    }
+    async function generateTextData(){
+      folder_name = getCookie("user_selection")
+
+	// var folder = "data/20news_test/no_header/"+ folder_name +"/";
+	var folder = "data/20news_test/no_header/";
+	// var folder = "data/20news_test/org/";
+	// var txtdoc = []
+	let output = []
+	 $.ajax({
+	    url : folder,
+	    success: function (data) {
+	        $(data).find("a").attr("href", function (i, val) {
+	            // if ( val.match(/\.(gif)$/) == 0){
+	            	this_file = val.split("");
+					// console.log(this_file.pop())	            	
+	            	// txtfiles.push(val)
+	            	if (this_file.pop() == "t"){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){  ( !isNaN(parseInt(this_file.pop(), 10)) )
+	            		output.push(folder+val)//txtfiles.push(val) // txtfiles.push(folder+val)
+	            	}
+	            // }
+	        });
+	        // total_doc = txtfiles.length;
+          // console.log(output)
+
+			// nextArticle();
+      },
+      complete: function(data){
+        // console.log(data, output)
+        buildCntrl(output)
+        // return output;
+      }
+	});
+// return [1,2,3]//allthatData
+
+    }
+    let cntrl;
+    generateTextData()
+    function buildCntrl(d){
+      cntrl = new Progress("chartDiv",d,progressFinished,2);
+    cntrl.updatePage();
+    };
+
+
+  </script>  
 </body>
 </html>
