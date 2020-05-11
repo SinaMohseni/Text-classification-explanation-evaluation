@@ -90,8 +90,11 @@
 '<h1> Instructions </h1><p>Select Pet Features in Images: Your main task is to <mark> hightlight the areas in the image that best describe pets.</mark></p><p> This could be a paw, a nose, the whole body etc. Your goal is to <mark>select the areas</mark> of the image <mark> that help <u>you recognize</u></mark> the pet. You do not need to select the entire pet in every image, only the most recognizable areas!</p></br></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG">',
 '<h1> Controls </h1><p>Use your mouse to draw around pets:</p><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-2.png">',
 '<h1> Finishing </h1><h3>After 15 images, your HIT code is displayed, you must <mark>copy and paste</mark> this in the mechanical turk page for credit: </h3></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-4.PNG">']
-    cntrl = new Progress("cnsnttextbox",slides,read_radio);
+    cntrl = new Progress("cnsnttextbox",slides,read_radio,-1);
     cntrl.updatePage(); // clear the page and load from object
+    //call to resolve the first page.
+    waitNSee();
+    console.log(cntrl);
     function nextSlide(){screening_id('stay');cntrl.next();waitNSee()}  // check mturk_ID before leaving the first page
     function backSlide(){cntrl.back()}
     //This is not a perfect system, but it does slow them down some. 
@@ -100,9 +103,12 @@
       //bypass Timer: Toggle on the line below
       // cntrl.saw()
     }
-    //call to resolve the first page.
-    waitNSee();
-
+function freshPage(){
+  return null;
+}
+function resolveDataFromStorage(){
+  return null;
+}
 
     //If a key is not entered in the URL, then generate a random key 0-4 inclusive
     function checkKey(k){
