@@ -11,6 +11,9 @@
     break;
     }
     switch ($task) {
+      case -1:
+        $filename = "../user-study/incoming_user_data/temp/" . $id . ".json";
+        break;
       case 0:
           //Image Annotation
           $filename = "../user-study/incoming_user_data/imageA/" . $id . ".json";
