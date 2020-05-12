@@ -36,6 +36,11 @@ h4{
 
 }
 
+#explaination_title{
+
+  padding: 3% 7% 0% 7%;
+  margin: 0;
+}
 a{
 	color: #622569;
 	text-decoration: underline;

@@ -19,7 +19,11 @@
    <!-- <div id="start" > <button onclick="start_over()">Start over</button> </div> -->
 
   <div id="chartDiv">
-    <button id='clear' >Clear Selections</button>
+    <h3 id="explaination_title">Please highlightany words realated to "Something Something" topic in this Artible: (1/14)</h3>
+    <div id="annotation_area"></div>
+    <div id="pallet" style="padding-bottom: 1%;">
+      <button id='clear' >Clear Selections</button>
+    </div>
 
   </div>
 
@@ -28,8 +32,8 @@
   <button id="backbutton-2" onclick="lastArticle()">Previous Article</button>
   <!-- <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div> -->
   <script src="./scripts/procedureController.js"></script>
-  <!-- <script id= maincode src="./scripts/text.js"></script> -->
-  <script type="text/javascript">
+  <script id= maincode src="./scripts/text.js"></script>
+  <!-- <script type="text/javascript">
     //Simple remapping functions to target the process controller for handleing these requests.
     function nextArticle() {
       if (cntrl.i < cntrl.total-1){
@@ -340,11 +344,46 @@
 				svg.attr("height", height + 100); 
 }
     }
+
+    
+
+
     async function generateTextData(){
       folder_name = getCookie("user_selection")
 
-	// var folder = "data/20news_test/no_header/"+ folder_name +"/";
-	var folder = "data/20news_test/no_header/";
+      getFileNames();
+      // parseTextInFiles(fileNames)
+
+      function article_title(articleName){
+	if (articleName == "guns") articleName = "Guns and Politics";
+	if (articleName == "med") articleName = "Medical";
+	if (articleName == "space") articleName = "Space and Astronomy";
+	if (articleName == "electronics") articleName = "Electronics and Computers";
+	if (articleName == "autos") articleName = "Cars and Truck";
+	
+	explanation_title.text("Please highlight any words related to \""+articleName+"\" topic in this Article: ( "+ doc_num+" / "+total_doc+ " )")
+}
+ async function parseTextInFiles(textfiles){
+        let readfiles = [];
+    for (var i = 0; i < textfiles.length ; i ++){
+	  	if ( $.inArray(textfiles[i], readfiles) == -1 ){
+			readfiles.push(textfiles[i])
+			articleName = textfiles[i].split("-")[1].split(".txt")[0]
+			fileName = textfiles[i].split("%")[1].split(".txt")[0]
+			// console.log(textfiles[i])
+			jQuery.get(textfiles[i], function(data) {   // jQuery.get('.'+textfiles[i], function(data) {
+					output = data
+				 	showText(0);
+				 	// console.log(output)
+			});
+				doc_num =i + 1;
+				article_title(articleName);
+			break;
+		}
+  }
+}
+async function getFileNames() {
+      var folder = "data/20news_test/no_header/";
 	// var folder = "data/20news_test/org/";
 	// var txtdoc = []
 	let output = []
@@ -355,25 +394,26 @@
 	            // if ( val.match(/\.(gif)$/) == 0){
 	            	this_file = val.split("");
 					// console.log(this_file.pop())	            	
-	            	// txtfiles.push(val)
+	            	// textfiles.push(val)
 	            	if (this_file.pop() == "t"){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){  ( !isNaN(parseInt(this_file.pop(), 10)) )
-	            		output.push(folder+val)//txtfiles.push(val) // txtfiles.push(folder+val)
+	            		output.push(folder+val)//textfiles.push(val) // textfiles.push(folder+val)
 	            	}
 	            // }
 	        });
-	        // total_doc = txtfiles.length;
+	        // total_doc = textfiles.length;
           // console.log(output)
 
 			// nextArticle();
       },
       complete: function(data){
         // console.log(data, output)
-        buildCntrl(output)
+        parseTextInFiles(output)
         // return output;
       }
-	});
-// return [1,2,3]//allthatData
+  });
+  
 
+}
     }
     let cntrl;
     generateTextData()
@@ -383,6 +423,6 @@
     };
 
 
-  </script>  
+  </script>   -->
 </body>
 </html>
