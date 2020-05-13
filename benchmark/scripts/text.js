@@ -76,7 +76,7 @@ function txtfilename(){
 		setTimeout(()=> { //todo find a way to get this working by waiting for the async functions to return.
 			cntrl = new Pages(textFileContents)
 			article_title();
-			showText(0);
+			showText(results_json[cntrl.i]);
 			// updateWindow();
 			resolveProgressButtons()
 		},200);
@@ -119,7 +119,7 @@ function nextArticle() {
 	exp_data = [];	// 		});
 	word_idx = [];
 	cntrl.i++;
-	showText(0);
+	showText(results_json[cntrl.i]);
 	//todo getHighlightsFromMem();
 	article_title();
 	resolveProgressButtons()
@@ -146,7 +146,7 @@ function lastArticle() {
 			// 	});
 			// }
 			cntrl.i--;
-			showText(0);
+			showText(results_json[cntrl.i]);
 			//todo getHighlightsFromMem();
 			article_title();
 			resolveProgressButtons();
@@ -222,7 +222,7 @@ function article_title(){
 	$("#explaination_title").text("Please highlight any words related to \""+articleName+"\" topic in this Article: ( "+ (cntrl.i+1)+" / "+cntrl.total+ " )")
 }
 
-function showText(update_txt) {
+function showText(highlightsFromMem) {
 	
 	var myElement = document.createElement('chartDiv');
 	myElement.style.userSelect = 'none';
@@ -250,7 +250,7 @@ function showText(update_txt) {
 		}
 	}
 	// if (update_txt == 0){
-	if(results_json[cntrl.i] == undefined){ //new article. has not been seen yet
+	if(highlightsFromMem == undefined || highlightsFromMem.indices == undefined){ //new article. has not been seen yet
 		for (var i = 0; i < words_array.length; i++){
 			words_hash.push({word : words_array[i],
 							idx: i,
@@ -260,7 +260,7 @@ function showText(update_txt) {
 							w : 0})
 		}
 	} else {
-		word_idx = results_json[cntrl.i].indices;
+		word_idx = highlightsFromMem.indices;
 		for (let i = 0; i < words_array.length; i++) {
 			words_hash.push({word : words_array[i],
 				idx: i,
@@ -569,6 +569,13 @@ function clearText() {
 		
 }
 
+function removeHighlights(){
+	word_idx = [];
+	showText(word_idx);
+	cntrl.unsaw()
+	resolveProgressButtons()
+
+}
 
 var hidRect;
 var time_weight = 100, topic_weight = 0, action_weight = 400, cluster_weight = 20;
