@@ -451,6 +451,9 @@ function showText(highlightsFromMem) {
 								if(index > -1 ){
 									word_idx.splice(index, 1);
 								}
+								if(word_idx.length == 0){
+									cntrl.unsaw();
+								}
 								console.log(word_idx)
 								// exp_data.push(d.word)
 								saved = 0
