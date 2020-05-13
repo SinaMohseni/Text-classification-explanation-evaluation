@@ -119,10 +119,14 @@ function nextArticle() {
 	exp_data = [];	// 		});
 	word_idx = [];
 	cntrl.i++;
-	showText(results_json[cntrl.i]);
-	//todo getHighlightsFromMem();
-	article_title();
-	resolveProgressButtons()
+	if(cntrl.i == cntrl.total){
+		writeFile();
+	} else{
+		showText(results_json[cntrl.i]);
+		//todo getHighlightsFromMem();
+		article_title();
+		resolveProgressButtons()
+	}
 
 }
 
@@ -183,17 +187,48 @@ function save_json(){//shouldOverwrite){
 	saved = 1;
 }
 
-function WriteFile(){
+function writeFile(){
 
-	if (saved == 0) save_json()
+	// if (saved == 0) save_json()
 
-	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
-	var a = document.createElement('a');
-	a.href = 'data:' + jsonContent;
-	a.download = 'results.json';
-	a.innerHTML = 'End Study';
-	a.click();
-}
+	// var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	// var a = document.createElement('a');
+	// a.href = 'data:' + jsonContent;
+	// a.download = 'results.json';
+	// a.innerHTML = 'End Study';
+	// a.click();
+	let toSave = []; //final output array to be built now and saved
+        
+	let task_key_id = getCookie("task_key_id") //get user data from cookie storage.
+	let tutorial_time = parseInt(getCookie("tutorial_time")) //get the lenght of Time they spent in the totorial from the cookies
+	let dataset_key = task_key_id.split(",")[1]; //separate out the dataset key so we know what they observed
+	let mturk_id = task_key_id.split(",")[2]; //separate their MTurk ID so we know who they are.
+	
+	//Calculate the Total Time the Task took to complete
+	let task_end_time = Math.floor(Date.now() / 1000);
+	let task_total_time = task_end_time - cntrl.progress_start_time;
+
+	//first entry contrins all this information
+	toSave.push({i: mturk_id, r:dataset_key, t:2, d:0,d1:tutorial_time,d2:task_total_time});
+
+	for (let index = 0; index < cntrl.total; index++) {
+		results_json[index].pageTime = cntrl.timeOnPage[index];
+		console.log(results_json[index])
+		// toSave.push(this.userData[index]);
+	}
+	//push the remainder of the user data to this file.
+	toSave.push(results_json);
+	//now Save the file as json to the server with a POST request.
+	$.ajax({
+		type : "POST",
+		url : "/benchmark/json.php",
+		data : {
+			json : JSON.stringify(toSave)
+		}
+		});
+		//Call the Callback function final page after being written.
+		location.href='./finish.html';
+	}
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -768,6 +803,10 @@ function resolveProgressButtons(){
 	} else { //turn on next button
 		document.getElementById("nextbutton-1").disabled = false;
 		document.getElementById("nextbutton-2").disabled = false;
+	}
+	if(cntrl.i == cntrl.total-1){
+		document.getElementById("nextbutton-1").innerHTML = "Submit Results";
+		document.getElementById("nextbutton-2").innerHTML = "Submit Results";
 	}
 
 	//if first image, don't let them go backward.
