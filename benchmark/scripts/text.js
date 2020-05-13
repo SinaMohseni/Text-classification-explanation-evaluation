@@ -77,7 +77,7 @@ function txtfilename(){
 			cntrl = new Pages(textFileContents)
 			article_title();
 			showText(results_json[cntrl.i]);
-			// updateWindow();
+			updateWindow();
 			resolveProgressButtons()
 		},200);
 		// console.log(textFileContents)
@@ -166,7 +166,7 @@ var saved = 1;
 
 function save_json(){//shouldOverwrite){  
 	// console.log(txtfiles[1])
-	console.log(word_idx)
+	// console.log(word_idx)
 	let updatedObj = {article: txtfiles[cntrl.i], word: exp_data, indices: word_idx}
 	let current_time_s = Math.floor(Date.now() / 1000);
         let tot_time = current_time_s - cntrl.last_time_s;
@@ -179,7 +179,7 @@ function save_json(){//shouldOverwrite){
         // } else{ //append to the data in this index
         //     results_json.push(updatedObj)
 		// }
-		console.log("Did that work? Here's the Data I have now",results_json);
+		// console.log("Did that work? Here's the Data I have now",results_json);
 	// for (var i=0;i<exp_data.length;i++){
 		// results_json.push({article: txtfiles[cntrl.i], word: exp_data})
 		// console.log(results_json)
@@ -213,7 +213,7 @@ function writeFile(){
 
 	for (let index = 0; index < cntrl.total; index++) {
 		results_json[index].pageTime = cntrl.timeOnPage[index];
-		console.log(results_json[index])
+		// console.log(results_json[index])
 		// toSave.push(this.userData[index]);
 	}
 	//push the remainder of the user data to this file.
@@ -453,7 +453,7 @@ function showText(highlightsFromMem) {
 								// results_json.push({article: articleName, word: d.word, action: "add"})
 								saved = 0;
 								word_idx.push(d.idx)
-								console.log(word_idx)
+								// console.log(word_idx)
 								exp_data.push(d.word)
 							}
 							 window.getSelection().removeAllRanges();
@@ -482,14 +482,14 @@ function showText(highlightsFromMem) {
 									exp_data.splice(index, 1);
 								}
 								index = word_idx.indexOf(d.idx);
-								console.log(d,index)
+								// console.log(d,index)
 								if(index > -1 ){
 									word_idx.splice(index, 1);
 								}
 								if(word_idx.length == 0){
 									cntrl.unsaw();
 								}
-								console.log(word_idx)
+								// console.log(word_idx)
 								// exp_data.push(d.word)
 								saved = 0
 					
@@ -509,7 +509,7 @@ function showText(highlightsFromMem) {
 									// console.log({article: articleName, word: d.word, action: "add"})
 									// results_json.push({article: articleName, word: d.word, action: "add"})
 									word_idx.push(d.idx)
-									console.log(word_idx)
+									// console.log(word_idx)
 									exp_data.push(d.word)
 									saved = 0
 							}
