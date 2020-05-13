@@ -77,6 +77,7 @@ function txtfilename(){
 			cntrl = new Pages(textFileContents)
 			article_title();
 			showText(0);
+			// updateWindow();
 			resolveProgressButtons()
 		},200);
 		// console.log(textFileContents)
@@ -116,6 +117,7 @@ function nextArticle() {
 	//todo decide if we need the saved variable or can just overwrite thejson on every page turn
 	if (saved == 0) save_json();
 	exp_data = [];	// 		});
+	word_idx = [];
 	cntrl.i++;
 	showText(0);
 	//todo getHighlightsFromMem();
@@ -128,6 +130,7 @@ function lastArticle() {
 			//todo decide if we need the saved variable or can just overwrite thejson on every page turn
 			if (saved == 0) save_json();
 			exp_data = [];
+			word_idx = [];
 
 	  		// readfiles.pop()
 	  		// this_article = readfiles.pop()
@@ -154,11 +157,13 @@ var words_hash = [];
 var words_array = [];
 var results_json = [];
 var exp_data = []
+var word_idx =[];
 var saved = 1;
 
 function save_json(){//shouldOverwrite){  
 	// console.log(txtfiles[1])
-	let updatedObj = {article: txtfiles[cntrl.i], word: exp_data}
+	console.log(word_idx)
+	let updatedObj = {article: txtfiles[cntrl.i], word: exp_data, indices: word_idx}
 	let current_time_s = Math.floor(Date.now() / 1000);
         let tot_time = current_time_s - cntrl.last_time_s;
         cntrl.last_time_s = current_time_s;
@@ -232,28 +237,45 @@ function showText(update_txt) {
     // var output = document.getElementById("TextArea").value;
     // var output = sample_txt;
 	
-	if (update_txt == 0){
-		words_hash = []; 
-		words_array = [];
-		var line_array = cntrl.d[cntrl.i].split("\n");
-		
-		for (var i = 0; i < line_array.length; i++) {
-			this_line = line_array[i].split(" ");
-			words_array.push("nextline");
+	words_hash = []; 
+	words_array = [];
+	var line_array = cntrl.d[cntrl.i].split("\n");
+	
+	for (var i = 0; i < line_array.length; i++) {
+		this_line = line_array[i].split(" ");
+		words_array.push("nextline");
 
-			for (var j = 0; j < this_line.length; j++) {
-				words_array.push(this_line[j])
-			}
+		for (var j = 0; j < this_line.length; j++) {
+			words_array.push(this_line[j])
 		}
-		
-
-
+	}
+	// if (update_txt == 0){
+	if(results_json[cntrl.i] == undefined){ //new article. has not been seen yet
 		for (var i = 0; i < words_array.length; i++){
 			words_hash.push({word : words_array[i],
+							idx: i,
+							highlight: 0,
 							x : 0,
 							y : 0,
 							w : 0})
 		}
+	} else {
+		word_idx = results_json[cntrl.i].indices;
+		for (let i = 0; i < words_array.length; i++) {
+			words_hash.push({word : words_array[i],
+				idx: i,
+				highlight: checkInx(i),
+				x : 0,
+				y : 0,
+				w : 0})
+				// console.log(words_hash)
+		}
+		// console.log("been here before",word_idx,words_hash)
+
+		function checkInx(i){
+			if (word_idx.includes(i)){ return 1} else{ return 0}
+		}
+
 	}
 
 				var letter_length = getWidthOfText(" ", "sans-serif", "12px"); 
@@ -319,16 +341,16 @@ function showText(update_txt) {
 						return d.w;})
 					.attr("height", box_height)
 					.attr("fill", function(d,i){ 
-			       		if (update_txt == 0) d.highlight = 0;
+			       		// if (d.highlight == 0) return "green";
 			       		if (d.highlight == 1) return "yellow"; 
-			       		if (d.highlight == 2) return "lightgreen"; 
-						return "white";
+			       		// if (d.highlight == 2) return "lightgreen"; 
+						// return "white";
 					})
 					.attr("opacity", function(d,i) { 
 						if (d.highlight == 1){
 							return 1;	
-						}else if (d.highlight == 2) {
-							return 1;	
+						// }else if (d.highlight == 2) {
+						// 	return 1;	
 						}else{
 							return 0;
 						}
@@ -401,7 +423,6 @@ function showText(update_txt) {
 						}
 					})
 					.on("mousedown", function(d){ 
-
 						dragall = 1;
 						var this_sample = d3.select(this).attr('class').split("-")[1]
 						// if (this_sample == last_sample){
@@ -409,9 +430,9 @@ function showText(update_txt) {
 							if (d.highlight == 1){
 								// svg.selectAll(".boxes-" + this_sample.toString())
 								// 	.attr("fill","lightgreen");
-
+					
 								// d.highlight = 2;
-
+					
 								svg.selectAll(".boxes-" + this_sample.toString())
 									.attr("opacity", 0);
 								d.highlight = 0;
@@ -420,17 +441,23 @@ function showText(update_txt) {
 								// results_json.push({article: articleName, word: d.word, action: "remove"})
 								index = exp_data.indexOf(d.word);
 								if (index > -1) {
-								    exp_data.splice(index, 1);
+									exp_data.splice(index, 1);
 								}
+								index = word_idx.indexOf(d.idx);
+								console.log(d,index)
+								if(index > -1 ){
+									word_idx.splice(index, 1);
+								}
+								console.log(word_idx)
 								// exp_data.push(d.word)
 								saved = 0
-
+					
 							}else if (d.highlight == 2){
 								// svg.selectAll(".boxes-" + this_sample.toString())
 								// 	.attr("opacity", 0);
 								
 								// d.highlight = 0;
-
+					
 							}else{
 								d.highlight = 1;
 								svg.selectAll(".boxes-" + this_sample.toString())
@@ -438,12 +465,16 @@ function showText(update_txt) {
 									.attr("opacity", 1);
 									// console.log(d)
 									cntrl.saw();
-									// console.log({article: articleName, word: d.word, action: "add"})
+									console.log({article: articleName, word: d.word, action: "add"})
 									// results_json.push({article: articleName, word: d.word, action: "add"})
+									word_idx.push(d.idx)
+									console.log(word_idx)
 									exp_data.push(d.word)
 									saved = 0
 							}
-							 window.getSelection().removeAllRanges();
+								window.getSelection().removeAllRanges();//updateHighlights(this,d)
+
+						
 						// }else{
 						// dragall = 1;	
 						// }
@@ -463,6 +494,12 @@ function showText(update_txt) {
 				height =y_pos; 
 				svg.selectAll(".explanation_frame").attr("height", height); 
 				svg.attr("height", height + 100); 
+}
+
+
+function updateHighlights(event, d){
+	// console.log("called")
+
 }
 
 function getWidthOfText(txt, fontname, fontsize){
@@ -630,7 +667,6 @@ var y_scale = d3.scaleLinear()
 
 txtfilename();
 // nextArticle();
-updateWindow();
 
 function Pages(files){
 	this.progress_start_time = Math.floor(Date.now() / 1000);
