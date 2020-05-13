@@ -261,6 +261,7 @@ function showText(highlightsFromMem) {
 		}
 	} else {
 		word_idx = highlightsFromMem.indices;
+		exp_data = highlightsFromMem.word;
 		for (let i = 0; i < words_array.length; i++) {
 			words_hash.push({word : words_array[i],
 				idx: i,
@@ -416,6 +417,8 @@ function showText(highlightsFromMem) {
 								// console.log({article: articleName, word: d.word, action: "add"})
 								// results_json.push({article: articleName, word: d.word, action: "add"})
 								saved = 0;
+								word_idx.push(d.idx)
+								console.log(word_idx)
 								exp_data.push(d.word)
 							}
 							 window.getSelection().removeAllRanges();
@@ -452,7 +455,7 @@ function showText(highlightsFromMem) {
 								// exp_data.push(d.word)
 								saved = 0
 					
-							}else if (d.highlight == 2){
+							// }else if (d.highlight == 2){
 								// svg.selectAll(".boxes-" + this_sample.toString())
 								// 	.attr("opacity", 0);
 								
@@ -465,7 +468,7 @@ function showText(highlightsFromMem) {
 									.attr("opacity", 1);
 									// console.log(d)
 									cntrl.saw();
-									console.log({article: articleName, word: d.word, action: "add"})
+									// console.log({article: articleName, word: d.word, action: "add"})
 									// results_json.push({article: articleName, word: d.word, action: "add"})
 									word_idx.push(d.idx)
 									console.log(word_idx)
@@ -571,6 +574,8 @@ function clearText() {
 
 function removeHighlights(){
 	word_idx = [];
+	exp_data = [];
+	save_json();
 	showText(word_idx);
 	cntrl.unsaw()
 	resolveProgressButtons()
