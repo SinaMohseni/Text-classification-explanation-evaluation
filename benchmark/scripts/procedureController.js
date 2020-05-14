@@ -70,7 +70,7 @@ function Progress(main_element,data,callBackMethod, condition){
         toSave.push({i: mturk_id, r:dataset_key, t:taskNum, d:0,d1:tutorial_time,d2:task_total_time});
 
         for (let index = 0; index < this.total; index++) {
-            this.userData[index].unshift({PageTime:this.timeOnPage[index]})
+            this.userData[index].pageTime = this.timeOnPage[index]
             console.log(this.userData[index])
             // toSave.push(this.userData[index]);
         }

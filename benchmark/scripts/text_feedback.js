@@ -73,7 +73,6 @@ function generateHTMLFromJSON(index, docWords) {
 		return out
 	}
 
-	//todo probably don't need to do anything more then just set up a div with id pallet. cause freshPage() will set this up...
 	function getFreshPallet() {
 		out = '<div id="palette"><h3 style = "display: inline-block; vertical-align: middle; text-align: top;margin-top: 1px;margin-bottom: 40px;"> How do you rate this heatmap explanation? </h3> \
 		<div class="stars" style = "display: inline-block; margin-left: 10px;"> \
@@ -121,36 +120,6 @@ function generateHTMLFromJSON(index, docWords) {
     		</form>\
     	</div> </div>'
 
-
-		var colorScale = d3.schemeCategory10;
-colorAr = [0, 1];
-
-d3.select('#palette')
-	.select('g')
-	.selectAll('rect')
-	.data(colorAr)
-	.enter().append('rect')
-	.attr('width', 10)
-	.attr('height', 10)
-	.attr('x', function (d, i) {
-		return 22 * i;
-	})
-	.attr('fill', function (d) {
-		return colorScale(d);
-	})
-	.style('cursor', 'pointer')
-	.on('click', function (d) {
-		console.log("click")
-		cntrl.saw();
-		changeColor(colorScale(d));
-		resolveProgressButtons()
-	});
-
-function changeColor(c) {
-	color = c.value;
-	inkColor = color
-}
-
 		return out
 	}
 	let output = getArticleTitle(index) + getArticleText(docWords) + getFreshPallet();
@@ -161,14 +130,13 @@ function changeColor(c) {
 
 function finished() {
 	console.log("all Done!")
+	location.href='./finish.html';
 }
 
 function freshPage() {
 	console.log("not yet rated")
 		$('input[name=star]').prop('checked', false);
 		rating = 0 //reset stars
-	// document.getElementById("pallet").innerHTML =
-	// "<p>hello</p>" //todo blank stars
 }
 
 function freezRating(id){
