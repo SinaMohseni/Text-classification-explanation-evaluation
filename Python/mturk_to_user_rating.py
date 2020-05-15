@@ -71,7 +71,8 @@ def get_ratings(batch):
 						# >>>>>>>>>>>> Without Normalization >>>>>>>>>>>>>>>
 						# with out normalization
 						this_rating = int(single['r'])   
-						# with the normalization
+						
+						# with the per participant normalization
 						# this_rating = round(((this_rating - min_r) / range_value),3)
 
 						if single['i'] in images: 
@@ -88,10 +89,10 @@ def get_ratings(batch):
 	for each in images:
 		if (len(images[each]) > 3):
 			# >>>> No normalization   >>> 
-			# this_rating = round((sum(images[each])/len(images[each]))/10, 3)
+			this_rating = round((sum(images[each])/len(images[each]))/10, 3)
 			
 			# >>>> With normalization   >>> 
-			this_rating = sum(images[each])/len(images[each])
+			# this_rating = sum(images[each])/len(images[each])
 			
 			print ('images: ',each, images[each])
 			images[each] = this_rating;
@@ -104,9 +105,9 @@ def get_ratings(batch):
 		print('less than 3 ratings: ',images.pop(each))
 
 	# >>>>>>>>>>>> Normalize all images ratings here >>>>>>>>>>>>> 
-	images["max"] = max_rate
-	images["min"] = min_rate
-	dic_normalization(images)
+	# images["max"] = max_rate
+	# images["min"] = min_rate
+	# dic_normalization(images)
 
 	return images;
 

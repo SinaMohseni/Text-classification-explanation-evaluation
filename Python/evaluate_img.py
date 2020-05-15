@@ -1,16 +1,20 @@
-# Calculate AUPR
-# Calculate soft-IoU 
-# Calculate rank corollation 
-# Calculate subjective human judgment 
+# 1- sentence-level +  work level.
+# 2- VOC dataset. 50 images per class x 20 class = $300
+# - or  ImageNet: 10 image x  1000 class = at least $1000
+
+# 3- any other evaluation experiment? 
 
 # Generating user attention map from mTurk studies
 
 # -*- coding: utf-8 -*- 
 
+
 import re
 import glob
 import copy
 import operator
+
+
 
 import math
 import json
@@ -242,12 +246,6 @@ def evaluate_MAE(user_path,model_path,ref_mask):
         user_mask = cv2.imread(user_file,0);
         user_mask = cv2.resize(user_mask, (224,224))
         
-            
-        # 1- looks at SM vs. HA for FP and FN sepearate 
-            # - because FP are the same for both
-
-
-
         # normalize user_mask and model_mask
         norm_usr_msk = np.true_divide(user_mask,(user_mask.sum())); 
         norm_mdl_msk = np.true_divide(model_mask, (model_mask.sum()));
@@ -270,34 +268,36 @@ def evaluate_MAE(user_path,model_path,ref_mask):
         
 
         # >>>>>>>> With out Normalize Scores >>>>>>>>
-        # this_AE = round(1.0 - this_AE/2,3);     # changing error to score  
-        # attn_FN[this_img[0]] = round(this_FN/2,3); 
-        # attn_FP[this_img[0]] = round(this_FP/2,3);
+        this_AE = round(1.0 - this_AE/2,3);     # changing error to score  
+        attn_FN[this_img[0]] = round(this_FN/2,3); 
+        attn_FP[this_img[0]] = round(this_FP/2,3);
 
         # >>>>>>>>>>>>>>>> Normalize Scores >>>>>>>>>>>>>>>>
-        this_AE = 1.0 - this_AE;              # changing error to score  
+        # this_AE = 1.0 - this_AE;              # changing error to score  
+        # >>>>>>>>> With out normalization Scores 
         MAE[this_img[0]] = this_AE; 
-        if (this_AE > max_AE): max_AE = this_AE;
-        if (this_AE < min_AE): min_AE = this_AE;
+        # >>>>>>>>>>>>>>>> Normalize Scores >>>>>>>>>>>>>>>>
+        # if (this_AE > max_AE): max_AE = this_AE;
+        # if (this_AE < min_AE): min_AE = this_AE;
 
-        attn_FN[this_img[0]] = this_FN; 
-        if (this_FN > max_FN): max_FN = this_FN;
-        if (this_FN < min_FN): min_FN = this_FN;
+        # attn_FN[this_img[0]] = this_FN; 
+        # if (this_FN > max_FN): max_FN = this_FN;
+        # if (this_FN < min_FN): min_FN = this_FN;
 
-        attn_FP[this_img[0]] = this_FP; 
-        if (this_FP > max_FP): max_FP = this_FP;
-        if (this_FP < min_FP): min_FP = this_FP;
+        # attn_FP[this_img[0]] = this_FP; 
+        # if (this_FP > max_FP): max_FP = this_FP;
+        # if (this_FP < min_FP): min_FP = this_FP;
 
     # >>>> Normalize adding min and max values in the dictionaries >>>>
-    MAE["max"] = max_AE 
-    MAE["min"] = min_AE
-    attn_FN["max"] = max_FN
-    attn_FN["min"] = min_FN 
-    attn_FP["max"] = max_FP
-    attn_FP["min"] = min_FP
-    dic_normalization(MAE)
-    dic_normalization(attn_FP)
-    dic_normalization(attn_FN)
+    # MAE["max"] = max_AE 
+    # MAE["min"] = min_AE
+    # attn_FN["max"] = max_FN
+    # attn_FN["min"] = min_FN 
+    # attn_FP["max"] = max_FP
+    # attn_FP["min"] = min_FP
+    # dic_normalization(MAE)
+    # dic_normalization(attn_FP)
+    # dic_normalization(attn_FN)
 
     return MAE,attn_FP,attn_FN
 
@@ -476,19 +476,22 @@ def evaluate_IoU(user_path,model_path,ref_mask):
         FP_user = cv2.bitwise_and(norm_usr_msk,norm_usr_msk,mask = ref_mask_inv)
         this_FP = (abs(FP_model - FP_user)).sum()/2;
 
-        FN_model = cv2.bitwise_and(norm_mdl_msk,norm_mdl_msk,mask = this_img[1])   # reference 
+
+        FN_model = cv2.bitwise_and(norm_mdl_msk,norm_mdl_msk,mask = this_img[1])   # reference
         FN_user = cv2.bitwise_and(norm_usr_msk,norm_usr_msk,mask = this_img[1])   # reference 
         this_FN = (abs(FN_model - FN_user)).sum()/2;
-
         
+
         MAE[this_img[0]] = 1.0 - round(this_AE,3);
         attn_FN[this_img[0]] = round(this_FN,3);
         attn_FP[this_img[0]] = round(this_FP,3);
-        
-        # tot = 1.0 - (attn_FN[this_img[0]] + attn_FP[this_img[0]])/2
-        # print ("this_FP, FN,1-TOT, MAE: ", round(this_FP,3),round(this_FN,3),round(tot,3),MAE[this_img[0]])
 
-    return MAE,attn_FP,attn_FN    
+
+        # tot = 1.0 - (attn_FN[this_img[0]] + attn_FP[this_img[0]])/2;
+        # print ("this_FP, FN,1-TOT, MAE: ", round(this_FP,3),round(this_FN,3),round(tot,3),MAE[this_img[0]]);
+    return MAE,attn_FP,attn_FN  
+
+
 
 def pair_two(attn_score,mask_score, human_rating,attn_FP,attn_FN,batch):
         # (pair_1,pair_2,pair_3,batch):
@@ -509,6 +512,7 @@ def pair_two(attn_score,mask_score, human_rating,attn_FP,attn_FN,batch):
     fields = ['name','human_rating','human-attention','segmentation-mask','attn_FP','attn_FN']
 
     with open(filename, 'w',newline='') as csvfile:  
+        
         writer = csv.DictWriter(csvfile, fieldnames = fields)  
         writer.writeheader()  
         writer.writerows(rows)
