@@ -9,30 +9,27 @@
   <link rel="stylesheet" href="./styles/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
- 
+  <script src="./libraries/bootstrap.js"></script>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
 </head>
 
 
 <body>
-   <div id="nextbutton" > <button onclick="nextArticle()">Next Article</button> </div>
-   <div id="backbutton" > <button onclick="lastArticle()">Previous Article</button> </div>
-   <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
-   </br>
-   </br>
-   <div id="start" > <button onclick="start_over()">Start over</button> </div>
+   <button id="nextbutton-1" onclick="nextArticle()">Next Article</button>
+   <button id="backbutton-1" onclick="lastArticle()">Previous Article</button> 
 
-  <div id="chartDiv" ></div>
-
-  <div>
-        <p> Comment box: </p>
-        <textarea id="TextArea" name="S1" rows="4"></textarea>   <!-- cols="95"  -->
+  <div id="chartDiv">
+    <h3 id="explaination_title">Please highlight any words related to "Something Something" topic in this Article: (1/14)</h3>
+    <div id="text_body"></div>
+    <div id="pallet" style="padding-bottom: 1%;">
+      <!--text and stars go here-->
+    </div>
   </div>
 
-  </br>
-  <div id="nextbutton2" > <button onclick="nextArticle()">Next Article</button> </div>
-  <div id="backbutton2" > <button onclick="lastArticle()">Previous Article</button> </div>
-  <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>
-  </br>
+  <button id="nextbutton-2" onclick="nextArticle()">Next Article</button> 
+  <button id="backbutton-2" onclick="lastArticle()">Previous Article</button>
+  <script src="./scripts/procedureController.js"></script>
   <script id= maincode src="./scripts/text_feedback.js"></script>   
 </body>
 </html>

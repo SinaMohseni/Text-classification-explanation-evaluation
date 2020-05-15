@@ -89,7 +89,7 @@ function txtfilename(){
 	tutorial_time = parseInt(getCookie("tutorial_time"))
 
 	// mturk_id, dataset_key, tutorial_duration, task_duration
-	results_json.push({i:task_key_id.split(",")[2], r: task_key_id.split(",")[1] ,d:0,d1:tutorial_time,d2:-1})
+	results_json.push({i:task_key_id.split(",")[2], r: task_key_id.split(",")[1], t:1, d:0,d1:tutorial_time,d2:-1})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
 	// 	$.ajax({
@@ -151,11 +151,11 @@ function nextImage() {
 	
 	if (doc_num == study_length) {
 		
-		alert("End of this HIT! \n\n Code is printed in a new tab. Please copy the code it in the AMT page to finish the HIT! \n\n You can also click on Download Results")
+		// alert("End of this HIT! \n\n Code is printed in a new tab. Please copy the code it in the AMT page to finish the HIT! \n\n You can also click on Download Results")
 
 		WriteFile(tot_time);
-		document.getElementById("nextbutton-1").innerHTML = "Download Results"
-		document.getElementById("nextbutton-2").innerHTML = "Download Results"
+		document.getElementById("nextbutton-1").innerHTML = "Finish and Submit Data"
+		document.getElementById("nextbutton-2").innerHTML = "Finish and Submit Data"
 
 	}else{
 
@@ -501,17 +501,26 @@ function WriteFile(tot_time){
 	results_json[0].d2 = task_total_time; //update the end time in the json before writing to file.
 		
 
+	console.log(results_json)
+	$.ajax({
+  type : "POST",
+  url : "json.php",
+  data : {
+	  json : JSON.stringify(results_json)
+  }
+});
+location.href='./finish.html';
 
-	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
-	var a = document.createElement('a');
-	a.href = 'data:' + jsonContent;
-	a.download = 'results.json';
-	a.innerHTML = 'End Study';
-	a.click();
+	// var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	// var a = document.createElement('a');
+	// a.href = 'data:' + jsonContent;
+	// a.download = 'results.json';
+	// a.innerHTML = 'End Study';
+	// a.click();
 	
-	var winPrint = window.open("about:blank", "_blank")//'', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0',"_blank"); 
-	winPrint.document.write(JSON.stringify(results_json)); 
-	winPrint.document.close(); 
+	// var winPrint = window.open("about:blank", "_blank")//'', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0',"_blank"); 
+	// winPrint.document.write(JSON.stringify(results_json)); 
+	// winPrint.document.close(); 
 	// something = window.open("data:text/json," + encodeURIComponent(JSON.stringify(results_json))); // ,"_blank"
 	// something.focus();
 

@@ -32,12 +32,13 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
 
 var txtfiles = []
 var readfiles = []
-var articleName;
+var articleTitles = [];
 var fileName;
 var folder_name = "sci.electronics"
-var call_once = 0;
-var total_doc
-var doc_num
+// var call_once = 0;
+// var total_doc
+// var doc_num
+let cntrl
 
 function txtfilename(){
 	
@@ -52,19 +53,34 @@ function txtfilename(){
 	    url : folder,
 	    success: function (data) {
 	        $(data).find("a").attr("href", function (i, val) {
-	            // if ( val.match(/\.(gif)$/) == 0){
-	            	this_file = val.split("");
-					// console.log(this_file.pop())	            	
-	            	// txtfiles.push(val)
-	            	if (this_file.pop() == "t"){  // if ((!isNaN(parseInt(this_file.pop(), 10))) & (this_file[0] == "/")){  ( !isNaN(parseInt(this_file.pop(), 10)) )
-	            		txtfiles.push(folder+val)//txtfiles.push(val) // txtfiles.push(folder+val)
-	            	}
-	            // }
-	        });
-	        total_doc = txtfiles.length;
-	        console.log(txtfiles)
-			nextArticle();
+				this_file = val.split(""); //make an array of the characters in file name.
+				if (this_file.pop() == "t"){ // if this file ends in a 't', it's likely a .txt file.
+					//i is -1 here because $(data).find("a") - lists the parent directory as an item. so we're off by one.
+					articleTitles[i-1] = val.split("/").pop().split("-")[1].split(".txt")[0]
+					txtfiles.push(folder+val)
+				}
+			});
+		},
+		complete: ()=> {
+			// console.log(articleTitles)
+			textFileContents = []
+			for (let index = 0; index < txtfiles.length; index++) {
+				$.get(txtfiles[index], (data) => {
+					textFileContents.push(data);
+				});
+			}
+			// let total_doc = txtfiles.length;
+			
 	    }
+	}).then( ()=> {
+		setTimeout(()=> { //todo find a way to get this working by waiting for the async functions to return.
+			cntrl = new Pages(textFileContents)
+			article_title();
+			showText(results_json[cntrl.i]);
+			updateWindow();
+			resolveProgressButtons()
+		},200);
+		// console.log(textFileContents)
 	});
 
 }
@@ -87,47 +103,57 @@ function start_over(){
 
 function nextArticle() {
 
-	for (var i = 0; i < txtfiles.length ; i ++){
-	  	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
-			readfiles.push(txtfiles[i])
-			articleName = txtfiles[i].split("-")[1].split(".txt")[0]
-			fileName = txtfiles[i].split("%")[1].split(".txt")[0]
-			// console.log(txtfiles[i])
-			jQuery.get(txtfiles[i], function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
-					output = data
-				 	showText(0);
-				 	// console.log(output)
-			});
-				doc_num =i + 1;
-				article_title(articleName);
-			break;
-		}
+	// for (var i = 0; i < txtfiles.length ; i ++){
+	//   	if ( $.inArray(txtfiles[i], readfiles) == -1 ){
+	// 		readfiles.push(txtfiles[i])
+	// 		articleName = txtfiles[i].split("-")[1].split(".txt")[0]
+	// 		fileName = txtfiles[i].split("%")[1].split(".txt")[0]
+	// 		console.log(txtfiles[i])
+	// 		jQuery.get(txtfiles[i], function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
+	// 				output = data
+				 	
+	// 			 	// console.log(output)
+
+	//todo decide if we need the saved variable or can just overwrite thejson on every page turn
+	if (saved == 0) save_json();
+	exp_data = [];	// 		});
+	word_idx = [];
+	cntrl.i++;
+	if(cntrl.i == cntrl.total){
+		writeFile();
+	} else{
+		showText(results_json[cntrl.i]);
+		//todo getHighlightsFromMem();
+		article_title();
+		resolveProgressButtons()
 	}
 
-	if (saved == 0) save_json();
-	exp_data = [];
 }
 
 function lastArticle() {
-
+			//todo decide if we need the saved variable or can just overwrite thejson on every page turn
 			if (saved == 0) save_json();
 			exp_data = [];
+			word_idx = [];
 
-	  		readfiles.pop()
-	  		this_article = readfiles.pop()
-	  		readfiles.push(this_article)
-	  		articleName = this_article.split("/").pop().split("-")[1].split(".txt")[0]
-	  		fileName = this_article.split(".txt")[0]
-			// console.log(this_article)
-	  		this_file = this_article.split("");
-			if (this_file.pop() == "t"){
-				jQuery.get(this_article, function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
-						output = data
-					 	showText(0);
-				});
-			}
-	 		doc_num -= 1;
-			article_title(articleName);
+	  		// readfiles.pop()
+	  		// this_article = readfiles.pop()
+	  		// readfiles.push(this_article)
+	  		// articleName = this_article.split("/").pop().split("-")[1].split(".txt")[0]
+	  		// fileName = this_article.split(".txt")[0]
+			// // console.log(this_article)
+	  		// this_file = this_article.split("");
+			// if (this_file.pop() == "t"){
+			// 	jQuery.get(this_article, function(data) {   // jQuery.get('.'+txtfiles[i], function(data) {
+			// 			output = data
+			// 		 	showText(0);
+			// 	});
+			// }
+			cntrl.i--;
+			showText(results_json[cntrl.i]);
+			//todo getHighlightsFromMem();
+			article_title();
+			resolveProgressButtons();
 
 }
 
@@ -135,28 +161,74 @@ var words_hash = [];
 var words_array = [];
 var results_json = [];
 var exp_data = []
+var word_idx =[];
 var saved = 1;
 
-function save_json(){  
-
+function save_json(){//shouldOverwrite){  
+	// console.log(txtfiles[1])
+	// console.log(word_idx)
+	let updatedObj = {article: txtfiles[cntrl.i], word: exp_data, indices: word_idx}
+	let current_time_s = Math.floor(Date.now() / 1000);
+        let tot_time = current_time_s - cntrl.last_time_s;
+        cntrl.last_time_s = current_time_s;
+        // console.log("time on page: ", tot_time, "(s), currently stored:", updatedObj["secSinceLast"]);
+        updatedObj["secSinceLast"]=tot_time;
+        cntrl.timeOnPage[cntrl.i] += tot_time;
+		// if(shouldOverwrite){ //overwrite the data
+		results_json.splice(cntrl.i,1,updatedObj);
+        // } else{ //append to the data in this index
+        //     results_json.push(updatedObj)
+		// }
+		// console.log("Did that work? Here's the Data I have now",results_json);
 	// for (var i=0;i<exp_data.length;i++){
-		results_json.push({article: fileName, word: exp_data})
-		console.log(results_json)
+		// results_json.push({article: txtfiles[cntrl.i], word: exp_data})
+		// console.log(results_json)
 	// }
 	saved = 1;
 }
 
-function WriteFile(){
+function writeFile(){
 
-	if (saved == 0) save_json()
+	// if (saved == 0) save_json()
 
-	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
-	var a = document.createElement('a');
-	a.href = 'data:' + jsonContent;
-	a.download = 'results.json';
-	a.innerHTML = 'End Study';
-	a.click();
-}
+	// var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	// var a = document.createElement('a');
+	// a.href = 'data:' + jsonContent;
+	// a.download = 'results.json';
+	// a.innerHTML = 'End Study';
+	// a.click();
+	let toSave = []; //final output array to be built now and saved
+        
+	let task_key_id = getCookie("task_key_id") //get user data from cookie storage.
+	let tutorial_time = parseInt(getCookie("tutorial_time")) //get the lenght of Time they spent in the totorial from the cookies
+	let dataset_key = task_key_id.split(",")[1]; //separate out the dataset key so we know what they observed
+	let mturk_id = task_key_id.split(",")[2]; //separate their MTurk ID so we know who they are.
+	
+	//Calculate the Total Time the Task took to complete
+	let task_end_time = Math.floor(Date.now() / 1000);
+	let task_total_time = task_end_time - cntrl.progress_start_time;
+
+	//first entry contrins all this information
+	toSave.push({i: mturk_id, r:dataset_key, t:2, d:0,d1:tutorial_time,d2:task_total_time});
+
+	for (let index = 0; index < cntrl.total; index++) {
+		results_json[index].pageTime = cntrl.timeOnPage[index];
+		// console.log(results_json[index])
+		// toSave.push(this.userData[index]);
+	}
+	//push the remainder of the user data to this file.
+	toSave.push(results_json);
+	//now Save the file as json to the server with a POST request.
+	$.ajax({
+		type : "POST",
+		url : "/benchmark/json.php",
+		data : {
+			json : JSON.stringify(toSave)
+		}
+		});
+		//Call the Callback function final page after being written.
+		location.href='./finish.html';
+	}
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -174,17 +246,18 @@ function getCookie(cname) {
 	}
 
 
-function article_title(articleName){
+function article_title(){
+	articleName = articleTitles[cntrl.i];
 	if (articleName == "guns") articleName = "Guns and Politics";
 	if (articleName == "med") articleName = "Medical";
 	if (articleName == "space") articleName = "Space and Astronomy";
 	if (articleName == "electronics") articleName = "Electronics and Computers";
 	if (articleName == "autos") articleName = "Cars and Truck";
 	
-	explanation_title.text("Please highlight any words related to \""+articleName+"\" topic in this Article: ( "+ doc_num+" / "+total_doc+ " )")
+	$("#explaination_title").text("Please highlight any words related to \""+articleName+"\" topic in this Article: ( "+ (cntrl.i+1)+" / "+cntrl.total+ " )")
 }
 
-function showText(update_txt) {
+function showText(highlightsFromMem) {
 	
 	var myElement = document.createElement('chartDiv');
 	myElement.style.userSelect = 'none';
@@ -199,28 +272,46 @@ function showText(update_txt) {
     // var output = document.getElementById("TextArea").value;
     // var output = sample_txt;
 	
-	if (update_txt == 0){
-		words_hash = []; 
-		words_array = [];
-		var line_array = output.split("\n");
-		
-		for (var i = 0; i < line_array.length; i++) {
-			this_line = line_array[i].split(" ");
-			words_array.push("nextline");
+	words_hash = []; 
+	words_array = [];
+	var line_array = cntrl.d[cntrl.i].split("\n");
+	
+	for (var i = 0; i < line_array.length; i++) {
+		this_line = line_array[i].split(" ");
+		words_array.push("nextline");
 
-			for (var j = 0; j < this_line.length; j++) {
-				words_array.push(this_line[j])
-			}
+		for (var j = 0; j < this_line.length; j++) {
+			words_array.push(this_line[j])
 		}
-		
-
-
+	}
+	// if (update_txt == 0){
+	if(highlightsFromMem == undefined || highlightsFromMem.indices == undefined){ //new article. has not been seen yet
 		for (var i = 0; i < words_array.length; i++){
 			words_hash.push({word : words_array[i],
+							idx: i,
+							highlight: 0,
 							x : 0,
 							y : 0,
 							w : 0})
 		}
+	} else {
+		word_idx = highlightsFromMem.indices;
+		exp_data = highlightsFromMem.word;
+		for (let i = 0; i < words_array.length; i++) {
+			words_hash.push({word : words_array[i],
+				idx: i,
+				highlight: checkInx(i),
+				x : 0,
+				y : 0,
+				w : 0})
+				// console.log(words_hash)
+		}
+		// console.log("been here before",word_idx,words_hash)
+
+		function checkInx(i){
+			if (word_idx.includes(i)){ return 1} else{ return 0}
+		}
+
 	}
 
 				var letter_length = getWidthOfText(" ", "sans-serif", "12px"); 
@@ -286,16 +377,16 @@ function showText(update_txt) {
 						return d.w;})
 					.attr("height", box_height)
 					.attr("fill", function(d,i){ 
-			       		if (update_txt == 0) d.highlight = 0;
+			       		// if (d.highlight == 0) return "green";
 			       		if (d.highlight == 1) return "yellow"; 
-			       		if (d.highlight == 2) return "lightgreen"; 
-						return "white";
+			       		// if (d.highlight == 2) return "lightgreen"; 
+						// return "white";
 					})
 					.attr("opacity", function(d,i) { 
 						if (d.highlight == 1){
 							return 1;	
-						}else if (d.highlight == 2) {
-							return 1;	
+						// }else if (d.highlight == 2) {
+						// 	return 1;	
 						}else{
 							return 0;
 						}
@@ -333,7 +424,7 @@ function showText(update_txt) {
 						}
 						svg.selectAll(".boxes-" + this_sample.toString()).moveToBack();
 						
-					})
+					}).style('cursor','pointer')
 					.on("mousemove", function(d){
 						var this_sample = d3.select(this).attr('class').split("-")[1]
 						if ((dragall == 1) & (this_sample != last_sample)){							
@@ -361,6 +452,8 @@ function showText(update_txt) {
 								// console.log({article: articleName, word: d.word, action: "add"})
 								// results_json.push({article: articleName, word: d.word, action: "add"})
 								saved = 0;
+								word_idx.push(d.idx)
+								// console.log(word_idx)
 								exp_data.push(d.word)
 							}
 							 window.getSelection().removeAllRanges();
@@ -368,7 +461,6 @@ function showText(update_txt) {
 						}
 					})
 					.on("mousedown", function(d){ 
-
 						dragall = 1;
 						var this_sample = d3.select(this).attr('class').split("-")[1]
 						// if (this_sample == last_sample){
@@ -376,9 +468,9 @@ function showText(update_txt) {
 							if (d.highlight == 1){
 								// svg.selectAll(".boxes-" + this_sample.toString())
 								// 	.attr("fill","lightgreen");
-
+					
 								// d.highlight = 2;
-
+					
 								svg.selectAll(".boxes-" + this_sample.toString())
 									.attr("opacity", 0);
 								d.highlight = 0;
@@ -387,28 +479,43 @@ function showText(update_txt) {
 								// results_json.push({article: articleName, word: d.word, action: "remove"})
 								index = exp_data.indexOf(d.word);
 								if (index > -1) {
-								    exp_data.splice(index, 1);
+									exp_data.splice(index, 1);
 								}
+								index = word_idx.indexOf(d.idx);
+								// console.log(d,index)
+								if(index > -1 ){
+									word_idx.splice(index, 1);
+								}
+								if(word_idx.length == 0){
+									cntrl.unsaw();
+								}
+								// console.log(word_idx)
 								// exp_data.push(d.word)
 								saved = 0
-
-							}else if (d.highlight == 2){
+					
+							// }else if (d.highlight == 2){
 								// svg.selectAll(".boxes-" + this_sample.toString())
 								// 	.attr("opacity", 0);
 								
 								// d.highlight = 0;
-
+					
 							}else{
 								d.highlight = 1;
 								svg.selectAll(".boxes-" + this_sample.toString())
 									.attr("fill","yellow")
 									.attr("opacity", 1);
+									// console.log(d)
+									cntrl.saw();
 									// console.log({article: articleName, word: d.word, action: "add"})
 									// results_json.push({article: articleName, word: d.word, action: "add"})
+									word_idx.push(d.idx)
+									// console.log(word_idx)
 									exp_data.push(d.word)
 									saved = 0
 							}
-							 window.getSelection().removeAllRanges();
+								window.getSelection().removeAllRanges();//updateHighlights(this,d)
+
+						
 						// }else{
 						// dragall = 1;	
 						// }
@@ -428,6 +535,12 @@ function showText(update_txt) {
 				height =y_pos; 
 				svg.selectAll(".explanation_frame").attr("height", height); 
 				svg.attr("height", height + 100); 
+}
+
+
+function updateHighlights(event, d){
+	// console.log("called")
+
 }
 
 function getWidthOfText(txt, fontname, fontsize){
@@ -497,6 +610,15 @@ function clearText() {
 		
 }
 
+function removeHighlights(){
+	word_idx = [];
+	exp_data = [];
+	save_json();
+	showText(word_idx);
+	cntrl.unsaw()
+	resolveProgressButtons()
+
+}
 
 var hidRect;
 var time_weight = 100, topic_weight = 0, action_weight = 400, cluster_weight = 20;
@@ -514,7 +636,7 @@ var w_size = window,
 		var chart_x = w_size.innerWidth || e_size.clientWidth || g_size.clientWidth;  
 		var chart_y = w_size.innerHeight || e_size.clientHeight || g_size.clientHeight; //
 
-var svg = d3.select("#chartDiv").append("svg"),
+var svg = d3.select("#annotation_area").append("svg"),
     margin = {top: 20, right: 50, bottom: 20, left: 50};
 
 
@@ -572,13 +694,13 @@ var y_scale = d3.scaleLinear()
 	var frame_height = height - 100
 	var result_height = 100
 	
-	var explanation_title = svg.append("g").append("text").attr("class","explanation_title")
-			  .style("font-weight", "bold")
-			  .style("font-size", "15px")
-			  .text("Please highlight any words related to \""+folder_name.toString()+"\" topic in this Article:")
-			  .attr('dy','0.35em')
-			  .attr("x", explanation_x)
-			  .attr("y", explanation_y);
+	// var explanation_title = svg.append("g").append("text").attr("class","explanation_title")
+	// 		  .style("font-weight", "bold")
+	// 		  .style("font-size", "15px")
+	// 		  .text("Please highlight any words related to \""+folder_name.toString()+"\" topic in this Article:")
+	// 		  .attr('dy','0.35em')
+	// 		  .attr("x", explanation_x)
+	// 		  .attr("y", explanation_y);
 
 	var explanation_frame = svg.append("g").append("rect").attr("class","explanation_frame")
 					.attr("x", explanation_x)
@@ -595,7 +717,57 @@ var y_scale = d3.scaleLinear()
 
 txtfilename();
 // nextArticle();
-updateWindow();
+
+function Pages(files){
+	this.progress_start_time = Math.floor(Date.now() / 1000);
+    this.last_time_s = this.progress_start_time;
+	this.i = 0 // Current page to resolve/look at
+	this.d = files; //List of file names
+    this.total = files.length //Total number of pages
+    this.hasSeen = new Array(this.total) //list of booleans if they have been seen.
+    this.timeOnPage = new Array(this.total) //How long have they been looking at this trial/page
+    for (let index = 0; index < this.total; index++) { //filling in the list of seen as false at first.
+        this.hasSeen[index] = false;
+        this.timeOnPage[index] = 0;
+        // console.log("filling array's with default values")
+    }
+    this.saw = function (index){
+        if(typeof index == "undefined"){index = this.i} //use index provided or just mark the current index as seen
+        this.hasSeen[index]=true;
+        // console.log("called Saw for index #",index, "on this index now:", this.i,this.total,this.hasSeen))
+        resolveProgressButtons();
+        return true;//unnecessary but just in case.
+    }
+    this.unsaw = function(index){
+        if(typeof index == "undefined"){index = this.i} //use index provided or just mark the current index as seen
+        this.hasSeen[index]=false;
+        resolveProgressButtons();
+        return false;//unnecessary but just in case.       
+	}
+	// this.back = function (){
+    //     // console.log("called Back to page #", this.i, "out of", this.total, "user has seen:",this.hasSeen)
+    //     if (this.i > 0){
+    //         this.i--;
+    //         this.updatePage();
+    //     }
+    // } 
+    // this.next = function(){
+    //     // console.log("called Next", this.i,this.total,this.hasSeen)
+    //     if(this.i < this.total-1){
+    //         this.i++;
+    //         this.updatePage();
+    //     // todo change the button text on the next to last page so it's clear that they are finishing
+    //     }else if(this.i == this.total-1){
+    //         document.getElementById("nextbutton-1").innerHTML = "Submit Annotations"
+    //         document.getElementById("nextbutton-2").innerHTML = "Submit Annotations"
+    //     }else{
+    //         this.writeToFile(this.conditionNum);
+    //         // this.callBackMethod()
+    //     }
+    // }
+	
+}
+
 
 function updateWindow(){
 							 
@@ -615,11 +787,34 @@ function updateWindow(){
 						.attr("x", explanation_x)
 						.attr("y", explanation_y);
 
-		explanation_title.attr("x", explanation_x)
-						.attr("y", explanation_y - 20);
+		// explanation_title.attr("x", explanation_x)
+		// 				.attr("y", explanation_y - 20);
 		
 		svg.selectAll(".explanation_frame").attr("height", height); //(3*next_line + line_counter * next_line));
 		svg.attr("height", height + 100); //y_pos
 		showText(1);
 	}
 	
+function resolveProgressButtons(){
+	// console.log(cntrl);
+	if(!cntrl.hasSeen[cntrl.i]){//turn off next button
+		document.getElementById("nextbutton-1").disabled = true;
+		document.getElementById("nextbutton-2").disabled = true;
+	} else { //turn on next button
+		document.getElementById("nextbutton-1").disabled = false;
+		document.getElementById("nextbutton-2").disabled = false;
+	}
+	if(cntrl.i == cntrl.total-1){
+		document.getElementById("nextbutton-1").innerHTML = "Submit Results";
+		document.getElementById("nextbutton-2").innerHTML = "Submit Results";
+	}
+
+	//if first image, don't let them go backward.
+	if(cntrl.i == 0){ //turn off previous button
+		document.getElementById("backbutton-1").disabled = true;
+		document.getElementById("backbutton-2").disabled = true;
+	} else{ // Turn on Previous button
+		document.getElementById("backbutton-1").disabled = false;
+		document.getElementById("backbutton-2").disabled = false;
+	}
+}

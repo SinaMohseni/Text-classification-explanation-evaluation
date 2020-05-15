@@ -1,4 +1,190 @@
+function startUp() {
+	folder_name = getCookie("user_selection")
+	let folder = "./data/20news_test/test_ml_generated/"
+	let documentData = [];
 
+	$.ajax({
+			url: folder,
+			success: (data) => { //get all the paths to files
+				$(data).find("a").attr("href", function (i, val) {
+					this_file = val.split(""); //make an character array of the file name
+					if (this_file.pop() == "n") { //If the character array ends in an "n" (aka .json file) then add it to the lists, this is to avoid adding directories to the arrays.
+						articleTitles.push(val.split("/").pop().split("-")[1].split(".json")[0]) //so we know what type of file it is
+						filePaths.push(folder + val) //the name of the path to the file.
+					}
+					// console.log(i,val, this_file, articleTitles,filePaths)
+
+
+				})
+				// console.log(folder_name,folder, documentData)
+			},
+			complete: () => { //get all the data in the files
+				// console.log(filePaths)
+				for (let index = 0; index < filePaths.length; index++) {
+					$.get(filePaths[index], (data) => {
+						documentData.push(data);
+					});
+				}
+			}
+		}) //end .ajax
+
+		.then(() => { //generate the html from the files and create the controller.
+			setTimeout(() => {
+
+				let htmlDocuments = [];
+				console.log(documentData)
+				for (let index = 0; index < documentData.length; index++) {
+					htmlDocuments.push(generateHTMLFromJSON(index, documentData[index]))
+				}
+				cntrl = new Progress('chartDiv', htmlDocuments, finished, 3)
+				cntrl.updatePage()
+			}, 200)
+		}) //end .then
+}
+
+function generateHTMLFromJSON(index, docWords) {
+	function getArticleTitle(i) {
+		articleName = articleTitles[i];
+		if (articleName == "guns") articleName = "Guns and Politics";
+		if (articleName == "med") articleName = "Medical";
+		if (articleName == "space") articleName = "Space and Astronomy";
+		if (articleName == "electronics") articleName = "Electronics and Computers";
+		if (articleName == "autos") articleName = "Cars and Truck";
+
+		return ('<h3 id="explanation_title">How well do the highlighted words relate to \"' + articleName + '\" in this Article?</h3>')
+	}
+
+	function getArticleText(words) {
+		//todo find a way to attach tool tips with the relative attribution to each word
+		let out = '<div id="text_body">'
+		for (let index = 0; index < words.length; index++) {
+			thisWordIndex = words.find(element => element.i == index)
+			// console.log(thisWordIndex)
+			//todo convert to join to optimize operations
+			out += '<span class="highlight" style="background:rgba( 255, 255, 0, ' + thisWordIndex.a + ');">' + thisWordIndex.w + '</span> ';
+		}
+
+		//alternative way to do it with less looping, but I wan't sure about ajax returning words out of order:
+		// words.forEach(word => {
+		// 	out += '<span class="highlight" style="background:rgba( 255, 255, 0,'+word.a+');">'+word.w +'</span> ';
+		// });
+
+		out += '</div>'
+		return out
+	}
+
+	function getFreshPallet() {
+		out = '<div id="palette"><h3 style = "display: inline-block; vertical-align: middle; text-align: top;margin-top: 1px;margin-bottom: 40px;"> How do you rate this heatmap explanation? </h3> \
+		<div class="stars" style = "display: inline-block; margin-left: 10px;"> \
+    		<form action=""> \
+    			<input class="star star-10" id="star-10" type="radio" name="star" value="10"/> \
+       				<label class="star star-10" for="star-10" onclick="newRating(10)">\
+					<br>  <b style = "font-size: 12px;text-align: center;padding: 0px;"> 10 </b> \
+					</label> \
+    			<input class="star star-9" id="star-9" type="radio" name="star" value="9" />\
+    				<label class="star star-9" for="star-9" onclick="newRating(9)">\
+      				<br>  <b style = "font-size: 12px;text-align: center;padding: 5px;"> 9 </b> \
+    				</label>\
+    			<input class="star star-8" id="star-8" type="radio" name="star" value="8"/>\
+    				<label class="star star-8" for="star-8" onclick="newRating(8)">\
+      				<br>  <b style = "font-size: 12px;text-align: center;padding: 5px;"> 8 </b> \
+   					</label>\
+ 				<input class="star star-7" id="star-7" type="radio" name="star" value="7"/>\
+    				<label class="star star-7" for="star-7" onclick="newRating(7)">\
+    				<br>  <b style = "font-size: 12px;text-align: center;padding: 5px;"> 7 </b> \
+    				</label>\
+    			<input class="star star-6" id="star-6" type="radio" name="star" value="6"/>\
+    				<label class="star star-6" for="star-6" onclick="newRating(6)">\
+      				<br>  <b style = "font-size: 12px;text-align: center;padding: 5px;"> 6 </b> \
+    				</label>\
+    			<input class="star star-5" id="star-5" type="radio" name="star" value="5"/>\
+    				<label class="star star-5" for="star-5" onclick="newRating(5)">\
+      				<br>  <b style = "font-size: 12px;text-align: center;padding: 5px;"> 5 </b> \
+    				</label>\
+    			<input class="star star-4" id="star-4" type="radio" name="star" value="4"/>\
+    				<label class="star star-4" for="star-4" onclick="newRating(4)">\
+      				<br>  <b style = "font-size: 12px;text-align: center;padding: 5px;"> 4 </b> \
+    				</label>\
+    			<input class="star star-3" id="star-3" type="radio" name="star" value="3"/>\
+    				<label class="star star-3" for="star-3" onclick="newRating(3)">\
+      				<br>  <b style = "font-size: 12px;text-align: center;padding: 5px;"> 3 </b> \
+    				</label>\
+    			<input class="star star-2" id="star-2" type="radio" name="star" value="2"/>\
+    				<label class="star star-2" for="star-2" onclick="newRating(2)">\
+      				<br>  <b style = "font-size: 12px;text-align: center;padding: 5px;"> 2 </b> \
+    				</label>\
+    			<input class="star star-1" id="star-1" type="radio" name="star" value="1"/>\
+    				<label class="star star-1" for="star-1" onclick="newRating(1)">\
+      				<br>  <b style = "font-size: 12px;text-align: center;padding: 5px;"> 1 </b> \
+    				</label>\
+    		</form>\
+    	</div> </div>'
+
+		return out
+	}
+	let output = getArticleTitle(index) + getArticleText(docWords) + getFreshPallet();
+
+	// console.log(output, docWords)
+	return output
+}
+
+function finished() {
+	console.log("all Done!")
+	location.href='./finish.html';
+}
+
+function freshPage() {
+	console.log("not yet rated")
+		$('input[name=star]').prop('checked', false);
+		rating = 0 //reset stars
+}
+
+function freezRating(id){
+	document.getElementById(id).disabled = true; // disabled="disabled"
+	setTimeout(function(){document.getElementById(id).disabled = false;},time_out);
+	// ... dim colors ...
+  }
+
+function resolveDataFromStorage(storedData){
+
+	console.log(storedData);
+	rating = storedData.r
+	for (let stars = 0; stars < rating; stars++) {
+		//todo: update stars
+		console.log("star")
+		$('.star-'+(stars+1)).prop('checked', true);
+	}
+}
+
+function newRating(rate){
+	console.log(rate, typeof(rate))
+	let toSave = {
+		i: filePaths[cntrl.i],
+		r: rate
+	}
+	cntrl.saveData(toSave,true)
+}
+
+
+//todo correct forward and back buttons
+function nextArticle(){
+	cntrl.next();
+}
+function lastArticle(){
+	cntrl.back()
+}
+
+
+var rating = 0;
+
+
+let articleTitles = [];
+let filePaths = [];
+startUp();
+
+
+
+/*
 var div1 = d3.select("body").append("talkbubble")   // Tooltip
 		.attr("class", "tooltip")
 		.style("opacity", 1)
@@ -130,10 +316,8 @@ var saved = 1;
 
 function save_json(){  
 
-	// for (var i=0;i<exp_data.length;i++){
-		results_json.push({article: articleName, word: exp_data})
-		console.log(results_json)
-	// }
+	results_json.push({article: articleName, word: exp_data})
+	console.log(results_json)
 	saved = 1;
 }
 
@@ -608,4 +792,4 @@ function updateWindow(){
 		svg.attr("height", height + 100); //y_pos
 		showText(1);
 	}
-	
+	*/

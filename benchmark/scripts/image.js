@@ -90,7 +90,7 @@ function txtfilename(){
 	tutorial_time = parseInt(getCookie("tutorial_time"))
 
 	// mturk_id, dataset_key, tutorial_duration, task_duration 
-	results_json.push({i: task_key_id.split(",")[2], r:task_key_id.split(",")[1] ,d:0,d1:tutorial_time,d2:-1})
+	results_json.push({i: task_key_id.split(",")[2], r:task_key_id.split(",")[1], t:0, d:0,d1:tutorial_time,d2:-1})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
 	console.log(folder, task_key_id)
@@ -142,10 +142,10 @@ function nextImage() {
 	
 	if (doc_num == study_length) {
 		
-		document.getElementById("nextbutton-1").innerHTML = "Completion Code"
-		document.getElementById("nextbutton-2").innerHTML = "Completion Code"
+		document.getElementById("nextbutton-1").innerHTML = "Finish and Submit Data"
+		document.getElementById("nextbutton-2").innerHTML = "Finish and Submit Data"
 		
-		alert("You successfully finished this HIT! \n\n A long code (json file) will be printed in your new browser tab. Please copy the code it in the AMT page to submit the HIT! \n\n\n If you don't see the new tab; click on the new Completion Code button")
+		// alert("You successfully finished this HIT! \n\n A long code (json file) will be printed in your new browser tab. Please copy the code it in the AMT page to submit the HIT! \n\n\n If you don't see the new tab; click on the new Completion Code button")
 
 		WriteFile(tot_time);
 
@@ -458,16 +458,27 @@ function WriteFile(){
 	let task_total_time = task_end_time - task_start_time;
 	results_json[0].d2 = task_total_time; //update the end time in the json before writing to file.
 
-	var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
-	var a = document.createElement('a');
-	a.href = 'data:' + jsonContent;
-	a.download = 'results.json';
-	a.innerHTML = 'End Study';
-	a.click();
+	// var jsonContent = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results_json));
+	
+		console.log(results_json)
+		$.ajax({
+	  type : "POST",
+	  url : "json.php",
+	  data : {
+		  json : JSON.stringify(results_json)
+	  }
+	});
+	location.href='./finish.html';
+  
+	// var a = document.createElement('a');
+	// a.href = 'data:' + jsonContent;
+	// a.download = 'results.json';
+	// a.innerHTML = 'End Study';
+	// a.click();
 
-	var winPrint = window.open("about:blank", "_blank")//'', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0',"_blank"); 
-	winPrint.document.write(JSON.stringify(results_json)); 
-	winPrint.document.close(); 
+	// var winPrint = window.open("about:blank", "_blank")//'', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0',"_blank"); 
+	// winPrint.document.write(JSON.stringify(results_json)); 
+	// winPrint.document.close(); 
 }
 
 

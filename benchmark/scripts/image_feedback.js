@@ -1,3 +1,8 @@
+/* 
+ * ***
+ * Not used by our current system -Jeremy
+ * ***
+ */
 highlight_data = []
 var inkColor = "red" // "#1f77b4"
 var imgIndex = '';
