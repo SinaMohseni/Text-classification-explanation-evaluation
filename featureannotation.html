@@ -10,7 +10,7 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <link rel="stylesheet" href="./benchmark/styles/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="./benchmark/scripts/workers.json"></script>
+  <script src="./benchmark/scripts/workers/workers.json"></script>
 </head>
 
 
@@ -27,7 +27,7 @@
         </br>
         </br>
         </br>
-        <p> We are building an AI system to recognize <u> pets in images from social media </u> to esmitate pet populations in cities </p>
+        <p> We are building an AI system to recognize <u> pets in images from social media </u> to esmitate pet populations in cities </p> 
         <p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p>
         <!-- todo: is "pixels" too specific? Is there a more general word? -->
         <p> We need your help to <u> select pixels that best represent pets</u> in order to train our AI. </p>
@@ -184,7 +184,7 @@ function resolveDataFromStorage(){
       } 
 
         output = 'passed'
-        $.getJSON("./benchmark/scripts/workers.json", function(workers) {
+        $.getJSON("./benchmark/scripts/workers/workers.json", function(workers) {
           
           if (mturk_ID in workers) {
             console.log(workers, workers[mturk_ID], key);

@@ -1,6 +1,8 @@
 data
-/mturk.csv
-/workers_new.json
-/workers.json
-/workers.json
-/workers.js
+mturk.csv
+workers_new.json
+workers.json
+workers.json
+benchmark/scripts/workers
+user-study/mturk-annotation-results/mturk
+user-study/mturk-rating-results/mturk

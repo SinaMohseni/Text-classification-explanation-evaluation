@@ -57,7 +57,7 @@ function txtfilename(){
 				if (this_file.pop() == "t"){ // if this file ends in a 't', it's likely a .txt file.
 					//i is -1 here because $(data).find("a") - lists the parent directory as an item. so we're off by one.
 					articleTitles[i-1] = val.split("/").pop().split("-")[1].split(".txt")[0]
-					txtfiles.push(folder+val)
+					txtfiles.push(val)  // folder+
 				}
 			});
 		},
@@ -216,6 +216,7 @@ function writeFile(){
 		// console.log(results_json[index])
 		// toSave.push(this.userData[index]);
 	}
+	
 	//push the remainder of the user data to this file.
 	toSave.push(results_json);
 	//now Save the file as json to the server with a POST request.

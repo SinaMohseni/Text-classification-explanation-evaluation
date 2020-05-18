@@ -9,7 +9,7 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <link rel="stylesheet" href="./benchmark/styles/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="./benchmark/scripts/workers.json"></script>
+  <script src="./benchmark/scripts/workers/workers.json"></script>
 </head>
 
 
@@ -185,7 +185,7 @@ function screening_id(action){
     } 
 
     output = 'passed'
-    $.getJSON("./benchmark/scripts/workers.json", function(workers) {
+    $.getJSON("./benchmark/scripts/workers/workers.json", function(workers) {
         
         console.log(mturk_ID,key,workers[mturk_ID])
 

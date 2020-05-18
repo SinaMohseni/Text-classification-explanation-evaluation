@@ -4,17 +4,19 @@
   /* sanity check */
   if (json_decode($json) != null)
   {
+
     $decode = json_decode($json);
     foreach($decode as $entry){
       $id = $entry->i;
       $task = $entry->t;
     break;
     }
-    switch ($task) {
-      case -1:
+
+    switch ($task) { 
+      case -1:       
         $filename = "../user-study/incoming_user_data/temp/" . $id . ".json";
-        break;
-      case 0:
+        break;       
+      case 0:        
           //Image Annotation
           $filename = "../user-study/incoming_user_data/imageA/" . $id . ".json";
           break;
@@ -31,6 +33,7 @@
           $filename = "../user-study/incoming_user_data/textR/" . $id . ".json";
           break;
         }
+
     // $filename = "./user_data/" . $id . ".json";
     $file = fopen($filename,'w+');
     fwrite($file, $json);
