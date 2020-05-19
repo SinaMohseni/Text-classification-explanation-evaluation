@@ -1,11 +1,13 @@
-<!-- This should be fine because users wouldn't be running this script unless they already passed the other checks. But if someone tries this twice they will end up overwriting their file I think. -->
+#!/usr/local/bin/php
 <?php
+try {
   $json = $_POST['json'];
   /* sanity check */
   if (json_decode($json) != null)
   {
 
     $decode = json_decode($json);
+    try{
     foreach($decode as $entry){
       $id = $entry->i;
       $task = $entry->t;
@@ -32,7 +34,14 @@
           //Text Rating
           $filename = "../user-study/incoming_user_data/textR/" . $id . ".json";
           break;
-        }
+      default;
+        throw new Exception('task ID Provided is incorrect. Check t value', 512);
+        break;
+      }
+      } catch (Exception $t){
+        echo $t;
+        exit;
+      }
 
     // $filename = "./user_data/" . $id . ".json";
     $file = fopen($filename,'w+');
@@ -41,6 +50,10 @@
   }
   else
   {
-    // user has posted invalid JSON, handle the error 
+    throw new Exception('json decode returned null',512);
   }
+} catch(Exception $e){
+  echo $e;
+  exit;
+}
 ?>
