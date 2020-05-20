@@ -156,7 +156,16 @@
               location.href='./benchmark/cnsnt.html'
               location.reload();
               location.href='./expqlty.html';   // feed-back
-              // location.href='./rateimg.html';   // feed-back
+            }else if (user_task == "TextAnnotation") {
+              setCookie("task_key_id", [user_task,task_key_id.split(",")[1],task_key_id.split(",")[2]])
+              location.href='./benchmark/cnsnt.html'
+              location.reload();
+              location.href='./exptxt.html';
+            }else if (user_task == "TextRating") {
+              setCookie("task_key_id", [user_task,task_key_id.split(",")[1],task_key_id.split(",")[2]])
+              location.href='./benchmark/cnsnt.html'
+              location.reload();
+              location.href='./evltxt.html';
             }else{
               location.reload();
               location.href='./unknownstudy.html';   //TODO: make a page saying they do not have the correct User_task cookie
