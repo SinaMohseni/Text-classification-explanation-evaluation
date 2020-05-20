@@ -44,8 +44,11 @@ function txtfilename(){
 	
 	folder_name = getCookie("user_selection")
 
+	//todo Set up some restrictions to ensure everyone see different documents, 
+	//todo right now it's set up to load as many as it can before the cntrl is constructed.
+
 	// var folder = "data/20news_test/no_header/"+ folder_name +"/";
-	var folder = "data/20news_test/no_header/";
+	var folder = "./data/20news_test/no_header/";
 	// var folder = "data/20news_test/org/";
 	var txtdoc = []
 	
@@ -55,9 +58,7 @@ function txtfilename(){
 	        $(data).find("a").attr("href", function (i, val) {
 				this_file = val.split(""); //make an array of the characters in file name.
 				if (this_file.pop() == "t"){ // if this file ends in a 't', it's likely a .txt file.
-					//i is -1 here because $(data).find("a") - lists the parent directory as an item. so we're off by one.
-					articleTitles[i-1] = val.split("/").pop().split("-")[1].split(".txt")[0]
-					txtfiles.push(val)  // folder+
+					txtfiles.push(folder+val)
 				}
 			});
 		},
@@ -66,6 +67,7 @@ function txtfilename(){
 			textFileContents = []
 			for (let index = 0; index < txtfiles.length; index++) {
 				$.get(txtfiles[index], (data) => {
+					articleTitles.push(txtfiles[index].split("/").pop().split("-")[1].split(".txt")[0])
 					textFileContents.push(data);
 				});
 			}
@@ -73,13 +75,13 @@ function txtfilename(){
 			
 	    }
 	}).then( ()=> {
-		setTimeout(()=> { //todo find a way to get this working by waiting for the async functions to return.
+		setTimeout(()=> { //todo find a way to get this working by waiting for the async functions to return in stead of setting a timer.
 			cntrl = new Pages(textFileContents)
 			article_title();
 			showText(results_json[cntrl.i]);
 			updateWindow();
 			resolveProgressButtons()
-		},200);
+		},500);
 		// console.log(textFileContents)
 	});
 
