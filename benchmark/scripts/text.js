@@ -169,7 +169,12 @@ var saved = 1;
 function save_json(){//shouldOverwrite){  
 	// console.log(txtfiles[1])
 	// console.log(word_idx)
-	let updatedObj = {article: txtfiles[cntrl.i], word: exp_data, indices: word_idx}
+	let wordsTuple = [];
+	for (let index = 0; index < exp_data.length; index++) {
+		wordsTuple.push([word_idx[index],exp_data[index]]);	
+	}
+	let updatedObj = {i: txtfiles[cntrl.i], p: wordsTuple}
+	console.log(updatedObj)
 	let current_time_s = Math.floor(Date.now() / 1000);
         let tot_time = current_time_s - cntrl.last_time_s;
         cntrl.last_time_s = current_time_s;
@@ -224,7 +229,7 @@ function writeFile(){
 	//now Save the file as json to the server with a POST request.
 	$.ajax({
 		type : "POST",
-		url : "/benchmark/json.php",
+		url : "./json.php",
 		data : {
 			json : JSON.stringify(toSave)
 		}
@@ -288,7 +293,7 @@ function showText(highlightsFromMem) {
 		}
 	}
 	// if (update_txt == 0){
-	if(highlightsFromMem == undefined || highlightsFromMem.indices == undefined){ //new article. has not been seen yet
+	if(highlightsFromMem == undefined || highlightsFromMem.p == undefined){ //new article. has not been seen yet
 		for (var i = 0; i < words_array.length; i++){
 			words_hash.push({word : words_array[i],
 							idx: i,
@@ -298,8 +303,12 @@ function showText(highlightsFromMem) {
 							w : 0})
 		}
 	} else {
-		word_idx = highlightsFromMem.indices;
-		exp_data = highlightsFromMem.word;
+		wordsTuple = highlightsFromMem.p;
+		console.log("words in memory:", wordsTuple)
+		for (let index = 0; index < wordsTuple.length; index++) {
+			word_idx.push(wordsTuple[index][0]);
+			exp_data.push(wordsTuple[index][1]);	
+		}
 		for (let i = 0; i < words_array.length; i++) {
 			words_hash.push({word : words_array[i],
 				idx: i,
