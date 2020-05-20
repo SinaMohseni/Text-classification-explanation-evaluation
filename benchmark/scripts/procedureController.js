@@ -79,13 +79,11 @@ function Progress(main_element,data,callBackMethod, condition){
         //now Save the file as json to the server with a POST request.
         $.ajax({
             type : "POST",
-            url : "/benchmark/json.php",
+            url : "./json.php",
             data : {
                 json : JSON.stringify(toSave)
             }
           });
-          //Call the Callback function final page after being written.
-          this.callBackMethod();
     }
     this.back = function (){
         // console.log("called Back to page #", this.i, "out of", this.total, "user has seen:",this.hasSeen)
@@ -103,8 +101,8 @@ function Progress(main_element,data,callBackMethod, condition){
         // }else if(this.i == this.total-2){
         //     document.getElementById("nextbutton-1").innerHTML = "Start Task"
         }else{
-            this.writeToFile(this.conditionNum);
-            // this.callBackMethod()
+            // this.writeToFile(this.conditionNum);
+            this.callBackMethod()
         }
     }
     this.updatePage = function(){
