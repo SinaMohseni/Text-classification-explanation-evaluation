@@ -17,6 +17,7 @@
     </div>
     <button id="backbutton-2" onclick="back()">Previous Image</button>
     <button id="nextbutton-2" onclick="next()">next Image</button>
+    <button onclick="sendTestData()">test Json.php connection</button>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="./benchmark/scripts/procedureController.js"></script>
@@ -87,6 +88,7 @@
     
     //*just a random array builder object to act as filler user data. (ie making a rating or a selection)
     function SetOfRandomNumbers(length) {
+        this.t = -1;
         this.stuff = new Array(length);
         this.refill = function () {
             for (let index = 0; index < this.stuff.length; index++) {
@@ -94,6 +96,18 @@
             }
             console.log("array refilled as ", this.stuff);
         }
+    }
+    function sendTestData(){
+        let q = [{"i":"Jeremy","r":"9","t":-1,"d":0,"d1":15,"d2":1014},{"i":"cat-2007_000528.jpg","p":[["246.00","354.14"]]},{"i":"cat-2007_000876.jpg","p":[["378.00","389.14"]]},{"i":"cat-2007_000876.jpg","p":[["382.00","397.14"]]}];
+        console.log(q);
+        $.ajax({
+            type : "POST",
+            url : "./benchmark/json.php",
+            data : {
+                json : JSON.stringify(q)
+            } 
+        });
+        console.log("fin")
     }
 </script>
 
