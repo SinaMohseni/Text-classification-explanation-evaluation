@@ -10,7 +10,7 @@ function startUp() {
 					this_file = val.split(""); //make an character array of the file name
 					if (this_file.pop() == "n") { //If the character array ends in an "n" (aka .json file) then add it to the lists, this is to avoid adding directories to the arrays.
 						articleTitles.push(val.split("/").pop().split("-")[1].split(".json")[0]) //so we know what type of file it is
-						filePaths.push(val) //folder + the name of the path to the file. 
+						filePaths.push(folder+val) //folder + the name of the path to the file. 
 					}
 					// console.log(i,val, this_file, articleTitles,filePaths)
 				})
@@ -127,6 +127,7 @@ function generateHTMLFromJSON(index, docWords) {
 }
 
 function finished() {
+	cntrl.writeToFile(3);
 	console.log("all Done!")
 	location.href='./finish.html';
 }
