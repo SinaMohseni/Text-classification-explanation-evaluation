@@ -1,0 +1,183 @@
+<!-- start with instruction - go to info sheet (cnsnt.html)-->
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+
+<head>
+
+<title>Explainable Machine Learning (XAI)</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" href="./benchmark/styles/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="./benchmark/scripts/workers/workers.json"></script>
+</head>
+
+
+<body>
+
+</br>
+  <button id="nextbutton-1" onclick=nextSlide() >Continue</button>
+  <button id="backbutton-1" onclick=backSlide() >Back</button>
+
+  <div id="formDiv">   
+    <div id="cnsnttextbox">
+      <!-- Instructions will be loaded here! -->
+    </div>
+  </div>
+
+  <button id="nextbutton-2" onclick=nextSlide() >Continue</button>
+  <button id="backbutton-2" onclick=backSlide() >Back</button>
+
+  <script src="benchmark/scripts/procedureController.js"></script>
+  <script type="text/javascript">
+
+    const urlParams = new URLSearchParams(window.location.search);  
+    const key = checkKey(urlParams.get('key'));
+
+    var mturk_ID = "";
+    var position = $(window).scrollTop();
+
+  let tutorial_start_time = Math.floor(Date.now() / 1000);
+    let slides = [
+        '<h1>Topic Recognition AI</h1>\
+        <p>Welcome, please read the instructions in this slideshow.</p>\
+        <h2>Background</h2>\
+        <p> We are building an AI system that recognizes <u> the important words </u> in order to classify emails.</p>\
+        <p> Our AI is trained to <mark><u>detect medicine or electronics topics</u></mark> in text </p>\
+        <p> We need your help to <mark><u>choose the "most descriptive" words</u></mark> to train our AI. </p>',
+        '<h1>Task</h1>\
+        <h2>Review our AI\'s Explanations:</h2> \
+        <p>Your main task is to <mark><u>select words</u></mark> which explain the given topic. </p>\
+        <p>Use your best judgement to select words (in yellow) that you feel are the <mark><u>most important</u></mark> for classifying the message.</p>\
+        <p> consider:\
+          <ul>\
+            <li>What words describe the topic?</li>\
+            <li>Are there words that are specific to this topic?</li>\
+          </ul>\
+        </p>\
+        <img  class="slide-img" src="./user-study/instructions/t-annotation-1.png" width="200">',
+        '<h1>Instructions</h1>\
+        <h2>In each article, click words to <mark>mark them as importatnt</mark>.</h2>\
+        <h2>Click [Next Article] to navigate your <mark>14</mark> articles.</h2>\
+        <img  class="slide-img" src="./user-study/instructions/t-annotation-2.png" >',
+        '<h1>Finishing</h1>\
+        <p>After rating all the articles your data will be sent to the researchers <mark>automatically</mark>.</p>\
+        <img  class="slide-img" src="./user-study/instructions/t-interface-3.png" >'
+      ]
+    cntrl = new Progress("cnsnttextbox",slides,read_radio);
+    cntrl.updatePage(); // clear the page and load from object
+    function nextSlide(){screening_id('stay');cntrl.next();waitNSee()}
+    function backSlide(){cntrl.back()}
+    
+    //These two functions are Required by the Progress object, but don't need functionality for this page's instance: 
+    function freshPage(){return null;}
+    function resolveDataFromStorage(){return null;}
+
+    //This is not a perfect system, but it does slow them down some. 
+    function waitNSee(){
+      setTimeout(function(){cntrl.saw()},2000)
+    }
+    //call to resolve the first page.
+    waitNSee();
+    
+
+
+//If a key is not entered in the URL, then generate a random key 0-4 inclusive
+function checkKey(k){
+  if (k === null){
+    return Math.floor(Math.random()*4)
+  } else{
+    return k
+  }
+}
+
+
+// request mturk id with mouse scroll event 
+$(window).scroll(function() {
+    var scroll = $(window).scrollTop();
+    if (scroll > position) {
+      if (mturk_ID == null || mturk_ID == "") {
+        screening_id('stay');
+        mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+      }
+    } else {
+      if (mturk_ID == null || mturk_ID == "") {
+        mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+        screening_id('stay');
+      }
+    }
+    position = scroll;
+  });
+
+
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function read_radio(){
+   
+
+  user_task = "TextAnnotation";
+
+  if (mturk_ID == null || mturk_ID == "") {
+   
+    mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+    if (mturk_ID != null & mturk_ID != "") {
+      result = screening_id('stay');
+      if (result == 'passed') alert("Be sure you fully understand the instructions on this page, you will not be able to see them during the task!\n\nClick [Continue] to begin")
+    }
+
+  }else{
+    screening_id('proceed');
+  }
+}
+
+function screening_id(action){
+    if (mturk_ID == null || mturk_ID == "") {
+      mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+    } 
+
+    output = 'passed'
+    $.getJSON("./benchmark/scripts/workers/workers.json", function(workers) {
+        
+        console.log(mturk_ID,key,workers[mturk_ID])
+
+        if (mturk_ID in workers) {
+            if (workers[mturk_ID].includes(parseInt(key))){
+                alert("You have done this HIT before; Sorry can't do it again!")
+                document.getElementById("nextbutton-1").innerHTML = "You Can't Continue"
+                document.getElementById("nextbutton-2").innerHTML = "You Can't Continue"
+                document.getElementById('nextbutton-1').disabled = true;  // disable this button
+                document.getElementById("nextbutton-2").disabled = true;  // disable this button
+                // window.close();
+                // var ww = window.open(window.location, '_self'); 
+                // ww.close();
+                output = 'failed'
+            }else{
+              let tutorial_end_time = Math.floor(Date.now() / 1000);
+              let total_tutorial_time = tutorial_end_time-tutorial_start_time
+              setCookie("user_selection", [user_task,key,mturk_ID])
+              setCookie("tutorial_time", total_tutorial_time)
+              location.href='./benchmark/cnsnt.html'
+            }
+
+        } else if (action == 'proceed'){
+          let tutorial_end_time = Math.floor(Date.now() / 1000);
+          let total_tutorial_time = tutorial_end_time-tutorial_start_time
+          setCookie("user_selection", [user_task,key,mturk_ID])
+          setCookie("tutorial_time", total_tutorial_time)
+          location.href='./benchmark/cnsnt.html'
+        }
+
+    });
+    return output
+}
+</script>
+</body>
+</html>
