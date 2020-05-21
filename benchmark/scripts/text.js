@@ -235,7 +235,7 @@ function writeFile(){
 		}
 		});
 		//Call the Callback function final page after being written.
-		location.href='./finish.html';
+		window.location.replace('./finish.html');
 	}
 
 function getCookie(cname) {
