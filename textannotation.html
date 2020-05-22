@@ -41,15 +41,18 @@
     let slides = [
         '<h1>Topic Recognition AI</h1>\
         <p>Welcome, please read the instructions in this slideshow.</p>\
+        <br><br>\
         <h2>Background</h2>\
-        <p> We are building an AI system that recognizes <u> the important words </u> in order to classify emails.</p>\
-        <p> Our AI is trained to <mark><u>detect medicine or electronics topics</u></mark> in text </p>\
+        <p> We are building an AI system that learns to classify emails.</p>\
+        <p> Our AI is trained to detect <mark><u>medicine</u></mark> and <mark><u>electronics</u></mark> topics in emails.</p>\
         <p> We need your help to <mark><u>choose the "most descriptive" words</u></mark> to train our AI. </p>',
-        '<h1>Task</h1>\
-        <h2>Review our AI\'s Explanations:</h2> \
+        '<h1>Your Task</h1>\
+        <br>\
+        <h2>Explain Descriptive Words to AI:</h2> \
         <p>Your main task is to <mark><u>select words</u></mark> which explain the given topic. </p>\
-        <p>Use your best judgement to select words (in yellow) that you feel are the <mark><u>most important</u></mark> for classifying the message.</p>\
-        <p> consider:\
+        <p>Use your best judgement to select words (by mouse click) that you feel are the <mark><u>most important</u></mark> for classifying the message.</p>\
+        <br>\
+        <p> Consider:\
           <ul>\
             <li>What words describe the topic?</li>\
             <li>Are there words that are specific to this topic?</li>\
@@ -57,11 +60,12 @@
         </p>\
         <img  class="slide-img" src="./user-study/instructions/t-annotation-1.png" width="200">',
         '<h1>Instructions</h1>\
-        <h2>In each article, click words to <mark>mark them as importatnt</mark>.</h2>\
+        <h2>In each email, click words to <mark>mark them as importatnt</mark>.</h2>\
         <h2>Click [Next Article] to navigate your <mark>14</mark> articles.</h2>\
         <img  class="slide-img" src="./user-study/instructions/t-annotation-2.png" >',
         '<h1>Finishing</h1>\
-        <p>After rating all the articles your data will be sent to the researchers <mark>automatically</mark>.</p>\
+        <p>After highlighting key words in all emails, your data will be <mark>stored automatically</mark>.</p>\
+        <p>Copy the <mark>HIT Completion Code</mark> and go back to the Mechanical Turk page to finish your HIT.</p>\
         <img  class="slide-img" src="./user-study/instructions/t-interface-3.png" >'
       ]
     cntrl = new Progress("cnsnttextbox",slides,read_radio);

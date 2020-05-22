@@ -46,18 +46,19 @@
     let slides = [
         '<h1>Topic Recognition AI</h1>\
         <p>Welcome, please read the instructions in this slideshow.</p>\
+        <br><br>\
         <h2>Background</h2>\
-        <p> We are building an AI system that recognizes <u> the important words </u> in order to classify emails.</p>\
-        <p> Our AI is trained to <mark><u>detect medicine or electronics topics</u></mark> in text </p>\
-        <p> We need your help to <mark><u>evaluate the "goodness" of our AI</u></mark> by reviewing it\'s output for 14 images. </p>\
-        <p> Our AI <mark>describes what words it uses to classify the message</mark> by highlighting them yellow. </p>',
-        '<h1>Task</h1>\
-        <h2>Review our AI\'s Explanations:</h2> \
-        <p>Your main task is to <mark><u> review and rate the higlighted words</u></mark> which explain how the AI made it\'s classification: </p>\
+        <p> We are building an AI system that learns to classify emails.</p>\
+        <p> Our AI is trained to detect <mark><u>medicine</u></mark> and <mark><u>electronics</u></mark> topics in emails.</p>\
+        <p> We need your help to <mark><u>evaluate the "goodness" of our AI</u></mark> by reviewing it\'s output for 14 emails. </p>\
+        <p> Our AI <mark><u>explains which words</u> it used to classify the emails</mark> by highlighting them yellow. </p>',
+        '<h1>Your Task</h1>\
+        <h2>Review AI Explanations:</h2> \
+        <p>Your main task is to <mark><u> review and rate the AI explanations (higlighted words)</u></mark> which describe why the AI made it\'s email classification. </p>\
         <p>The words with the <mark>most opaque yellow</mark> were the most important for classifying the message to a topic whereas the areas left white have little significance.</p>\
         <img  class="slide-img" src="./user-study/instructions/t-interface-1.png" width="200">',
-        '<h1>Instructions</h1>\
-        <h2>Rate AI explanations for each message:</h2>\
+        '<h1>Tour Task</h1>\
+        <h2>Rate AI explanations for each email:</h2>\
         <p>Consider: \
           <ul>\
             <li>Are the correct words selected?</li>\
@@ -68,7 +69,8 @@
         <h2>Click [Next Article] to navigate:</h2>\
         <img  class="slide-img" src="./user-study/instructions/t-interface-2.png" >',
         '<h1>Finishing</h1>\
-        <p>After rating all the articles your data will be sent to the researchers <mark>automatically</mark>.</p>\
+        <p>After rating all <mark>14</mark> articles, your data will be <mark>stored automatically</mark>.</p>\
+        <p>Copy the <mark>HIT Completion Code</mark> and go back to the Mechanical Turk page to finish your HIT.</p>\
         <img  class="slide-img" src="./user-study/instructions/t-interface-3.png" >'
       ]
     cntrl = new Progress("cnsnttextbox",slides,read_radio);
