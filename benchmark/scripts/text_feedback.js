@@ -10,7 +10,7 @@ function startUp() {
 					this_file = val.split(""); //make an character array of the file name
 					if (this_file.pop() == "n") { //If the character array ends in an "n" (aka .json file) then add it to the lists, this is to avoid adding directories to the arrays.
 						articleTitles.push(val.split("/").pop().split("-")[1].split(".json")[0]) //so we know what type of file it is
-						filePaths.push(val) //folder + the name of the path to the file. 
+						filePaths.push(folder+val) //folder + the name of the path to the file. 
 					}
 					// console.log(i,val, this_file, articleTitles,filePaths)
 				})
@@ -36,7 +36,7 @@ function startUp() {
 				}
 				cntrl = new Progress('chartDiv', htmlDocuments, finished, 3)
 				cntrl.updatePage()
-			}, 200)
+			}, 500)
 		}) //end .then
 }
 
@@ -58,8 +58,7 @@ function generateHTMLFromJSON(index, docWords) {
 		for (let index = 0; index < words.length; index++) {
 			thisWordIndex = words.find(element => element.i == index)
 			// console.log(thisWordIndex)
-			//todo convert to join to optimize operations
-			out += '<span class="highlight" style="background:rgba( 255, 255, 0, ' + thisWordIndex.a + ');">' + thisWordIndex.w + '</span> ';
+			out += '<span class="highlight" style="font-size: ' + 300 * thisWordIndex.a +'%; background:rgba( 255, 255, 0, ' + thisWordIndex.a + ');">' + thisWordIndex.w + '</span> ';
 		}
 
 		//alternative way to do it with less looping, but I wan't sure about ajax returning words out of order:
@@ -127,8 +126,9 @@ function generateHTMLFromJSON(index, docWords) {
 }
 
 function finished() {
+	cntrl.writeToFile(3);
 	console.log("all Done!")
-	location.href='./finish.html';
+	window.location.replace('./finish.html');
 }
 
 function freshPage() {

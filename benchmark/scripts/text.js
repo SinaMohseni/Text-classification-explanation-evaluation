@@ -44,8 +44,11 @@ function txtfilename(){
 	
 	folder_name = getCookie("user_selection")
 
+	//todo Set up some restrictions to ensure everyone see different documents, 
+	//todo right now it's set up to load as many as it can before the cntrl is constructed.
+
 	// var folder = "data/20news_test/no_header/"+ folder_name +"/";
-	var folder = "data/20news_test/no_header/";
+	var folder = "./data/20news_test/no_header/";
 	// var folder = "data/20news_test/org/";
 	var txtdoc = []
 	
@@ -55,9 +58,7 @@ function txtfilename(){
 	        $(data).find("a").attr("href", function (i, val) {
 				this_file = val.split(""); //make an array of the characters in file name.
 				if (this_file.pop() == "t"){ // if this file ends in a 't', it's likely a .txt file.
-					//i is -1 here because $(data).find("a") - lists the parent directory as an item. so we're off by one.
-					articleTitles[i-1] = val.split("/").pop().split("-")[1].split(".txt")[0]
-					txtfiles.push(val)  // folder+
+					txtfiles.push(folder+val)
 				}
 			});
 		},
@@ -66,6 +67,7 @@ function txtfilename(){
 			textFileContents = []
 			for (let index = 0; index < txtfiles.length; index++) {
 				$.get(txtfiles[index], (data) => {
+					articleTitles.push(txtfiles[index].split("/").pop().split("-")[1].split(".txt")[0])
 					textFileContents.push(data);
 				});
 			}
@@ -73,13 +75,13 @@ function txtfilename(){
 			
 	    }
 	}).then( ()=> {
-		setTimeout(()=> { //todo find a way to get this working by waiting for the async functions to return.
+		setTimeout(()=> { //todo find a way to get this working by waiting for the async functions to return in stead of setting a timer.
 			cntrl = new Pages(textFileContents)
 			article_title();
 			showText(results_json[cntrl.i]);
 			updateWindow();
 			resolveProgressButtons()
-		},200);
+		},500);
 		// console.log(textFileContents)
 	});
 
@@ -167,7 +169,12 @@ var saved = 1;
 function save_json(){//shouldOverwrite){  
 	// console.log(txtfiles[1])
 	// console.log(word_idx)
-	let updatedObj = {article: txtfiles[cntrl.i], word: exp_data, indices: word_idx}
+	let wordsTuple = [];
+	for (let index = 0; index < exp_data.length; index++) {
+		wordsTuple.push([word_idx[index],exp_data[index]]);	
+	}
+	let updatedObj = {i: txtfiles[cntrl.i], p: wordsTuple}
+	console.log(updatedObj)
 	let current_time_s = Math.floor(Date.now() / 1000);
         let tot_time = current_time_s - cntrl.last_time_s;
         cntrl.last_time_s = current_time_s;
@@ -222,13 +229,13 @@ function writeFile(){
 	//now Save the file as json to the server with a POST request.
 	$.ajax({
 		type : "POST",
-		url : "/benchmark/json.php",
+		url : "./json.php",
 		data : {
 			json : JSON.stringify(toSave)
 		}
 		});
 		//Call the Callback function final page after being written.
-		location.href='./finish.html';
+		window.location.replace('./finish.html');
 	}
 
 function getCookie(cname) {
@@ -286,7 +293,7 @@ function showText(highlightsFromMem) {
 		}
 	}
 	// if (update_txt == 0){
-	if(highlightsFromMem == undefined || highlightsFromMem.indices == undefined){ //new article. has not been seen yet
+	if(highlightsFromMem == undefined || highlightsFromMem.p == undefined){ //new article. has not been seen yet
 		for (var i = 0; i < words_array.length; i++){
 			words_hash.push({word : words_array[i],
 							idx: i,
@@ -296,8 +303,12 @@ function showText(highlightsFromMem) {
 							w : 0})
 		}
 	} else {
-		word_idx = highlightsFromMem.indices;
-		exp_data = highlightsFromMem.word;
+		wordsTuple = highlightsFromMem.p;
+		console.log("words in memory:", wordsTuple)
+		for (let index = 0; index < wordsTuple.length; index++) {
+			word_idx.push(wordsTuple[index][0]);
+			exp_data.push(wordsTuple[index][1]);	
+		}
 		for (let i = 0; i < words_array.length; i++) {
 			words_hash.push({word : words_array[i],
 				idx: i,
