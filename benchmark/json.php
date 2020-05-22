@@ -13,23 +13,23 @@
     }
 
     switch ($task) { 
-      case -1:       
-        $filename = "../user-study/incoming_user_data/temp/" . $id . ".json";
-        break;       
-      case 0:        
-          //Image Annotation
+      case -1:
+        $filename = "../user-study/incoming_user_data/temp/" . $id . ".json"; 
+        break;
+      case 0:
+          //Image Annotation -- 
           $filename = "../user-study/incoming_user_data/imageA/" . $id . ".json";
           break;
       case 1:
-          //Image Rating
+          //Image Rating -- 
           $filename = "../user-study/incoming_user_data/imageR/" . $id . ".json";
           break;
       case 2:
-          //text Annotation
+          //text Annotation -- 
           $filename = "../user-study/incoming_user_data/textA/" . $id . ".json";
           break;
       case 3;
-          //Text Rating
+          //Text Rating -- 
           $filename = "../user-study/incoming_user_data/textR/" . $id . ".json";
           break;
         }

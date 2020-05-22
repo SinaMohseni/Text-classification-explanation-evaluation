@@ -33,8 +33,8 @@ def get_jsons(batch):
 	results = entire_log['Answer.surveycode']
 
 
-	i=0
-	for each in results: 
+	i=0;
+	for each in results:
 		try:
 			print ('P: ',i)
 			each_json = json.loads(each)
@@ -44,7 +44,6 @@ def get_jsons(batch):
 					single['image'] = single.pop('i')
 					# single['counter'] = single.pop('c')
 					single['points'] = single.pop('p')
-
 				i+=1;
 				with open(out_folder+'P'+str(i)+'.json','w', encoding='utf-8') as f:
 					json.dump(each_json, f, ensure_ascii=False)
