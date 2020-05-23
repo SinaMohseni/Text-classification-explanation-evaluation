@@ -58,7 +58,7 @@ function generateHTMLFromJSON(index, docWords) {
 		for (let index = 0; index < words.length; index++) {
 			thisWordIndex = words.find(element => element.i == index)
 			// console.log(thisWordIndex)
-			out += '<span class="highlight" style="font-size: ' + 300 * thisWordIndex.a +'%; background:rgba( 255, 255, 0, ' + thisWordIndex.a + ');">' + thisWordIndex.w + '</span> ';
+			out += '<span class="highlight" style="font-size: ' + 300 * thisWordIndex.a +'%; background:rgba( 0, 255, 0, ' + thisWordIndex.a + ');">' + thisWordIndex.w + '</span> ';
 		}
 
 		//alternative way to do it with less looping, but I wan't sure about ajax returning words out of order:
