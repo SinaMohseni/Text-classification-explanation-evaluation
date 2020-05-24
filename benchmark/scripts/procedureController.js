@@ -77,13 +77,26 @@ function Progress(main_element,data,callBackMethod, condition){
         //push the remainder of the user data to this file.
         toSave.push(this.userData);
         //now Save the file as json to the server with a POST request.
-        $.ajax({
+        let isSuccess = false;
+        let req = $.ajax({
             type : "POST",
             url : "./json.php",
+            async: false,
             data : {
                 json : JSON.stringify(toSave)
+            },
+            success: () => {
+                console.log("Connected to json.php, SUCSSESS");
+                isSuccess = true;
+                // return isSuccess;
+            },
+            error: (e) => {
+                console.error("Incomplete Transfer. Cannpt connect to JSON.php",e);
+                isSuccess = false;
+                // return isSuccess;
             }
-          });
+        });
+        return isSuccess;
     }
     this.back = function (){
         // console.log("called Back to page #", this.i, "out of", this.total, "user has seen:",this.hasSeen)

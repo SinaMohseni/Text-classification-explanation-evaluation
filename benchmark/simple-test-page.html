@@ -20,7 +20,7 @@
     <button onclick="sendTestData()">test Json.php connection</button>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="./benchmark/scripts/procedureController.js"></script>
+<script src="./scripts/procedureController.js"></script>
 <script type="text/javascript">
     /*simple-test-page.html testing functions for tessting object*/
     
@@ -98,16 +98,34 @@
         }
     }
     function sendTestData(){
-        let q = [{"i":"Jeremy","r":"9","t":-1,"d":0,"d1":15,"d2":1014},{"i":"cat-2007_000528.jpg","p":[["246.00","354.14"]]},{"i":"cat-2007_000876.jpg","p":[["378.00","389.14"]]},{"i":"cat-2007_000876.jpg","p":[["382.00","397.14"]]}];
+        let q = [{"i":"manual-send-test-page","r":"9","t":-1,"d":0,"d1":15,"d2":1014},{"i":"cat-2007_000528.jpg","p":[["246.00","354.14"]]},{"i":"cat-2007_000876.jpg","p":[["378.00","389.14"]]},{"i":"cat-2007_000876.jpg","p":[["382.00","397.14"]]}];
         console.log(q);
         $.ajax({
             type : "POST",
-            url : "./benchmark/json.php",
+            url : "./json.php",
             data : {
                 json : JSON.stringify(q)
-            } 
+            },
+            success: ()=>{
+                console.log("JSON.php |:--:| Connection established");
+            },
+            complete: ()=>{
+                console.log("manual run complete")
+            },
+            error: (e)=>{
+                console.error("Error Occured:", e)
+            }
         });
-        console.log("fin")
+        setCookie('task_key_id', "---,0,object-send-test-page");
+        console.log("creating temp cookie:",getCookie('task_key_id'));
+        action(); //just to write something to the Progress.userData array so it's not empty
+        if(cntrl.writeToFile(-1)){
+                // window.location.replace("simple-test-page.html");
+                console.log("fin")
+        }else {
+            // window.location.replace("simple-test-page.html");
+            console.log("Did not complete Object-Send to JSON.php")
+        }
     }
 </script>
 
