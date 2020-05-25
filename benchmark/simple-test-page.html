@@ -7,17 +7,18 @@
 <body>
     <button id="backbutton-1" onclick="back()">Previous Image</button>
     <button id="nextbutton-1" onclick="next()">next Image</button>
-    <h1>this is the body</h1>
-    <div class="content">
-        <div id="instruction">This is the <span id="num">$$</span> page top</div>
+    <div class="chartdiv">
+        <div id="title"><code style="color:green;">Open the console</code> to see how things are working</div>
         <div id="content">The page content shown to the user and updates </div>
-        <div id="pallet">This is the tools and <button id="aciton" onclick="action()">Resolve this page</button>for
-            rating or annotating. <button id="clear" onclick="reset()">clear stuff?</button></div>
+        <div id="pallet">The Tools that can be activated</div>
         <div id="test-space"></div>
     </div>
     <button id="backbutton-2" onclick="back()">Previous Image</button>
     <button id="nextbutton-2" onclick="next()">next Image</button>
+    <hr>
+    <p> This button will try sending post data to json.php. It is for testing purposes and the output will be in the browser console.<br>
     <button onclick="sendTestData()">test Json.php connection</button>
+    </p>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="./scripts/procedureController.js"></script>
@@ -55,6 +56,7 @@
     function reset(){
         cntrl.saveData([],true);
         cntrl.unsaw();
+        cntrl.updatePage();
     }
 
     //How do you display the data that was saved in the controller?
@@ -74,15 +76,29 @@
     //As needed, what does a blank page look like before the user has manipulated it?
     function freshPage() {
         document.getElementById("pallet").innerHTML =
-            'This is the tools and <button id="aciton" onclick="action()">Resolve this page</button>for rating or annotating.<button id="clear" onclick="reset()">clear stuff?</button>'
+        'These are the tools you have for this page<br>\
+            <button id="aciton" onclick="action()">Add new data to Progress Obj for this page</button>\
+            <button id="clear" onclick="reset()">clear Progress Obj data saved for this page</button>'
     }    
-    
+   
+    console.log("%c!-- This page is designed to test that the object constructed by procedureController.js is constructed / functioning properly --!", "color:#555; font-size:14px")
     //Page data
-    d = ['<h1> Instructions: </h1> </br><h2> Select Pet Features in Images: <br>Your main task is to <mark> hightlight areas in the image that mostly represent pets.</mark></h2><p> This could be a paw, a nose, the whole body etc. Your goal is to <mark>select the areas</mark> of the image <mark> that help <u>you recognize</u></mark> the pet. You do not need to select the entire pet in every image, only the most important areas!</p></br></br><img  id= test_img src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG" width="400">'
-    ,1,2];
+    d = ['<h1>First Page</h1><p>this is the first page with some content</p>',
+        '<h1> Instructions: </h1> </br><h2> Select Pet Features in Images: \
+        <br>Your main task is to <mark> hightlight areas in the image that mostly\
+        represent pets.</mark></h2><p> This could be a paw, a nose, the whole\
+        body etc. Your goal is to <mark>select the areas</mark> of the image\
+        <mark> that help <u>you recognize</u></mark> the pet. You do not need\
+        to select the entire pet in every image, only the most important areas!\
+        </p></br></br><img  id= test_img src=\
+        "http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG"\
+        width="400">'
+    ,"<h1>last Page</h1>"];
     cntrl = new Progress("content", d, progressFinished,-1);
     
-    //-->>>Start things off by updating the page!<<<--
+    /*
+     * -->>>Start things off by updating the page!<<<--
+     */
     cntrl.updatePage();
 
     
@@ -97,36 +113,55 @@
             console.log("array refilled as ", this.stuff);
         }
     }
+
+
+    /**
+     * Tests the json.php file and it's connection/if it's accepting post requests on this server.
+     * @RESULT - there should be two files "manual-send-test-page.json" & "object-send-test-page.json" 
+     *           added to 'user-study/incoming_user_data/temp/', the first file is to see that ajax POST
+     *           is working the other check that the Progress Object is delivering data automatically. 
+     * */
     function sendTestData(){
+        /// PHASE I: /// Test if the ajax request functions without any aditional object confusion.
+        //So we make some manual JSON data and console it.
         let q = [{"i":"manual-send-test-page","r":"9","t":-1,"d":0,"d1":15,"d2":1014},{"i":"cat-2007_000528.jpg","p":[["246.00","354.14"]]},{"i":"cat-2007_000876.jpg","p":[["378.00","389.14"]]},{"i":"cat-2007_000876.jpg","p":[["382.00","397.14"]]}];
-        console.log(q);
+        console.log("manual send", q);
+        //Try delivering the data to the json.php file with a synchronous post request
         $.ajax({
             type : "POST",
             url : "./json.php",
             data : {
                 json : JSON.stringify(q)
             },
+            async: false,
             success: ()=>{
-                console.log("JSON.php |:--:| Connection established");
+                console.log("JSON.php |:--:| Connection established, Manually");
             },
             complete: ()=>{
-                console.log("manual run complete")
+                console.log("Manual run complete")
             },
             error: (e)=>{
-                console.error("Error Occured:", e)
+                console.error("Error Occured during Manual Run:", e)
             }
-        });
+        });//end ajax()
+
+        /// PHASE II: ///  Test if ajax is also working for that Procedure Controler object that is being used by some interfaces.
+        //set a cookie so the object's Write-file knows what to name the new data - and console the cookie
         setCookie('task_key_id', "---,0,object-send-test-page");
         console.log("creating temp cookie:",getCookie('task_key_id'));
-        action(); //just to write something to the Progress.userData array so it's not empty
+        //An instance of a Progress object was loaded when the page loads, (line 97) so no need to recreate obj.
+        //Write something to the Progress.userData array so it's not empty, not necessary, but just to ensure that the object is working.
+        action();
+        //Ask the object to write to file - fiering it's AJAX POST Request. Will return false if it fails.
+        //typically AJAX is asynchronous, but the AJAX call in the Progress object is set to run synchronously, so no need to deal with any wierd .wait(), or .then() promisies in the following condition
         if(cntrl.writeToFile(-1)){
-                // window.location.replace("simple-test-page.html");
-                console.log("fin")
+            // window.location.replace("simple-test-page.html"); //replace the page if the test passes the first time to ensure the data is posted to the server even when the page is replaced
+            console.log("fin")
         }else {
-            // window.location.replace("simple-test-page.html");
+            // window.location.replace("simple-test-page.html"); //replace the page if the test passes the first time to ensure the data is posted to the server even when the page is ".replace()"
             console.log("Did not complete Object-Send to JSON.php")
-        }
-    }
+        }//endif()
+    } //end sendTestData()
 </script>
 
 </html>
