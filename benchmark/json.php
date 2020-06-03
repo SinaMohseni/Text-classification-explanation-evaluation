@@ -1,4 +1,3 @@
-#!/usr/local/bin/php
 <?php
 try {
   $json = $_POST['json'];

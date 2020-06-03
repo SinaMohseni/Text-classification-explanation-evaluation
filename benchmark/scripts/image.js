@@ -92,43 +92,45 @@ function txtfilename(){
 	// mturk_id, dataset_key, tutorial_duration, task_duration 
 	results_json.push({i: task_key_id.split(",")[2], r:task_key_id.split(",")[1], t:0, d:0,d1:tutorial_time,d2:-1})
 
-	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
-	console.log(folder, task_key_id)
+	var folder = "./data/"+ folder_name + "/cat/"; //  +"_exp/";
+	// console.log(folder, task_key_id)
 	var txtdoc = []
 
-	// $.ajax({
-	//     url : folder,
-	//     success: function (data) {
-	//         $(data).find("a").attr("href", function (i, val) {
-	//             	this_file = val.split("");
-	//             	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
-	//             	// this_file.pop()
-	//             	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
-	//             		console.log(folder)
-	// 					console.log(val)
-	//             		txtfiles.push(val) // txtfiles.push(folder+val)
-	//             	}
-	//         });
-	//         console.log(txtfiles)
-	//         total_doc = txtfiles.length;
-	// 		nextImage();
-	//     }
-	// });
+    // ------- old ---------
+	$.ajax({
+	    url : folder,
+	    success: function (data) {
+	        $(data).find("a").attr("href", function (i, val) {
+	            	this_file = val.split("");
+	            	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
+	            	// this_file.pop()
+	            	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
+	            		// console.log(folder)
+						console.log(val)
+	            		txtfiles.push(val) // txtfiles.push(folder+val)
+	            	}
+	        });
+	        console.log(txtfiles)
+	        total_doc = txtfiles.length;
+			nextImage();
+	    }
+	});
 
 	// raw_imgs:       This is the list of main annotation images 
 	// raw_check_imgs: This is the list of attention check images for annotation task
-		
-	if (raw_imgs.length >= ((parseInt(dataset_key)+1)*main_images)  ){
-		for (i=0;i<training_imgs;i++){
-			txtfiles.push(raw_check_imgs[i])
-		}
-		for (i=0;i<main_images;i++){
-			txtfiles.push(raw_imgs[i+(dataset_key*main_images)])
-		}
-	}else{
-		alert("Not Enough Images found!")
-	}
-	last_time_s = Math.floor(Date.now() / 1000);
+	
+	// ------- new	---------
+	// if (raw_imgs.length >= ((parseInt(dataset_key)+1)*main_images)  ){
+	// 	for (i=0;i<training_imgs;i++){
+	// 		txtfiles.push(raw_check_imgs[i])
+	// 	}
+	// 	for (i=0;i<main_images;i++){
+	// 		txtfiles.push(raw_imgs[i+(dataset_key*main_images)])
+	// 	}
+	// }else{
+	// 	alert("Not Enough Images found!")
+	// }
+	// last_time_s = Math.floor(Date.now() / 1000);
 
 	nextImage();
 }

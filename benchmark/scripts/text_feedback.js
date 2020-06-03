@@ -25,7 +25,6 @@ function startUp() {
 				}
 			}
 		}) //end .ajax
-
 		.then(() => { //generate the html from the files and create the controller.
 			setTimeout(() => {
 

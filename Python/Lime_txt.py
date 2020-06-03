@@ -137,7 +137,6 @@ def run_txt_evaluation(training_set, model_name,header_mode,vectorization):
         for each in predicted_class_matrix:
             class_matrix.append(each)
 
-
         # print ('\n \n Explanation for class %s' % predicted_class, "#: ", class_names.index(predicted_class) , int(class_names.index(predicted_class)))
         exp = explainer.explain_instance(newsgroups_test.data[idx], c.predict_proba, num_features=10, labels=[predicted_class_num])
         features_list = exp.as_list(label=predicted_class_num)
