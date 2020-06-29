@@ -41,9 +41,9 @@ import numpy as np
 # from skimage.io import imread
 # from skimage.segmentation import mark_boundaries
 import scipy.misc
-print ("OpenCV Version: ", cv2.__version__)
-print ("SciPy Version: ", scipy.__version__)
-print ("NumPy Version: ", np.__version__)
+# print ("OpenCV Version: ", cv2.__version__)
+# print ("SciPy Version: ", scipy.__version__)
+# print ("NumPy Version: ", np.__version__)
 
 # script to get user rating dic from mturk csv file
 from mturk_to_user_rating import get_ratings;
@@ -227,9 +227,9 @@ def evaluate_MAE(user_path,model_path,ref_mask):
     for this_img in ref_mask:
 
         user_file = user_path + this_img[0]
-        model_file = model_path + this_img[0]
+        model_file = model_path + this_img[0].split("-")[1]+'.jpg'
 
-        # print (user_file, model_file)
+
 
         # model_file = model_path + "cat-"+ this_img[0] + ".jpg";
         # if os.path.exists(model_file):
@@ -238,8 +238,11 @@ def evaluate_MAE(user_path,model_path,ref_mask):
         # else: 
         #     # user_file = jpg_file_2
         #     model_file = model_path + "dog-"+ this_img[0] + ".jpg";
-        # user_file = user_path + this_img[0] + ".jpg"; 
+        # # user_file = user_path + this_img[0] + ".jpg"; 
         
+        
+        print (user_file, model_file)
+
         model_mask = cv2.imread(model_file,0);
         model_mask = cv2.resize(model_mask, (224,224))
         
@@ -268,9 +271,9 @@ def evaluate_MAE(user_path,model_path,ref_mask):
         
 
         # >>>>>>>> With out Normalize Scores >>>>>>>>
-        this_AE = round(1.0 - this_AE/2,3);     # changing error to score  
-        attn_FN[this_img[0]] = round(this_FN/2,3); 
-        attn_FP[this_img[0]] = round(this_FP/2,3);
+        this_AE = round(1.0 - this_AE/2,3);               # changing error to score  
+        attn_FN[this_img[0]] = round(this_FN/2,3);  # 1.0 -...   changing error to score  
+        attn_FP[this_img[0]] = round(this_FP/2,3);  # 1.0 -... changing error to score  
 
         # >>>>>>>>>>>>>>>> Normalize Scores >>>>>>>>>>>>>>>>
         # this_AE = 1.0 - this_AE;              # changing error to score  
@@ -493,14 +496,17 @@ def evaluate_IoU(user_path,model_path,ref_mask):
 
 
 
-def pair_two(attn_score,mask_score, human_rating,attn_FP,attn_FN,batch):
+def pair_two(filename, attn_score,mask_score, human_rating,attn_FP,attn_FN,batch):
         # (pair_1,pair_2,pair_3,batch):
 
     rows = [];
 
     for each in attn_score:
+        
+        this = each.split("-")[1];
+
         rows.append({'name':each, 
-                    "human_rating":human_rating[each], 
+                    "human_rating":human_rating[this], 
                     "human-attention":attn_score[each],
                     "segmentation-mask":mask_score[each], 
                     "attn_FP":attn_FP[each],
@@ -508,7 +514,7 @@ def pair_two(attn_score,mask_score, human_rating,attn_FP,attn_FN,batch):
                     })
 
     # name of csv file  
-    filename = "../user-study/evaluation-results/"+batch+"/pairs_ready.csv"
+    
     fields = ['name','human_rating','human-attention','segmentation-mask','attn_FP','attn_FN']
 
     with open(filename, 'w',newline='') as csvfile:  
@@ -518,6 +524,9 @@ def pair_two(attn_score,mask_score, human_rating,attn_FP,attn_FN,batch):
         writer.writerows(rows)
 
     return 0 
+
+
+
 
 
 batches = ['batch-2'] # ,'batch-2','batch-3','batch-4']
@@ -531,14 +540,21 @@ for batch in batches:
     print ('Batch: ', batch)
     ref_mask = [];
     img_folder = "../data/VOC2012_raw/"                                       # original raw images
-    model_mask_folder =  "../data/VOC2012_mask/" 
+    lime_mask_folder =  "../data/VOC2012_lime/masks/" 
+    grad_mask_folder =  "../data/VOC2012_grad-cam/VOC2012_mask/"
+    model_mask_folder = lime_mask_folder; # grad_mask_folder;
+
     attn_mask_folder = "../data/user_attn_maps/"+batch+"/"                         # Final binary human-attention mask
     seg_mask_folder = "../data/user_seg_maps/"+batch+"/"                         # Final binary human-attention mask
     res_folder = "../user-study/mturk-annotation-results/"+batch+"/json/"
     ref_folder = "../user-study/mturk-annotation-results/"+batch+"/ref/"
     # to save an overlay of user attention-map on raw image
-    heatmap_folder = "../data/user_attn_overlay/"+batch+"/"
+    # heatmap_folder = "../data/user_attn_overlay/"+batch+"/"
+    
 
+    # out_folder = "../user-study/evaluation-results/"+batch+"/pairs_ready.csv"
+    out_folder = "../user-study/evaluation-results/"+batch+"/lime/pairs_ready.csv"
+    
     # model_mask = "../data/VOC2012_mask/"                                       # "./Image/LIME_mask/"
     # model_overlay = "./Image/LIME_overlay/"
 
@@ -553,7 +569,7 @@ for batch in batches:
 
 
     # 1- Calculating mean human-judgment for model explanations
-    human_rating = get_ratings(batch)
+    human_rating = get_ratings(batch,'lime')
 
 
     # 2-Calculating human-attentino MAE score 
@@ -569,6 +585,6 @@ for batch in batches:
     # generate csv tables of all results for statistical analysis 
     # "exp_score":pair_1[each],"mask_score":pair_2[each],"human_rating":pair_3[each]
     # pair_two(attn_FN,mask_FN, human_rating,attn_FP,attn_FN,batch)
-    pair_two(attn_score,mask_score, human_rating,attn_FP,attn_FN,batch)
+    pair_two(out_folder, attn_score,mask_score, human_rating,attn_FP,attn_FN,batch)
 
 

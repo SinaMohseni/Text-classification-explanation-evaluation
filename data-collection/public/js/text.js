@@ -1,4 +1,6 @@
 
+
+
 var div1 = d3.select("body").append("talkbubble")   // Tooltip
 		.attr("class", "tooltip")
 		.style("opacity", 1)
@@ -51,13 +53,15 @@ let cntrl
 function getText(txt_adrs){
     // read text from URL location
     var request = new XMLHttpRequest();
+    var this_txt;
     request.open('GET', txt_adrs, true);
     request.send(null);
     request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
             var type = request.getResponseHeader('Content-Type');
             if (type.indexOf("text") !== 1) {
-            	textFileContents.push(request.responseText)
+            	this_txt = request.responseText.replace(/´/g, "'"); //.replace("´","'")
+            	textFileContents.push(this_txt)
             	if (textFileContents.length == main_docs+training_docs) start_page();
             	// console.log(request.responseText)
                 return request.responseText;
@@ -69,8 +73,7 @@ function getText(txt_adrs){
 
 
 function txtfilename(){
-	
-	 category = [categories[2]];
+	 // category = [categories_txt[0]];  // ,categories_txt[1]
 	
 	let task_key_id = getCookie("task_key_id") //get user data from cookie storage.
 	let dataset_key = task_key_id.split(",")[1]; //separate out the dataset key so we know what they observed
@@ -79,21 +82,23 @@ function txtfilename(){
 	training_docs = 1;
 
 	raw_txt = [];
-	raw_txt = mergeDedupe([graphics_topic, politics_topic,baseball_topic]) // , bird_class, plane_class, bic_class])
+	raw_txt = mergeDedupe([pos_imdb_txt, neg_imdb_txt]) // ,baseball_topic_txt , bird_class, plane_class, bic_class])
+
 	var txtdoc = [];
 
 	if (raw_txt.length >= ((parseInt(dataset_key)+1)*main_docs)  ){
 		
 		for (i=0;i<training_docs;i++){
-				txtfiles.push(check_docs[i])
-				articleTitles.push(categories_dic[check_docs[i].split('/')[3]])
-				getText(check_docs[i])
+				txtfiles.push(check_docs_txt[i])
+				articleTitles.push(categories_txt_dic[check_docs_txt[i].split('/')[3]])
+				getText(check_docs_txt[i])
 			}
 		for (i=0;i<main_docs;i++){
 			this_doc = raw_txt[i+(dataset_key*main_docs)]
 			txtfiles.push(this_doc)
-			articleTitles.push(categories_dic[this_doc.split('/')[3]])
+			articleTitles.push(categories_txt_dic[this_doc.split('/')[3]])
 			getText(raw_txt[i+(dataset_key*main_docs)])
+			console.log(raw_txt[i+(dataset_key*main_docs)])
 			// textFileContents.push(getText(raw_txt[i+(dataset_key*main_docs)]))
 		}
 	}else{
@@ -241,7 +246,7 @@ function save_json(){//shouldOverwrite){
 		wordsTuple.push([word_idx[index],exp_data[index]]);	
 	}
 	let updatedObj = {i: txtfiles[cntrl.i], p: wordsTuple}
-	console.log(updatedObj)
+	// console.log(updatedObj)
 	let current_time_s = Math.floor(Date.now() / 1000);
         let tot_time = current_time_s - cntrl.last_time_s;
         cntrl.last_time_s = current_time_s;
@@ -323,16 +328,28 @@ function getCookie(cname) {
 
 
 function article_title(){
-	// articleName = articleTitles[cntrl.i];
-	// if (articleName == "guns") articleName = "Guns and Politics";
-	// if (articleName == "med") articleName = "Medical";
-	// if (articleName == "space") articleName = "Space and Astronomy";
-	// if (articleName == "electronics") articleName = "Electronics and Computers";
-	// if (articleName == "autos") articleName = "Cars and Truck";
 
 	articleName = articleTitles[cntrl.i];
 	
+	console.log("articleName", articleName)	
+
 	$("#explaination_title").text("Please highlight any words related to \""+articleName+"\" topic in this Article: ( "+ (cntrl.i+1)+" / "+cntrl.total+ " )")
+
+	var src_str = $("#explaination_title").html();
+	var term = articleName; 
+	term = term.replace(/(\s+)/,"(<[^>]+>)*$1(<[^>]+>)*");
+	var pattern = new RegExp("("+term+")", "gi");
+
+	if (articleName == "Positive Review"){
+		src_str = src_str.replace(pattern, "<mark_pos>$1</mark_pos>");
+		src_str = src_str.replace(/(<mark_pos>[^<>]*)((<[^>]+>)+)([^<>]*<\/mark_pos>)/,"$1</mark_pos>$2<mark_pos>$4");
+	}else{
+		src_str = src_str.replace(pattern, "<mark_neg>$1</mark_neg>");
+		src_str = src_str.replace(/(<mark_neg>[^<>]*)((<[^>]+>)+)([^<>]*<\/mark_neg>)/,"$1</mark_neg>$2<mark_neg>$4");	
+	}
+	
+
+	$("#explaination_title").html(src_str);
 
 }
 
@@ -376,7 +393,7 @@ function showText(highlightsFromMem) {
 		}
 	} else {
 		wordsTuple = highlightsFromMem.p;
-		console.log("words in memory:", wordsTuple)
+		// console.log("words in memory:", wordsTuple)
 		for (let index = 0; index < wordsTuple.length; index++) {
 			word_idx.push(wordsTuple[index][0]);
 			exp_data.push(wordsTuple[index][1]);	

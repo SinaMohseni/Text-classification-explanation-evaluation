@@ -35,11 +35,119 @@ def dic_normalization(this_dic):
         this_dic[each] = round(((this_dic[each] - min_value) / range_value),3);
 
 
-def get_ratings(batch):
+
+def get_ratings(batch,select_method):
+	
+	if select_method == 'lime':
+		return get_lime(batch)
+	else:
+		return get_grad_cam(batch)
+
+
+def get_lime(batch):
+	
+	max_rate = -100; min_rate = 100;
+	print ('---------------- here')
+	batch = 'batch-3'
+
+	in_folder = "../user-study/mturk-rating-results/mturk/"+batch+"/mturk.json";  # mturk.csv
+	out_folder = "../user-study/mturk-rating-results/"+batch+"/json/";
+
+	# entire_log = pd.read_csv(in_folder, doublequote=True, escapechar='\\')  # 
+	# results = entire_log['Answer.surveycode']
+	
+	f = open (in_folder, "r") 
+	entire_log = json.loads(f.read()) 
+
+	images = {}  # 	{image_xx: [ rating1, rating2,..., rating_n]}
+	
+	i=0;
+	j=0;
+	# print ("mturk_id: ", entire_log[0])   # pop out the mtruk id record
+	# entire_log.pop(0)
+	new_file = []
+	for each in entire_log:
+		# print ("Each: ", each)
+		if (len(each['i'].split(".")) > 1): # == "jpg"):
+			this_image = each['i'].split(".")[0]+"."+each['i'].split(".")[1]
+			if this_image in images:
+				images[this_image].append(int(each["r"]));
+			else:
+				images[this_image] = [int(each["r"])]
+
+	# print (images)
+
+	# i=0
+	# # each participant
+	# for each in results: 
+	# 	try:
+	# 		print ('P: ',i)
+	# 		each_json = json.loads(each)
+	# 		try:
+	# 			i+=1;
+	# 			each_json.pop(0);			# pop out the mtruk id record
+				
+	# 			# each image rating
+	# 			# >>>>>>>>>>>> Normalize each participants rating here >>>>>>>>>>>>>>>
+	# 			max_r = -100; min_r = 100;  
+	# 			for single in each_json: 
+	# 				if single['i'] not in attention_checks:
+	# 					this_rating = int(single['r'])
+	# 					if (this_rating > max_r): max_r = this_rating;
+	# 					if (this_rating < min_r): min_r = this_rating;
+
+	# 			range_value = max_r - min_r;
+	# 			for single in each_json:
+	# 				if single['i'] not in attention_checks:
+	# 					# >>>>>>>>>>>> Without Normalization >>>>>>>>>>>>>>>
+	# 					# with out normalization
+	# 					this_rating = int(single['r'])   
+						
+	# 					# with the per participant normalization
+	# 					# this_rating = round(((this_rating - min_r) / range_value),3)
+
+	# 					if single['i'] in images: 
+	# 						images[single['i']].append(this_rating)
+	# 					else: 
+	# 						images[single['i']] = [this_rating]
+	# 		except:
+	# 			print ('Error: ', each_json)    # pop out the mtruk id record
+	# 	except:
+	# 		print ('Error: ', each)    # pop out the mtruk id record
+
+
+	take_it_out = []
+	for each in images:
+		if (len(images[each]) > 3):
+			# >>>> No normalization   >>> 
+			this_rating = round((sum(images[each])/len(images[each]))/10, 3)
+			
+			# >>>> With normalization   >>> 
+			# this_rating = sum(images[each])/len(images[each])
+			
+			print ('images: ',each, images[each])
+			images[each] = this_rating;
+			if (this_rating > max_rate): max_rate = this_rating;
+			if (this_rating < min_rate): min_rate = this_rating;
+		else: 
+			take_it_out.append(each);	
+
+	for each in take_it_out:
+		print('less than 3 ratings: ',images.pop(each))
+
+	# >>>>>>>>>>>> Normalize all images ratings here >>>>>>>>>>>>> 
+	# images["max"] = max_rate
+	# images["min"] = min_rate
+	# dic_normalization(images)
+
+	return images;
+
+
+def get_grad_cam(batch):
 	
 	max_rate = -100; min_rate = 100;
 
-	in_folder = "../user-study/mturk-rating-results/"+batch+"/mturk.csv";
+	in_folder = "../user-study/mturk-rating-results/mturk/"+batch+"/mturk.csv";
 	out_folder = "../user-study/mturk-rating-results/"+batch+"/json/";
 
 	entire_log = pd.read_csv(in_folder, doublequote=True, escapechar='\\')  # 
@@ -110,7 +218,6 @@ def get_ratings(batch):
 	# dic_normalization(images)
 
 	return images;
-
 
 def get_workers(batch):
 	# this function needs an update for batch-2

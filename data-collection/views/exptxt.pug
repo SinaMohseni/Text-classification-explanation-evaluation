@@ -5,6 +5,7 @@ head
   meta(http-equiv='content-type' content='text/html;charset=utf-8')
   link(rel='stylesheet', href='/style/style.css')
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+  script(src='https://markjs.io/')
   script(src='https://unpkg.com/axios/dist/axios.min.js')
   script(src='https://d3js.org/d3.v4.min.js')
   script(src='/js/txt_adrs.js')
@@ -15,9 +16,12 @@ button#nextbutton-1(onclick='nextArticle()') Next Article
 #chartDiv
   h3#explaination_title
     | Please highlight any words realated to &quot;topic &quot; topic in this Article: (1/14)
+  p
+  p
+  button#clear1(onclick='removeHighlights()') Clear Selections
   #annotation_area
   #pallet(style='padding-bottom: 1%;')
-    button#clear(onclick='removeHighlights()') Clear Selections
+    button#clear2(onclick='removeHighlights()') Clear Selections
 button#nextbutton-2(onclick='nextArticle()') Next Article
 button#backbutton-2(onclick='lastArticle()') Previous Article
 // <div id="exit_button" > <button onclick="WriteFile()">End study</button> </div>

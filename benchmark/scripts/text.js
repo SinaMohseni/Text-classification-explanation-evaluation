@@ -49,7 +49,10 @@ function txtfilename(){
 
 
 	
-categories = ['alt.atheism',
+categories = [
+	 'pos_val',
+	 'neg_val',
+	 'alt.atheism',
 	 'comp.graphics',
 	 'comp.os.ms-windows.misc',
 	 'comp.sys.ibm.pc.hardware',
@@ -70,7 +73,10 @@ categories = ['alt.atheism',
 	 'talk.politics.misc',
 	 'talk.religion.misc']
 
-categories_dic = {'alt.atheism': 'Atheism',
+categories_dic = {
+	'neg_val': 'Negative Review',
+	 'pos_val': 'Positive Review',
+	 'alt.atheism': 'Atheism',
 	 'comp.graphics': 'Computer Graphics',
 	 'comp.os.ms-windows.misc': 'Computer Windows',
 	 'comp.sys.ibm.pc.hardware': 'IBM Computer Hardware',
@@ -133,11 +139,11 @@ categories_dic = {'alt.atheism': 'Atheism',
 		religion_topic = 		 
 		["/benchmark/data/validation_set_50/talk.religion.misc/102.txt", "/benchmark/data/validation_set_50/talk.religion.misc/107.txt", "/benchmark/data/validation_set_50/talk.religion.misc/108.txt", "/benchmark/data/validation_set_50/talk.religion.misc/109.txt", "/benchmark/data/validation_set_50/talk.religion.misc/117.txt", "/benchmark/data/validation_set_50/talk.religion.misc/123.txt", "/benchmark/data/validation_set_50/talk.religion.misc/125.txt", "/benchmark/data/validation_set_50/talk.religion.misc/129.txt", "/benchmark/data/validation_set_50/talk.religion.misc/135.txt", "/benchmark/data/validation_set_50/talk.religion.misc/137.txt", "/benchmark/data/validation_set_50/talk.religion.misc/148.txt", "/benchmark/data/validation_set_50/talk.religion.misc/155.txt", "/benchmark/data/validation_set_50/talk.religion.misc/157.txt", "/benchmark/data/validation_set_50/talk.religion.misc/159.txt", "/benchmark/data/validation_set_50/talk.religion.misc/161.txt", "/benchmark/data/validation_set_50/talk.religion.misc/18.txt", "/benchmark/data/validation_set_50/talk.religion.misc/184.txt", "/benchmark/data/validation_set_50/talk.religion.misc/19.txt", "/benchmark/data/validation_set_50/talk.religion.misc/192.txt", "/benchmark/data/validation_set_50/talk.religion.misc/193.txt", "/benchmark/data/validation_set_50/talk.religion.misc/197.txt", "/benchmark/data/validation_set_50/talk.religion.misc/198.txt", "/benchmark/data/validation_set_50/talk.religion.misc/20.txt", "/benchmark/data/validation_set_50/talk.religion.misc/208.txt", "/benchmark/data/validation_set_50/talk.religion.misc/210.txt", "/benchmark/data/validation_set_50/talk.religion.misc/212.txt", "/benchmark/data/validation_set_50/talk.religion.misc/220.txt", "/benchmark/data/validation_set_50/talk.religion.misc/224.txt", "/benchmark/data/validation_set_50/talk.religion.misc/235.txt", "/benchmark/data/validation_set_50/talk.religion.misc/24.txt", "/benchmark/data/validation_set_50/talk.religion.misc/28.txt", "/benchmark/data/validation_set_50/talk.religion.misc/32.txt", "/benchmark/data/validation_set_50/talk.religion.misc/33.txt", "/benchmark/data/validation_set_50/talk.religion.misc/46.txt", "/benchmark/data/validation_set_50/talk.religion.misc/54.txt", "/benchmark/data/validation_set_50/talk.religion.misc/57.txt", "/benchmark/data/validation_set_50/talk.religion.misc/58.txt", "/benchmark/data/validation_set_50/talk.religion.misc/60.txt", "/benchmark/data/validation_set_50/talk.religion.misc/69.txt", "/benchmark/data/validation_set_50/talk.religion.misc/70.txt", "/benchmark/data/validation_set_50/talk.religion.misc/73.txt", "/benchmark/data/validation_set_50/talk.religion.misc/74.txt", "/benchmark/data/validation_set_50/talk.religion.misc/8.txt", "/benchmark/data/validation_set_50/talk.religion.misc/85.txt", "/benchmark/data/validation_set_50/talk.religion.misc/87.txt", "/benchmark/data/validation_set_50/talk.religion.misc/88.txt", "/benchmark/data/validation_set_50/talk.religion.misc/97.txt"]
 
-	category = categories[19];
+	category = categories[1];
 	
 
-	// var folder = "./data/20news_test/no_header/";
-	var folder = "./data/validation_set_50/"+category+"/";
+	// var folder = "./data/validation_set_50/"+category+"/";
+	var folder = "./data/imdb/"+category+"/";
 	console.log(folder)
 	var txtdoc = []
 		

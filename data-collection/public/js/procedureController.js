@@ -236,23 +236,32 @@ function getCookie(cname) {
     
     // -----------------Task 2---------------------
     }else if (user_task == "ImageRating"){
-
+        
+        // for LIME method
         slides = ['<h1> Pet Recognition AI </h1><p>Welcome, please read the instructions in this slideshow.</p><h2> Background: </h2><p> We are building an AI system to recognize <u> pets in images from social media </u> to esmitate pet populations in cities </p><p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p><p><mark>We need your help to <u>evaluate the "goodness" of our AI</u></mark> by reviewing it\'s output for 15 images. </p><p> Our <u>AI describes where it found a pet</u> by highlighting areas of the image. </p>',
         '<h1> Task </h1><h3>Review our AI\'s Explanations:</3><p>Your main task is to <mark><u> review and rate the heatmaps</u></mark> which explain what parts the AI used to make it\'s decision: </p><p>The areas in red were the most important for identifying the pet whereas the areas in blue have little significance.</p><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/heatmap.PNG">',
-        '<h1> Instructions </h1><p>On a scale from 1-10, Rate the AI explanations for each image.</p><strong><p>Consider:<ul><li>Is the correct area selected?</li><li>Does it match your expectations?</li><li>Would you use the same areas to make your desicion?</li> <!-- todo: this is similar to the one above...--></ul></p></strong><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-1.PNG" >',
-        '<h1> Interface </h1><h3>Click [Next Image] to Contiune: </h3><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-2.PNG" >',
+        '<h1> Instructions </h1><p>On a scale from 1-10, Rate the AI explanations for each image.</p><strong><p>Consider:<ul><li>Is the correct area selected?</li><li>Does it match your expectations?</li><li>Would you use the same areas to make your desicion?</li> <!-- todo: this is similar to the one above...--></ul></p></strong><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/lime-interface-1.PNG" >',
+        '<h1> Interface </h1><h3>Click [Next Image] to Contiune: </h3><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/lime-interface-2.PNG" >',
         '<h1> Finishing </h1><h3>After reviewing the images, your HIT code is displayed, you must <mark>copy and paste</mark> this in the mechanical turk page for credit: </h3><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-3.PNG" >']
+    
+        // for Grad-cam method
+        // slides = ['<h1> Pet Recognition AI </h1><p>Welcome, please read the instructions in this slideshow.</p><h2> Background: </h2><p> We are building an AI system to recognize <u> pets in images from social media </u> to esmitate pet populations in cities </p><p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p><p><mark>We need your help to <u>evaluate the "goodness" of our AI</u></mark> by reviewing it\'s output for 15 images. </p><p> Our <u>AI describes where it found a pet</u> by highlighting areas of the image. </p>',
+        // '<h1> Task </h1><h3>Review our AI\'s Explanations:</3><p>Your main task is to <mark><u> review and rate the heatmaps</u></mark> which explain what parts the AI used to make it\'s decision: </p><p>The areas in red were the most important for identifying the pet whereas the areas in blue have little significance.</p><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/heatmap.PNG">',
+        // '<h1> Instructions </h1><p>On a scale from 1-10, Rate the AI explanations for each image.</p><strong><p>Consider:<ul><li>Is the correct area selected?</li><li>Does it match your expectations?</li><li>Would you use the same areas to make your desicion?</li> <!-- todo: this is similar to the one above...--></ul></p></strong><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-1.PNG" >',
+        // '<h1> Interface </h1><h3>Click [Next Image] to Contiune: </h3><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-2.PNG" >',
+        // '<h1> Finishing </h1><h3>After reviewing the images, your HIT code is displayed, you must <mark>copy and paste</mark> this in the mechanical turk page for credit: </h3><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/interface-3.PNG" >']
     
     // -----------------Task 3---------------------
     }else if (user_task == "ImageAnnotation"){
-        slides = ['<h1> Pet Features in Images </h1><p>\
+        slides = ['<h1> Object Features in Images </h1><p>\
                 Welcome, please read the instructions in this slideshow.</p>\
                 <br><br>\
-                <h2> Background: </h2><p> We are building an AI system to <mark><u>recognize pets in images from social media</u></mark> to estimate pet populations in cities.</p><p> Our AI system is trained to <u> detect cats and dogs</u> in images. </p><!-- todo: is "pixels" too specific? Is there a more general word? --><p> We need your help to <mark><u> select image areas that best represent pets</u></mark> in order to train our AI. </p><!-- <p> You <u> do not necessarily need to select the entire pet body </u> but the salient area that is most representative of pets. </p> --></br>',
-            '<h1> Instructions </h1><p>Select Pet Features in Images: Your main task is to <mark> hightlight the areas in the image that best describe pets.</mark></p><p> This could be a paw, a nose, the whole body etc. Your goal is to <mark>select the areas</mark> of the image  that <mark><u> help you recognize</u></mark> the pet. <br><br>You do not need to select the entire pet in every image, only the most recognizable areas!</p></br></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG">',
+                <h2> Background: </h2><p> We are building an AI system to <mark><u>recognize different objects in images from social media</u></mark>.</p><!-- todo: is "pixels" too specific? Is there a more general word? --><p> We need your help to <mark><u> select image areas that best represent objects</u></mark> in order to train our AI. </p><!-- <p> You <u> do not necessarily need to select the entire pet body </u> but the salient area that is most representative of pets. </p> --></br>',
+            '<h1> Instructions </h1><p>Select Features in Images: Your main task is to <mark> hightlight the areas in the image that best describe that object.</mark></p><p> For example, in the image below, this could be a paw, a nose, the whole body etc. Your goal is to <mark>select the areas</mark> of the image  that <mark><u> help you recognize</u></mark> the object. <br><br>You do not need to select the entire pet in every image, only the most recognizable areas!</p></br></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-1.PNG">',
             '<h1> Controls </h1><p>Use your mouse to draw around pets:</p><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-2.png">',
             '<h1> Finishing </h1><h3>After 15 images, your HIT code is displayed, you must <mark>copy and paste</mark> this in the mechanical turk page for credit: </h3></br><img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/annotation-4.PNG">']
     
+
     // -----------------Task 4---------------------
     }else if (user_task == "TextAnnotation"){
 
@@ -261,31 +270,63 @@ function getCookie(cname) {
         <p>Welcome, please read the instructions in this slideshow.</p>\
         <br><br>\
         <h2>Background</h2>\
-        <p> We are building an AI system that learns to classify emails.</p>\
-        <p> Our AI is trained to detect <mark><u>medicine</u></mark> and <mark><u>electronics</u></mark> topics in emails.</p>\
-        <p> We need your help to <mark><u>choose the "most descriptive" words</u></mark> to train our AI. </p>',
+        <p> We are building an AI system that learns to learn movie reviews.</p>\
+        <p> Our AI is trained to detect <mark_pos><u>positive</u></mark_pos> and <mark_neg><u>negative</u></mark_neg> movie reviews.</p>\
+        <p> We need your help to <mark><u>choose the "most descriptive" words, phrases, or sentences </u></mark> in movie reviews to train our AI. </p>',
         '<h1>Your Task</h1>\
         <br>\
-        <h2>Explain Descriptive Words to AI:</h2> \
-        <p>Your main task is to <mark><u>select words</u></mark> which explain the given topic. </p>\
-        <p>Use your best judgement to select words (by mouse click) that you feel are the <mark><u>most important</u></mark> for classifying the message.</p>\
+        <h2>Explain Descriptive Words and Phrases to AI:</h2> \
+        <p>Your main task is to <mark><u>select words and phrases</u></mark> which explain a <mark_pos><u>positive</u></mark_pos> or <mark_neg><u>negative</u></mark_neg> movie review. </p>\
+        <p>Use your best judgement to select words (by mouse click) that you feel are the <mark><u>most important</u></mark> for identifying the review.</p>\
         <br>\
         <p> Consider:\
           <ul>\
-            <li>What words describe the topic?</li>\
-            <li>Are there words that are specific to this topic?</li>\
+            <li>What words describe a <mark_pos><u>positive</u></mark_pos> or <mark_neg><u>negative</u></mark_neg> movie review?</li>\
+            <li>What about phrases?</li>\
           </ul>\
         </p>\
-        <img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/t-annotation-1.png" width="200">',
+        <img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/t-interface-4.png" width="200">',
         '<h1>Instructions</h1>\
-        <h2>In each email, click words to <mark>mark them as importatnt</mark>.</h2>\
-        <h2>Click [Next Article] to navigate your <mark>14</mark> articles.</h2>\
-        <img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/t-annotation-2.png" >',
+        <h2>In each movie review, click words (drag for multiple words) to <mark>mark them as important</mark>.</h2>\
+        <h2>Click [Next Article] to navigate your <mark>11</mark> articles.</h2>\
+        <img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/t-interface-4.png" >',
         '<h1>Finishing</h1>\
-        <p>After highlighting key words in all emails, your data will be <mark>stored automatically</mark>.</p>\
+        <p>After highlighting key words in all movie reviews, your data will be <mark>stored automatically</mark>.</p>\
         <p>Copy the <mark>HIT Completion Code</mark> and go back to the Mechanical Turk page to finish your HIT.</p>\
         <img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/t-interface-3.png" >'
       ]
+
+      
+      //   slides = [
+      //   '<h1>Topic Recognition AI</h1>\
+      //   <p>Welcome, please read the instructions in this slideshow.</p>\
+      //   <br><br>\
+      //   <h2>Background</h2>\
+      //   <p> We are building an AI system that learns to identify emails.</p>\
+      //   <p> Our AI is trained to detect <mark><u>medicine</u></mark> and <mark><u>electronics</u></mark> topics in emails.</p>\
+      //   <p> We need your help to <mark><u>choose the "most descriptive" words</u></mark> to train our AI. </p>',
+      //   '<h1>Your Task</h1>\
+      //   <br>\
+      //   <h2>Explain Descriptive Words to AI:</h2> \
+      //   <p>Your main task is to <mark><u>select words</u></mark> which explain the given topic. </p>\
+      //   <p>Use your best judgement to select words (by mouse click) that you feel are the <mark><u>most important</u></mark> for classifying the message.</p>\
+      //   <br>\
+      //   <p> Consider:\
+      //     <ul>\
+      //       <li>What words describe the topic?</li>\
+      //       <li>Are there words that are specific to this topic?</li>\
+      //     </ul>\
+      //   </p>\
+      //   <img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/t-annotation-1.png" width="200">',
+      //   '<h1>Instructions</h1>\
+      //   <h2>In each email, click words to <mark>mark them as importatnt</mark>.</h2>\
+      //   <h2>Click [Next Article] to navigate your <mark>14</mark> articles.</h2>\
+      //   <img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/t-annotation-2.png" >',
+      //   '<h1>Finishing</h1>\
+      //   <p>After highlighting key words in all emails, your data will be <mark>stored automatically</mark>.</p>\
+      //   <p>Copy the <mark>HIT Completion Code</mark> and go back to the Mechanical Turk page to finish your HIT.</p>\
+      //   <img  class="slide-img" src="http://people.tamu.edu/~sina.mohseni/data/instructions/t-interface-3.png" >'
+      // ]
     }else{
         console.log("undefined user task")
     }
@@ -322,16 +363,18 @@ $(window).scroll(function() {
     if (scroll > position) {
       if (mturk_ID == null || mturk_ID == "") {
         screening_id('stay');
-        mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+        mturk_ID = prompt("Please enter your Amazon Mechanical Turk ID for screening:", "");
       }
     } else {
       if (mturk_ID == null || mturk_ID == "") {
-        mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+        mturk_ID = prompt("Please enter your Amazon Mechanical Turk ID for screening:", "");
         screening_id('stay');
       }
     }
     position = scroll;
   });
+
+
 
 
 function getParameterByName(name, url) {
@@ -351,7 +394,7 @@ function read_radio(){
 
   if (mturk_ID == null || mturk_ID == "") {
    
-    mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+    mturk_ID = prompt("Please enter your Amazon Mechanical Turk ID for screening:", "");
     if (mturk_ID != null & mturk_ID != "") {
       result = screening_id('stay');
       if (result == 'passed') alert("Be sure you fully understand the instructions on this page, you will not be able to see them during the task!\n\nClick [Continue] to begin")
@@ -370,7 +413,7 @@ function resolveDataFromStorage(history){return null}
 
 function screening_id(action){
     if (mturk_ID == null || mturk_ID == "") {
-      mturk_ID = prompt("Please enter your AMT ID for screening:", "");
+      mturk_ID = prompt("Please enter your Amazon Mechanical Turk ID for screening:", "");
     } 
 
     output = 'passed'

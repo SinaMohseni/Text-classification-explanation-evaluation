@@ -1,13 +1,29 @@
 // both attention check images (raw and annotated) should be the same images;
 // Both main annotated and raw image should be in the same order;
 
-
-
-const bic_class = ["data/VOC_org/bicycle/2007_000515.jpg", "data/VOC_org/bicycle/2007_000793.jpg", "data/VOC_org/bicycle/2007_001027.jpg", "data/VOC_org/bicycle/2007_005702.jpg", "data/VOC_org/bicycle/2008_000803.jpg", "data/VOC_org/bicycle/2008_001336.jpg", "data/VOC_org/bicycle/2008_001404.jpg", "data/VOC_org/bicycle/2008_001626.jpg", "data/VOC_org/bicycle/2008_002370.jpg", "data/VOC_org/bicycle/2008_002948.jpg", "data/VOC_org/bicycle/2008_003075.jpg", "data/VOC_org/bicycle/2008_003351.jpg", "data/VOC_org/bicycle/2008_003940.jpg", "data/VOC_org/bicycle/2008_004040.jpg", "data/VOC_org/bicycle/2008_004331.jpg", "data/VOC_org/bicycle/2008_004862.jpg", "data/VOC_org/bicycle/2008_005201.jpg", "data/VOC_org/bicycle/2008_006088.jpg", "data/VOC_org/bicycle/2008_006195.jpg", "data/VOC_org/bicycle/2008_006645.jpg", "data/VOC_org/bicycle/2008_007761.jpg", "data/VOC_org/bicycle/2008_008080.jpg", "data/VOC_org/bicycle/2008_008357.jpg", "data/VOC_org/bicycle/2008_008579.jpg", "data/VOC_org/bicycle/2008_008705.jpg", "data/VOC_org/bicycle/2009_000161.jpg", "data/VOC_org/bicycle/2009_000281.jpg", "data/VOC_org/bicycle/2009_000757.jpg", "data/VOC_org/bicycle/2009_001642.jpg", "data/VOC_org/bicycle/2009_001915.jpg", "data/VOC_org/bicycle/2009_002371.jpg", "data/VOC_org/bicycle/2009_002404.jpg", "data/VOC_org/bicycle/2009_002777.jpg", "data/VOC_org/bicycle/2009_003469.jpg", "data/VOC_org/bicycle/2009_004496.jpg", "data/VOC_org/bicycle/2009_004518.jpg", "data/VOC_org/bicycle/2009_004710.jpg", "data/VOC_org/bicycle/2009_004984.jpg", "data/VOC_org/bicycle/2010_000113.jpg", "data/VOC_org/bicycle/2010_001431.jpg", "data/VOC_org/bicycle/2010_001606.jpg", "data/VOC_org/bicycle/2010_002720.jpg", "data/VOC_org/bicycle/2010_003912.jpg", "data/VOC_org/bicycle/2010_004069.jpg", "data/VOC_org/bicycle/2011_000465.jpg", "data/VOC_org/bicycle/2011_001599.jpg", "data/VOC_org/bicycle/2011_002543.jpg", "data/VOC_org/bicycle/2011_002657.jpg", "data/VOC_org/bicycle/2011_002811.jpg", "data/VOC_org/bicycle/2011_002913.jpg"]
-const plane_class = ["data/VOC_org/aeroplane/2007_000256.jpg", "data/VOC_org/aeroplane/2007_001377.jpg", "data/VOC_org/aeroplane/2007_004988.jpg", "data/VOC_org/aeroplane/2007_005043.jpg", "data/VOC_org/aeroplane/2007_006232.jpg", "data/VOC_org/aeroplane/2007_009348.jpg", "data/VOC_org/aeroplane/2008_000251.jpg", "data/VOC_org/aeroplane/2008_001805.jpg", "data/VOC_org/aeroplane/2008_003189.jpg", "data/VOC_org/aeroplane/2008_003261.jpg", "data/VOC_org/aeroplane/2008_003275.jpg", "data/VOC_org/aeroplane/2008_003673.jpg", "data/VOC_org/aeroplane/2008_003905.jpg", "data/VOC_org/aeroplane/2008_004406.jpg", "data/VOC_org/aeroplane/2008_004532.jpg", "data/VOC_org/aeroplane/2008_004885.jpg", "data/VOC_org/aeroplane/2008_005078.jpg", "data/VOC_org/aeroplane/2008_005538.jpg", "data/VOC_org/aeroplane/2008_005796.jpg", "data/VOC_org/aeroplane/2008_006213.jpg", "data/VOC_org/aeroplane/2008_006216.jpg", "data/VOC_org/aeroplane/2008_006401.jpg", "data/VOC_org/aeroplane/2008_006920.jpg", "data/VOC_org/aeroplane/2008_007195.jpg", "data/VOC_org/aeroplane/2008_007764.jpg", "data/VOC_org/aeroplane/2008_007970.jpg", "data/VOC_org/aeroplane/2008_008048.jpg", "data/VOC_org/aeroplane/2008_008479.jpg", "data/VOC_org/aeroplane/2008_008546.jpg", "data/VOC_org/aeroplane/2009_000397.jpg", "data/VOC_org/aeroplane/2009_000440.jpg", "data/VOC_org/aeroplane/2009_000545.jpg", "data/VOC_org/aeroplane/2009_001905.jpg", "data/VOC_org/aeroplane/2009_002941.jpg", "data/VOC_org/aeroplane/2009_003033.jpg", "data/VOC_org/aeroplane/2009_003278.jpg", "data/VOC_org/aeroplane/2009_003994.jpg", "data/VOC_org/aeroplane/2009_004402.jpg", "data/VOC_org/aeroplane/2009_004548.jpg", "data/VOC_org/aeroplane/2009_004969.jpg", "data/VOC_org/aeroplane/2009_005019.jpg", "data/VOC_org/aeroplane/2010_000437.jpg", "data/VOC_org/aeroplane/2010_000939.jpg", "data/VOC_org/aeroplane/2010_001085.jpg", "data/VOC_org/aeroplane/2010_003279.jpg", "data/VOC_org/aeroplane/2011_000129.jpg", "data/VOC_org/aeroplane/2011_000481.jpg", "data/VOC_org/aeroplane/2011_001158.jpg", "data/VOC_org/aeroplane/2011_002851.jpg", "data/VOC_org/aeroplane/2011_003111.jpg"]
-const bird_class = ["data/VOC_org/bird/2007_003682.jpg", "data/VOC_org/bird/2007_009607.jpg", "data/VOC_org/bird/2008_000472.jpg", "data/VOC_org/bird/2008_000515.jpg", "data/VOC_org/bird/2008_001514.jpg", "data/VOC_org/bird/2008_001673.jpg", "data/VOC_org/bird/2008_001810.jpg", "data/VOC_org/bird/2008_004087.jpg", "data/VOC_org/bird/2008_004276.jpg", "data/VOC_org/bird/2008_004551.jpg", "data/VOC_org/bird/2008_004689.jpg", "data/VOC_org/bird/2008_004783.jpg", "data/VOC_org/bird/2008_005260.jpg", "data/VOC_org/bird/2008_005303.jpg", "data/VOC_org/bird/2008_005997.jpg", "data/VOC_org/bird/2008_006924.jpg", "data/VOC_org/bird/2008_007319.jpg", "data/VOC_org/bird/2008_007546.jpg", "data/VOC_org/bird/2008_007673.jpg", "data/VOC_org/bird/2008_007752.jpg", "data/VOC_org/bird/2008_007848.jpg", "data/VOC_org/bird/2008_007994.jpg", "data/VOC_org/bird/2008_008197.jpg", "data/VOC_org/bird/2008_008347.jpg", "data/VOC_org/bird/2008_008461.jpg", "data/VOC_org/bird/2009_000146.jpg", "data/VOC_org/bird/2009_000218.jpg", "data/VOC_org/bird/2009_000879.jpg", "data/VOC_org/bird/2009_000930.jpg", "data/VOC_org/bird/2009_001693.jpg", "data/VOC_org/bird/2009_002754.jpg", "data/VOC_org/bird/2009_003088.jpg", "data/VOC_org/bird/2009_003285.jpg", "data/VOC_org/bird/2009_003922.jpg", "data/VOC_org/bird/2009_004509.jpg", "data/VOC_org/bird/2009_004652.jpg", "data/VOC_org/bird/2009_004996.jpg", "data/VOC_org/bird/2009_005137.jpg", "data/VOC_org/bird/2009_005262.jpg", "data/VOC_org/bird/2010_001042.jpg", "data/VOC_org/bird/2010_001715.jpg", "data/VOC_org/bird/2010_001868.jpg", "data/VOC_org/bird/2010_003929.jpg", "data/VOC_org/bird/2010_004352.jpg", "data/VOC_org/bird/2010_004570.jpg", "data/VOC_org/bird/2010_005350.jpg", "data/VOC_org/bird/2010_005516.jpg", "data/VOC_org/bird/2010_005896.jpg", "data/VOC_org/bird/2011_000232.jpg", "data/VOC_org/bird/2011_003163.jpg"]
-const boat_class = ["data/VOC_org/boat/2007_001487.jpg", "data/VOC_org/boat/2007_003910.jpg", "data/VOC_org/boat/2008_000148.jpg", "data/VOC_org/boat/2008_000235.jpg", "data/VOC_org/boat/2008_000957.jpg", "data/VOC_org/boat/2008_001136.jpg", "data/VOC_org/boat/2008_001159.jpg", "data/VOC_org/boat/2008_001202.jpg", "data/VOC_org/boat/2008_001858.jpg", "data/VOC_org/boat/2008_001946.jpg", "data/VOC_org/boat/2008_002131.jpg", "data/VOC_org/boat/2008_003034.jpg", "data/VOC_org/boat/2008_003275.jpg", "data/VOC_org/boat/2008_003480.jpg", "data/VOC_org/boat/2008_004636.jpg", "data/VOC_org/boat/2008_004716.jpg", "data/VOC_org/boat/2008_004983.jpg", "data/VOC_org/boat/2008_005398.jpg", "data/VOC_org/boat/2008_005593.jpg", "data/VOC_org/boat/2008_006065.jpg", "data/VOC_org/boat/2008_006121.jpg", "data/VOC_org/boat/2008_006289.jpg", "data/VOC_org/boat/2008_006500.jpg", "data/VOC_org/boat/2008_006730.jpg", "data/VOC_org/boat/2008_007179.jpg", "data/VOC_org/boat/2009_000308.jpg", "data/VOC_org/boat/2009_000385.jpg", "data/VOC_org/boat/2009_000690.jpg", "data/VOC_org/boat/2009_000752.jpg", "data/VOC_org/boat/2009_002173.jpg", "data/VOC_org/boat/2009_002343.jpg", "data/VOC_org/boat/2009_003284.jpg", "data/VOC_org/boat/2009_003522.jpg", "data/VOC_org/boat/2009_004888.jpg", "data/VOC_org/boat/2010_000906.jpg", "data/VOC_org/boat/2010_001164.jpg", "data/VOC_org/boat/2010_001967.jpg", "data/VOC_org/boat/2010_002117.jpg", "data/VOC_org/boat/2010_002620.jpg", "data/VOC_org/boat/2010_003107.jpg", "data/VOC_org/boat/2010_003117.jpg", "data/VOC_org/boat/2010_004124.jpg", "data/VOC_org/boat/2010_004714.jpg", "data/VOC_org/boat/2010_005192.jpg", "data/VOC_org/boat/2010_005332.jpg", "data/VOC_org/boat/2011_000744.jpg", "data/VOC_org/boat/2011_001310.jpg", "data/VOC_org/boat/2011_001532.jpg", "data/VOC_org/boat/2011_001582.jpg", "data/VOC_org/boat/2011_001886.jpg"]
+// no 4 3 
+// yes 0 1 2 
 const bottle_class = ["data/VOC_org/bottle/2008_002292.jpg", "data/VOC_org/bottle/2008_003076.jpg", "data/VOC_org/bottle/2008_003969.jpg", "data/VOC_org/bottle/2008_004037.jpg", "data/VOC_org/bottle/2008_004145.jpg", "data/VOC_org/bottle/2008_004659.jpg", "data/VOC_org/bottle/2008_004926.jpg", "data/VOC_org/bottle/2008_006145.jpg", "data/VOC_org/bottle/2008_006641.jpg", "data/VOC_org/bottle/2008_006792.jpg", "data/VOC_org/bottle/2008_006815.jpg", "data/VOC_org/bottle/2008_007286.jpg", "data/VOC_org/bottle/2008_007923.jpg", "data/VOC_org/bottle/2008_007954.jpg", "data/VOC_org/bottle/2008_008694.jpg", "data/VOC_org/bottle/2009_000058.jpg", "data/VOC_org/bottle/2009_000411.jpg", "data/VOC_org/bottle/2009_001224.jpg", "data/VOC_org/bottle/2009_001328.jpg", "data/VOC_org/bottle/2009_001339.jpg", "data/VOC_org/bottle/2009_001743.jpg", "data/VOC_org/bottle/2009_001937.jpg", "data/VOC_org/bottle/2009_002328.jpg", "data/VOC_org/bottle/2009_002671.jpg", "data/VOC_org/bottle/2009_002732.jpg", "data/VOC_org/bottle/2009_003629.jpg", "data/VOC_org/bottle/2009_003865.jpg", "data/VOC_org/bottle/2009_004432.jpg", "data/VOC_org/bottle/2009_005302.jpg", "data/VOC_org/bottle/2010_000050.jpg", "data/VOC_org/bottle/2010_000375.jpg", "data/VOC_org/bottle/2010_001219.jpg", "data/VOC_org/bottle/2010_001785.jpg", "data/VOC_org/bottle/2010_001980.jpg", "data/VOC_org/bottle/2010_002668.jpg", "data/VOC_org/bottle/2010_003017.jpg", "data/VOC_org/bottle/2010_003037.jpg", "data/VOC_org/bottle/2010_003468.jpg", "data/VOC_org/bottle/2010_004254.jpg", "data/VOC_org/bottle/2010_004520.jpg", "data/VOC_org/bottle/2010_005349.jpg", "data/VOC_org/bottle/2010_005654.jpg", "data/VOC_org/bottle/2010_005663.jpg", "data/VOC_org/bottle/2011_000027.jpg", "data/VOC_org/bottle/2011_000622.jpg", "data/VOC_org/bottle/2011_000743.jpg", "data/VOC_org/bottle/2011_001008.jpg", "data/VOC_org/bottle/2011_001168.jpg", "data/VOC_org/bottle/2011_002553.jpg", "data/VOC_org/bottle/2011_003044.jpg"]
+const bic_class = ["data/VOC_org/bicycle/2007_000515.jpg", "data/VOC_org/bicycle/2007_000793.jpg", "data/VOC_org/bicycle/2007_001027.jpg", "data/VOC_org/bicycle/2007_005702.jpg", "data/VOC_org/bicycle/2008_000803.jpg"] //, "data/VOC_org/bicycle/2008_001336.jpg", "data/VOC_org/bicycle/2008_001404.jpg", "data/VOC_org/bicycle/2008_001626.jpg", "data/VOC_org/bicycle/2008_002370.jpg", "data/VOC_org/bicycle/2008_002948.jpg", "data/VOC_org/bicycle/2008_003075.jpg", "data/VOC_org/bicycle/2008_003351.jpg", "data/VOC_org/bicycle/2008_003940.jpg", "data/VOC_org/bicycle/2008_004040.jpg", "data/VOC_org/bicycle/2008_004331.jpg", "data/VOC_org/bicycle/2008_004862.jpg", "data/VOC_org/bicycle/2008_005201.jpg", "data/VOC_org/bicycle/2008_006088.jpg", "data/VOC_org/bicycle/2008_006195.jpg", "data/VOC_org/bicycle/2008_006645.jpg", "data/VOC_org/bicycle/2008_007761.jpg", "data/VOC_org/bicycle/2008_008080.jpg", "data/VOC_org/bicycle/2008_008357.jpg", "data/VOC_org/bicycle/2008_008579.jpg", "data/VOC_org/bicycle/2008_008705.jpg", "data/VOC_org/bicycle/2009_000161.jpg", "data/VOC_org/bicycle/2009_000281.jpg", "data/VOC_org/bicycle/2009_000757.jpg", "data/VOC_org/bicycle/2009_001642.jpg", "data/VOC_org/bicycle/2009_001915.jpg", "data/VOC_org/bicycle/2009_002371.jpg", "data/VOC_org/bicycle/2009_002404.jpg", "data/VOC_org/bicycle/2009_002777.jpg", "data/VOC_org/bicycle/2009_003469.jpg", "data/VOC_org/bicycle/2009_004496.jpg", "data/VOC_org/bicycle/2009_004518.jpg", "data/VOC_org/bicycle/2009_004710.jpg", "data/VOC_org/bicycle/2009_004984.jpg", "data/VOC_org/bicycle/2010_000113.jpg", "data/VOC_org/bicycle/2010_001431.jpg", "data/VOC_org/bicycle/2010_001606.jpg", "data/VOC_org/bicycle/2010_002720.jpg", "data/VOC_org/bicycle/2010_003912.jpg", "data/VOC_org/bicycle/2010_004069.jpg", "data/VOC_org/bicycle/2011_000465.jpg", "data/VOC_org/bicycle/2011_001599.jpg", "data/VOC_org/bicycle/2011_002543.jpg", "data/VOC_org/bicycle/2011_002657.jpg", "data/VOC_org/bicycle/2011_002811.jpg", "data/VOC_org/bicycle/2011_002913.jpg"]
+const plane_class = ["data/VOC_org/aeroplane/2007_000256.jpg", "data/VOC_org/aeroplane/2007_001377.jpg", "data/VOC_org/aeroplane/2007_004988.jpg", "data/VOC_org/aeroplane/2007_005043.jpg", "data/VOC_org/aeroplane/2007_006232.jpg"] // , "data/VOC_org/aeroplane/2007_009348.jpg", "data/VOC_org/aeroplane/2008_000251.jpg", "data/VOC_org/aeroplane/2008_001805.jpg", "data/VOC_org/aeroplane/2008_003189.jpg", "data/VOC_org/aeroplane/2008_003261.jpg", "data/VOC_org/aeroplane/2008_003275.jpg", "data/VOC_org/aeroplane/2008_003673.jpg", "data/VOC_org/aeroplane/2008_003905.jpg", "data/VOC_org/aeroplane/2008_004406.jpg", "data/VOC_org/aeroplane/2008_004532.jpg", "data/VOC_org/aeroplane/2008_004885.jpg", "data/VOC_org/aeroplane/2008_005078.jpg", "data/VOC_org/aeroplane/2008_005538.jpg", "data/VOC_org/aeroplane/2008_005796.jpg", "data/VOC_org/aeroplane/2008_006213.jpg", "data/VOC_org/aeroplane/2008_006216.jpg", "data/VOC_org/aeroplane/2008_006401.jpg", "data/VOC_org/aeroplane/2008_006920.jpg", "data/VOC_org/aeroplane/2008_007195.jpg", "data/VOC_org/aeroplane/2008_007764.jpg", "data/VOC_org/aeroplane/2008_007970.jpg", "data/VOC_org/aeroplane/2008_008048.jpg", "data/VOC_org/aeroplane/2008_008479.jpg", "data/VOC_org/aeroplane/2008_008546.jpg", "data/VOC_org/aeroplane/2009_000397.jpg", "data/VOC_org/aeroplane/2009_000440.jpg", "data/VOC_org/aeroplane/2009_000545.jpg", "data/VOC_org/aeroplane/2009_001905.jpg", "data/VOC_org/aeroplane/2009_002941.jpg", "data/VOC_org/aeroplane/2009_003033.jpg", "data/VOC_org/aeroplane/2009_003278.jpg", "data/VOC_org/aeroplane/2009_003994.jpg", "data/VOC_org/aeroplane/2009_004402.jpg", "data/VOC_org/aeroplane/2009_004548.jpg", "data/VOC_org/aeroplane/2009_004969.jpg", "data/VOC_org/aeroplane/2009_005019.jpg", "data/VOC_org/aeroplane/2010_000437.jpg", "data/VOC_org/aeroplane/2010_000939.jpg", "data/VOC_org/aeroplane/2010_001085.jpg", "data/VOC_org/aeroplane/2010_003279.jpg", "data/VOC_org/aeroplane/2011_000129.jpg", "data/VOC_org/aeroplane/2011_000481.jpg", "data/VOC_org/aeroplane/2011_001158.jpg", "data/VOC_org/aeroplane/2011_002851.jpg", "data/VOC_org/aeroplane/2011_003111.jpg"]
+const bird_class = ["data/VOC_org/bird/2007_003682.jpg", "data/VOC_org/bird/2007_009607.jpg", "data/VOC_org/bird/2008_000472.jpg", "data/VOC_org/bird/2008_000515.jpg", "data/VOC_org/bird/2008_001514.jpg"] //, "data/VOC_org/bird/2008_001673.jpg", "data/VOC_org/bird/2008_001810.jpg", "data/VOC_org/bird/2008_004087.jpg", "data/VOC_org/bird/2008_004276.jpg", "data/VOC_org/bird/2008_004551.jpg", "data/VOC_org/bird/2008_004689.jpg", "data/VOC_org/bird/2008_004783.jpg", "data/VOC_org/bird/2008_005260.jpg", "data/VOC_org/bird/2008_005303.jpg", "data/VOC_org/bird/2008_005997.jpg", "data/VOC_org/bird/2008_006924.jpg", "data/VOC_org/bird/2008_007319.jpg", "data/VOC_org/bird/2008_007546.jpg", "data/VOC_org/bird/2008_007673.jpg", "data/VOC_org/bird/2008_007752.jpg", "data/VOC_org/bird/2008_007848.jpg", "data/VOC_org/bird/2008_007994.jpg", "data/VOC_org/bird/2008_008197.jpg", "data/VOC_org/bird/2008_008347.jpg", "data/VOC_org/bird/2008_008461.jpg", "data/VOC_org/bird/2009_000146.jpg", "data/VOC_org/bird/2009_000218.jpg", "data/VOC_org/bird/2009_000879.jpg", "data/VOC_org/bird/2009_000930.jpg", "data/VOC_org/bird/2009_001693.jpg", "data/VOC_org/bird/2009_002754.jpg", "data/VOC_org/bird/2009_003088.jpg", "data/VOC_org/bird/2009_003285.jpg", "data/VOC_org/bird/2009_003922.jpg", "data/VOC_org/bird/2009_004509.jpg", "data/VOC_org/bird/2009_004652.jpg", "data/VOC_org/bird/2009_004996.jpg", "data/VOC_org/bird/2009_005137.jpg", "data/VOC_org/bird/2009_005262.jpg", "data/VOC_org/bird/2010_001042.jpg", "data/VOC_org/bird/2010_001715.jpg", "data/VOC_org/bird/2010_001868.jpg", "data/VOC_org/bird/2010_003929.jpg", "data/VOC_org/bird/2010_004352.jpg", "data/VOC_org/bird/2010_004570.jpg", "data/VOC_org/bird/2010_005350.jpg", "data/VOC_org/bird/2010_005516.jpg", "data/VOC_org/bird/2010_005896.jpg", "data/VOC_org/bird/2011_000232.jpg", "data/VOC_org/bird/2011_003163.jpg"]
+const boat_class = ["data/VOC_org/boat/2007_001487.jpg", "data/VOC_org/boat/2007_003910.jpg", "data/VOC_org/boat/2008_000148.jpg", "data/VOC_org/boat/2008_000235.jpg", "data/VOC_org/boat/2008_000957.jpg"] // , "data/VOC_org/boat/2008_001136.jpg", "data/VOC_org/boat/2008_001159.jpg", "data/VOC_org/boat/2008_001202.jpg", "data/VOC_org/boat/2008_001858.jpg", "data/VOC_org/boat/2008_001946.jpg", "data/VOC_org/boat/2008_002131.jpg", "data/VOC_org/boat/2008_003034.jpg", "data/VOC_org/boat/2008_003275.jpg", "data/VOC_org/boat/2008_003480.jpg", "data/VOC_org/boat/2008_004636.jpg", "data/VOC_org/boat/2008_004716.jpg", "data/VOC_org/boat/2008_004983.jpg", "data/VOC_org/boat/2008_005398.jpg", "data/VOC_org/boat/2008_005593.jpg", "data/VOC_org/boat/2008_006065.jpg", "data/VOC_org/boat/2008_006121.jpg", "data/VOC_org/boat/2008_006289.jpg", "data/VOC_org/boat/2008_006500.jpg", "data/VOC_org/boat/2008_006730.jpg", "data/VOC_org/boat/2008_007179.jpg", "data/VOC_org/boat/2009_000308.jpg", "data/VOC_org/boat/2009_000385.jpg", "data/VOC_org/boat/2009_000690.jpg", "data/VOC_org/boat/2009_000752.jpg", "data/VOC_org/boat/2009_002173.jpg", "data/VOC_org/boat/2009_002343.jpg", "data/VOC_org/boat/2009_003284.jpg", "data/VOC_org/boat/2009_003522.jpg", "data/VOC_org/boat/2009_004888.jpg", "data/VOC_org/boat/2010_000906.jpg", "data/VOC_org/boat/2010_001164.jpg", "data/VOC_org/boat/2010_001967.jpg", "data/VOC_org/boat/2010_002117.jpg", "data/VOC_org/boat/2010_002620.jpg", "data/VOC_org/boat/2010_003107.jpg", "data/VOC_org/boat/2010_003117.jpg", "data/VOC_org/boat/2010_004124.jpg", "data/VOC_org/boat/2010_004714.jpg", "data/VOC_org/boat/2010_005192.jpg", "data/VOC_org/boat/2010_005332.jpg", "data/VOC_org/boat/2011_000744.jpg", "data/VOC_org/boat/2011_001310.jpg", "data/VOC_org/boat/2011_001532.jpg", "data/VOC_org/boat/2011_001582.jpg", "data/VOC_org/boat/2011_001886.jpg"]
+const bus_class = ["data/VOC_org/bus/2007_008747.jpg", "data/VOC_org/bus/2008_003373.jpg", "data/VOC_org/bus/2008_007356.jpg", "data/VOC_org/bus/2008_008281.jpg", "data/VOC_org/bus/2009_000557.jpg"]
+const car_class = ["data/VOC_org/car/2008_001274.jpg", "data/VOC_org/car/2008_002466.jpg", "data/VOC_org/car/2008_003061.jpg", "data/VOC_org/car/2008_005638.jpg", "data/VOC_org/car/2008_005686.jpg"]
+// const cat_class = []
+const chair_class =  ["data/VOC_org/chair/2007_004510.jpg", "data/VOC_org/chair/2008_001439.jpg", "data/VOC_org/chair/2008_002071.jpg", "data/VOC_org/chair/2008_003504.jpg", "data/VOC_org/chair/2008_004460.jpg"]
+const cow_class = ["data/VOC_org/cow/2007_003841.jpg", "data/VOC_org/cow/2008_005375.jpg", "data/VOC_org/cow/2008_007932.jpg", "data/VOC_org/cow/2009_001163.jpg", "data/VOC_org/cow/2010_000907.jpg"]
+const table_class = ["data/VOC_org/diningtable/2007_003668.jpg", "data/VOC_org/diningtable/2008_001809.jpg", "data/VOC_org/diningtable/2008_002892.jpg", "data/VOC_org/diningtable/2008_007048.jpg", "data/VOC_org/diningtable/2008_008402.jpg"]
+// const dog_class = [] 
+const horse_class = ["data/VOC_org/horse/2007_000783.jpg", "data/VOC_org/horse/2008_000219.jpg", "data/VOC_org/horse/2008_002338.jpg", "data/VOC_org/horse/2008_003805.jpg", "data/VOC_org/horse/2008_005408.jpg"]
+const motor_class = ["data/VOC_org/motorbike/2007_005173.jpg", "data/VOC_org/motorbike/2008_000082.jpg", "data/VOC_org/motorbike/2008_000811.jpg", "data/VOC_org/motorbike/2008_002772.jpg", "data/VOC_org/motorbike/2008_003892.jpg"]
+const person_class =  ["data/VOC_org/person/2007_001686.jpg", "data/VOC_org/person/2007_002545.jpg", "data/VOC_org/person/2007_003581.jpg", "data/VOC_org/person/2007_005331.jpg", "data/VOC_org/person/2007_006744.jpg"]
+const plant_class = ["data/VOC_org/pottedplant/2008_000287.jpg", "data/VOC_org/pottedplant/2008_000491.jpg", "data/VOC_org/pottedplant/2008_003726.jpg", "data/VOC_org/pottedplant/2008_005345.jpg", "data/VOC_org/pottedplant/2008_006207.jpg"]
+const sheep_class =  ["data/VOC_org/sheep/2007_003593.jpg", "data/VOC_org/sheep/2007_006944.jpg", "data/VOC_org/sheep/2008_005706.jpg", "data/VOC_org/sheep/2008_007677.jpg", "data/VOC_org/sheep/2010_004188.jpg"]
+const sofa_class =["data/VOC_org/sofa/2008_005623.jpg", "data/VOC_org/sofa/2008_005850.jpg", "data/VOC_org/sofa/2008_006276.jpg", "data/VOC_org/sofa/2008_008538.jpg", "data/VOC_org/sofa/2009_000732.jpg"]
+const train_class = ["data/VOC_org/train/2008_004212.jpg", "data/VOC_org/train/2008_007648.jpg", "data/VOC_org/train/2009_000283.jpg", "data/VOC_org/train/2009_001291.jpg", "data/VOC_org/train/2009_003185.jpg"]
+const monitor_class = ["data/VOC_org/tvmonitor/2007_000121.jpg", "data/VOC_org/tvmonitor/2007_009216.jpg", "data/VOC_org/tvmonitor/2008_003466.jpg", "data/VOC_org/tvmonitor/2008_005439.jpg", "data/VOC_org/tvmonitor/2008_007798.jpg", , "data/VOC_org/tvmonitor/2010_001270.jpg", "data/VOC_org/tvmonitor/2008_006946.jpg", "data/VOC_org/tvmonitor/2009_000041.jpg", "data/VOC_org/tvmonitor/2009_002733.jpg", "data/VOC_org/tvmonitor/2009_004128.jpg"]
+
 
 const raw_check_imgs = [
 "data/VOC_org/cat/cat-2007_000528.jpg",
@@ -16,7 +32,7 @@ const raw_check_imgs = [
 "data/VOC_org/cat/cat-2008_000824.jpg"]
 
 
-var cat = [
+var cat_class = [
 "data/VOC_org/cat/cat-2008_000950.jpg",
 "data/VOC_org/cat/cat-2008_001980.jpg",
 "data/VOC_org/cat/cat-2008_002177.jpg",
@@ -72,7 +88,7 @@ var cat = [
 "data/VOC_org/cat/cat-2011_001900.jpg"]
 
 
-var dog = [
+var dog_class = [
 "data/VOC_org/dog/dog-2007_001239.jpg",
 "data/VOC_org/dog/dog-2007_001763.jpg",
 "data/VOC_org/dog/dog-2007_008260.jpg",
@@ -129,15 +145,14 @@ var dog = [
 
 
 
-
-var annotated_check_imgs = [
+var annotated_check_imgs_gradcam = [
 "data/VOC_grad-cam/cat-2007_000528.jpg",
 "data/VOC_grad-cam/cat-2007_000876.jpg",
 "data/VOC_grad-cam/cat-2007_003778.jpg",
 "data/VOC_grad-cam/cat-2008_000824.jpg"
 ]
 
-var annotated_imgs = [
+var annotated_imgs_gradcam = [
 "data/VOC_grad-cam/cat-2008_000950.jpg",
 "data/VOC_grad-cam/cat-2008_001980.jpg",
 "data/VOC_grad-cam/cat-2008_002177.jpg",
@@ -244,4 +259,121 @@ var annotated_imgs = [
 "data/VOC_grad-cam/dog-2010_003257.jpg",
 "data/VOC_grad-cam/dog-2010_004970.jpg",
 "data/VOC_grad-cam/dog-2011_000202.jpg"]
+
+
+
+
+
+var annotated_check_imgs_lime = [
+"data/VOC2012_lime/cat/2008_001980.jpg.jpg",
+"data/VOC2012_lime/cat/2008_003841.jpg.jpg",
+"data/VOC2012_lime/cat/2008_003386.jpg.jpg",
+"data/VOC2012_lime/dog/2009_000181.jpg.jpg"
+]
+
+
+var annotated_imgs_lime = [
+"data/VOC2012_lime/cat/2008_000950.jpg.jpg",
+"data/VOC2012_lime/cat/2008_002177.jpg.jpg",
+"data/VOC2012_lime/cat/2008_002225.jpg.jpg",
+"data/VOC2012_lime/cat/2008_002294.jpg.jpg",
+"data/VOC2012_lime/cat/2008_002299.jpg.jpg",
+"data/VOC2012_lime/cat/2008_002410.jpg.jpg",
+"data/VOC2012_lime/cat/2008_002583.jpg.jpg",
+"data/VOC2012_lime/cat/2008_002749.jpg.jpg",
+"data/VOC2012_lime/cat/2008_003559.jpg.jpg",
+"data/VOC2012_lime/cat/2008_004303.jpg.jpg",
+"data/VOC2012_lime/cat/2008_005300.jpg.jpg",
+"data/VOC2012_lime/cat/2008_005469.jpg.jpg",
+"data/VOC2012_lime/cat/2008_005496.jpg.jpg",
+"data/VOC2012_lime/cat/2008_005566.jpg.jpg",
+"data/VOC2012_lime/cat/2008_005600.jpg.jpg",
+"data/VOC2012_lime/cat/2008_005857.jpg.jpg",
+"data/VOC2012_lime/cat/2008_006081.jpg.jpg",
+"data/VOC2012_lime/cat/2008_006377.jpg.jpg",
+"data/VOC2012_lime/cat/2008_006609.jpg.jpg",
+"data/VOC2012_lime/cat/2008_007239.jpg.jpg",
+"data/VOC2012_lime/cat/2008_007403.jpg.jpg",
+"data/VOC2012_lime/cat/2008_007610.jpg.jpg",
+"data/VOC2012_lime/cat/2008_007683.jpg.jpg",
+"data/VOC2012_lime/cat/2009_000504.jpg.jpg",
+"data/VOC2012_lime/cat/2009_000684.jpg.jpg",
+"data/VOC2012_lime/cat/2009_000966.jpg.jpg",
+"data/VOC2012_lime/cat/2009_001391.jpg.jpg",
+"data/VOC2012_lime/cat/2009_002008.jpg.jpg",
+"data/VOC2012_lime/cat/2009_003904.jpg.jpg",
+"data/VOC2012_lime/cat/2009_004796.jpg.jpg",
+"data/VOC2012_lime/cat/2009_004999.jpg.jpg",
+"data/VOC2012_lime/cat/2010_000001.jpg.jpg",
+"data/VOC2012_lime/cat/2010_000009.jpg.jpg",
+"data/VOC2012_lime/cat/2010_000114.jpg.jpg",
+"data/VOC2012_lime/cat/2010_000157.jpg.jpg",
+"data/VOC2012_lime/cat/2010_000317.jpg.jpg",
+"data/VOC2012_lime/cat/2010_000500.jpg.jpg",
+"data/VOC2012_lime/cat/2010_000799.jpg.jpg",
+"data/VOC2012_lime/cat/2010_001344.jpg.jpg",
+"data/VOC2012_lime/cat/2010_001351.jpg.jpg",
+"data/VOC2012_lime/cat/2010_002086.jpg.jpg",
+"data/VOC2012_lime/cat/2010_002224.jpg.jpg",
+"data/VOC2012_lime/cat/2010_002778.jpg.jpg",
+"data/VOC2012_lime/cat/2010_003291.jpg.jpg",
+"data/VOC2012_lime/cat/2010_003299.jpg.jpg",
+"data/VOC2012_lime/cat/2010_004712.jpg.jpg",
+"data/VOC2012_lime/cat/2010_004815.jpg.jpg",
+"data/VOC2012_lime/cat/2010_005344.jpg.jpg",
+"data/VOC2012_lime/cat/2010_005697.jpg.jpg",
+"data/VOC2012_lime/cat/2011_001900.jpg.jpg",
+"data/VOC2012_lime/dog/2007_001239.jpg.jpg",
+"data/VOC2012_lime/dog/2007_001763.jpg.jpg",
+"data/VOC2012_lime/dog/2007_008260.jpg.jpg",
+"data/VOC2012_lime/dog/2007_008415.jpg.jpg",
+"data/VOC2012_lime/dog/2007_009331.jpg.jpg",
+"data/VOC2012_lime/dog/2007_009562.jpg.jpg",
+"data/VOC2012_lime/dog/2007_009889.jpg.jpg",
+"data/VOC2012_lime/dog/2008_002003.jpg.jpg",
+"data/VOC2012_lime/dog/2008_002536.jpg.jpg",
+"data/VOC2012_lime/dog/2008_002936.jpg.jpg",
+"data/VOC2012_lime/dog/2008_003101.jpg.jpg",
+"data/VOC2012_lime/dog/2008_003497.jpg.jpg",
+"data/VOC2012_lime/dog/2008_004265.jpg.jpg",
+"data/VOC2012_lime/dog/2008_004273.jpg.jpg",
+"data/VOC2012_lime/dog/2008_004480.jpg.jpg",
+"data/VOC2012_lime/dog/2008_004525.jpg.jpg",
+"data/VOC2012_lime/dog/2008_004768.jpg.jpg",
+"data/VOC2012_lime/dog/2008_005137.jpg.jpg",
+"data/VOC2012_lime/dog/2008_005514.jpg.jpg",
+"data/VOC2012_lime/dog/2008_005898.jpg.jpg",
+"data/VOC2012_lime/dog/2008_006074.jpg.jpg",
+"data/VOC2012_lime/dog/2008_006546.jpg.jpg",
+"data/VOC2012_lime/dog/2008_006965.jpg.jpg",
+"data/VOC2012_lime/dog/2008_007021.jpg.jpg",
+"data/VOC2012_lime/dog/2008_007384.jpg.jpg",
+"data/VOC2012_lime/dog/2008_007537.jpg.jpg",
+"data/VOC2012_lime/dog/2008_007583.jpg.jpg",
+"data/VOC2012_lime/dog/2008_007781.jpg.jpg",
+"data/VOC2012_lime/dog/2008_007902.jpg.jpg",
+"data/VOC2012_lime/dog/2008_008636.jpg.jpg",
+"data/VOC2012_lime/dog/2009_000156.jpg.jpg",
+"data/VOC2012_lime/dog/2009_000282.jpg.jpg",
+"data/VOC2012_lime/dog/2009_000452.jpg.jpg",
+"data/VOC2012_lime/dog/2009_000651.jpg.jpg",
+"data/VOC2012_lime/dog/2009_000804.jpg.jpg",
+"data/VOC2012_lime/dog/2009_001329.jpg.jpg",
+"data/VOC2012_lime/dog/2009_001367.jpg.jpg",
+"data/VOC2012_lime/dog/2009_001446.jpg.jpg",
+"data/VOC2012_lime/dog/2009_001687.jpg.jpg",
+"data/VOC2012_lime/dog/2009_001828.jpg.jpg",
+"data/VOC2012_lime/dog/2009_001833.jpg.jpg",
+"data/VOC2012_lime/dog/2009_002039.jpg.jpg",
+"data/VOC2012_lime/dog/2009_002193.jpg.jpg",
+"data/VOC2012_lime/dog/2009_002445.jpg.jpg",
+"data/VOC2012_lime/dog/2009_002586.jpg.jpg",
+"data/VOC2012_lime/dog/2009_002681.jpg.jpg",
+"data/VOC2012_lime/dog/2009_003986.jpg.jpg",
+"data/VOC2012_lime/dog/2010_000159.jpg.jpg",
+"data/VOC2012_lime/dog/2010_002817.jpg.jpg",
+"data/VOC2012_lime/dog/2010_003257.jpg.jpg",
+"data/VOC2012_lime/dog/2010_004970.jpg.jpg",
+"data/VOC2012_lime/dog/2011_000202.jpg.jpg"]
+
 

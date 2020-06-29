@@ -1,4 +1,6 @@
 data
+data-collection/public/data
+user-study
 mturk.csv
 workers_new.json
 workers.json

@@ -68,8 +68,8 @@ let task_start_time = Math.floor(Date.now() / 1000); //set a start time for the 
 var results_json = [];
 var txtfiles = [];
 var imageName;
-var folder_name = "VOC_grad-cam";
-// var folder_name = "udacity" 
+// var folder_name = "VOC_grad-cam";
+var folder_name = "VOC2012_lime/cat" 
 var call_once = 0;
 var doc_num = 1;
 current_time_s = 0;
@@ -92,24 +92,24 @@ function txtfilename(){
 	results_json.push({i:task_key_id.split(",")[2], r: task_key_id.split(",")[1], t:1, d:0,d1:tutorial_time,d2:-1})
 
 	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
-	// 	$.ajax({
-	//     url : folder,
-	//     success: function (data) {
-	//         $(data).find("a").attr("href", function (i, val) {
-	//             	this_file = val.split("");
-	//             	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
-	//             	// this_file.pop()
-	//             	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
-	//             		console.log(folder)
-	// 					console.log(val)
-	//             		txtfiles.push(val) // txtfiles.push(folder+val)
-	//             	}
-	//         });
-	//         console.log(txtfiles)
-	//         total_doc = txtfiles.length;
-	// 		nextImage();
-	//     }
-	// });
+		$.ajax({
+	    url : folder,
+	    success: function (data) {
+	        $(data).find("a").attr("href", function (i, val) {
+	            	this_file = val.split("");
+	            	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
+	            	// this_file.pop()
+	            	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
+	            		console.log(folder)
+						console.log(val)
+	            		txtfiles.push(val) // txtfiles.push(folder+val)
+	            	}
+	        });
+	        console.log(txtfiles)
+	        total_doc = txtfiles.length;
+			nextImage();
+	    }
+	});
 
 	// annotated_imgs:       This is the list of main images for user rating
 	// annotated_check_imgs: This is the list of attention check images for rating task

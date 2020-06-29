@@ -28,6 +28,20 @@ h4{
   font-size: 0.9em;
 }
 
+
+mark_pos { 
+  background-color: lightgreen;
+  color: black; 
+}
+
+
+mark_neg { 
+  background-color: #fa8072;
+  color: black;
+  
+}
+
+
 #title{
   float: left;
   position: absolute;

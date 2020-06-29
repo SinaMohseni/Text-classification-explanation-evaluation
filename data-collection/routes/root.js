@@ -126,9 +126,13 @@ router.get('/game/trueOrFake', game.renderGame_TrueOrFake)
 //router.get('/game/twoFakesAndATrue', game.renderGame_TwoFakes)
 router.post('/guess', game.guess)
 
+
 /*** Interaction Logging ***/
 router.post('/logAnnotation', logging.logAnnotation)
 router.get('/log/annotations', logging.allAnnotations)
+router.get('/log/img_ann', logging.allImg_an)
+router.get('/log/img_ann_id/:participantId', logging.allImg_an_id)
+
 
 
 router.post('/log', logging.logInteraction)

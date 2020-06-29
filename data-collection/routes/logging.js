@@ -26,19 +26,19 @@ logging.logInteraction = async (req, res) => {
   const {action, info} = req.body
 
   
-  if (req.session.taskRun_id != null){
-    let loggedAct = new Interaction({
-      taskRun : mongoose.Types.ObjectId(req.session.taskRun_id),
-      action: action,
-      details: info
-    })
-    await loggedAct.save()
-    res.send("log - thanks")
-  }
-  else {
-    console.error("got a log interaction, but no taskRun found")
-    res.send("log - no taskRun, whoops")
-  }
+  // if (req.session.taskRun_id != null){
+  //   let loggedAct = new Interaction({
+  //     taskRun : mongoose.Types.ObjectId(req.session.taskRun_id),
+  //     action: action,
+  //     details: info
+  //   })
+  //   await loggedAct.save()
+  //   res.send("log - thanks")
+  // }
+  // else {
+  //   console.error("got a log interaction, but no taskRun found")
+  //   res.send("log - no taskRun, whoops")
+  // }
 
 }
 
@@ -63,6 +63,84 @@ logging.allAnnotations = async (req, res) => {
   }
   res.send(csvString)
 }
+
+
+
+logging.allImg_an = async (req, res) => {
+
+  
+  let allInteractions = await Interaction.find({}).populate('Interaction').lean().exec()
+  // console.log('all logs',allInteractions)
+  
+  let csvString = "Index, mTurk ID, HIT ID <br/>";
+  
+  counter = 0;
+  for(let each_hit of allInteractions) {
+      // console.log('\n hit_ids',each_hit.hit_id)    
+      // console.log('mturk_id',each_hit.log['mturk_id']) 
+      counter+=1;
+
+      if (each_hit.hit_id.split("_")[0] == "img" && each_hit.hit_id.split("_")[1] == "an"){
+        csvString += counter + " , "+ each_hit.log['mturk_id'] + "  ,  " +  each_hit.hit_id + "<br/>"
+      }
+      
+  }
+  res.send(csvString)
+}
+
+
+
+logging.allImg_an_id = async (req, res) => {
+  
+  let allInteractions = await Interaction.find({}).populate('Interaction').lean().exec()
+  
+  var participantId = req.params.participantId
+  var participantObjs = participantId.split(',');
+  all_available = [];
+  lost_data  = [];
+  console.log("All IDs: ", participantObjs)
+  
+  // participantsss = []
+  // for(let participant of participantObjs) {
+  //   let participantsss = await Interaction.find({hit_id: participantId}).populate('Interaction').lean().exec() // .select('_id').lean().exec();  // .populate('Interaction').lean().exec()//
+  //   // let interactionsForParticipant = await Interaction.find({ taskRun: { $in: participantTaskRuns } }).populate('taskRun').lean().exec()
+  // }
+  // console.log("participantObjs  ", participantsss)
+
+
+  // let csvString = "Index, mTurk ID, HIT ID <br/>";
+  // let csvString = "Index, log <br/>";
+  let csvString = "";
+
+  counter = 0;
+  for(let each_hit of allInteractions) {
+      // console.log('\n hit_ids',each_hit.hit_id)    
+      // console.log('mturk_id',each_hit.log['mturk_id']) 
+
+      if (participantObjs.includes(each_hit.hit_id)){
+        counter+=1;
+        // csvString += counter + " , "+ each_hit.log['mturk_id'] + "  ,  " +  each_hit.hit_id + "<br/>"
+        // console.log(each_hit.log['results'])   
+        // console.log(each_hit.log['results'][0]) 
+        csvString += JSON.stringify(each_hit.log['results']) + "<br/>"
+        if (Object.keys(each_hit.log['results']).length > 0){
+
+          console.log(counter, "  ",Object.keys(each_hit.log['results']).length, each_hit.log['mturk_id'])
+          all_available.push(each_hit.hit_id)
+        }
+      }
+  }
+
+  res.send(csvString)    
+   participantObjs.forEach( function (i) { 
+      if(all_available.indexOf(i) < 0) {
+        lost_data.push(i);
+        console.log("lost_data: ", i)
+      }
+    });
+
+}
+
 
 
 logging.allParticipants = async (req, res) => {

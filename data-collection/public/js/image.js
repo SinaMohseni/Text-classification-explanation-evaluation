@@ -56,7 +56,7 @@ var div1 = d3.select("body").append("talkbubble")   // Tooltip
   };
 
 
-const training_imgs = 4;  // Number of images to consider as training images. 
+const training_imgs = 2;  // Number of images to consider as training images. 
 const main_images = 10;    // Number of main images to be annotated.
 //Number of images displayed to a user for the study.
 const study_length = training_imgs + main_images; 
@@ -89,7 +89,7 @@ const mergeDedupe = (arr) => {
 function txtfilename(){
 
 	task_key_id = getCookie("task_key_id")
-	dataset_key = task_key_id.split(",")[1]; 
+	dataset_key = task_key_id.split(",")[1];
 
 	mturk_id = task_key_id.split(",")[2];
 	tutorial_time = parseInt(getCookie("tutorial_time"))
@@ -103,7 +103,16 @@ function txtfilename(){
 	// raw_imgs:       This is the list of main annotation images 
 	// raw_check_imgs: This is the list of attention check images for annotation task
 	raw_imgs = []
-	raw_imgs = mergeDedupe([bottle_class, boat_class, bird_class, plane_class, bic_class])
+
+	// batch-2
+	// raw_imgs = mergeDedupe([cat,dig])
+	// batch-3
+	// raw_imgs = mergeDedupe([bottle_class])
+	// batch-4
+	// raw_imgs = mergeDedupe([bic_class, plane_class, bird_class, boat_class, bus_class, car_class, chair_class, cow_class, table_class, horse_class, motor_class, person_class, plant_class, sheep_class, sofa_class, train_class, monitor_class]);
+	// batch-5
+	raw_imgs = mergeDedupe([bic_class, plane_class, bird_class, boat_class, bus_class, car_class, chair_class, cow_class, table_class, horse_class, motor_class, person_class, plant_class, sheep_class, sofa_class, train_class, monitor_class]);
+
 
 	if (raw_imgs.length >= ((parseInt(dataset_key)+1)*main_images)  ){
 		for (i=0;i<training_imgs;i++){

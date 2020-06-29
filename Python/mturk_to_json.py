@@ -23,10 +23,75 @@ import pandas as pd
 
 
 
-def get_jsons(batch): 
+def parse_column(data):
+    try:
+        return json.loads(data)
+    except Exception as e:
+        print(e)
+        return None
 
-	in_folder = "../user-study/mturk-annotation-results/"+batch+"/mturk.csv"
-	out_folder = "../user-study/mturk-annotation-results/"+batch+"/json/"
+# get Participants' annotaions from server json objects
+def get_jsons(batch, data_source): 
+
+	if data_source == "ref":
+		source = "ref"  #  "mturk1"
+		out_folder = "ref"
+	else: 
+		source = "mturk1"
+		out_folder = "json"
+
+	# in_folder = "../user-study/mturk-annotation-results/mturk/"+batch+"/mturk.csv"
+	in_folder = "../user-study/mturk-annotation-results/mturk/"+batch+"/"+source+".json"
+	out_folder = "../user-study/mturk-annotation-results/"+batch+"/"+out_folder+"/"
+
+	# entire_log = pd.read_csv(in_folder , doublequote=True , escapechar='\\')  
+	# entire_log = pd.read_csv(in_folder , converters={'log': parse_column})   # json.loads
+	# entire_log = pd.read_json(in_folder)   # json.loads
+	# entire_log = json.loads(in_folder)
+
+	f = open (in_folder, "r") 
+	entire_log = json.loads(f.read()) 
+	
+	i=0;
+	j=0;
+	print ("mturk_id: ", entire_log[0])   # pop out the mtruk id record
+	# entire_log.pop(0)
+	new_file = []
+	for each in entire_log:
+		# print (each)
+		if (len(each['i'].split(".")) > 1): # == "jpg"):
+			new_conture = {};
+			new_conture['image'] = each['i'];#  .pop('i')
+			new_conture['points'] = each['p']; # .pop('p')
+			new_file.append(new_conture.copy())
+			# print ('image counter: ',j)
+			j+=1;
+		else:
+			if (len(new_file) > 0):
+				print ('P: ',i, len(new_file))
+				j=0
+				i+=1;
+				# with open(out_folder+'P'+str(i)+'.json','w', encoding='utf-8') as f:
+				with open(out_folder+'ref-'+str(i-1)+'.json','w', encoding='utf-8') as f:
+					json.dump(new_file, f, ensure_ascii=False)
+				new_file = [];
+
+	# write the  last log  
+	print ('Last: P: ',i, len(new_file),  out_folder)
+	j=0
+	i+=1;
+	# with open(out_folder+'P'+str(i)+'.json','w', encoding='utf-8') as f:
+	with open(out_folder+'ref-'+str(i-1)+'.json','w', encoding='utf-8') as f:
+		json.dump(new_file, f, ensure_ascii=False)
+
+
+	return 0
+
+# get Participants' annotaions from the AMT csv output file
+def get_jsons_old(batch): 
+
+	in_folder = "../user-study/mturk-annotation-results/mturk"+batch+"/mturk.csv"
+	out_folder = "../user-study/mturk-annotation-results/"+batch+"/ref/"  # json
 
 	entire_log = pd.read_csv(in_folder, doublequote=True, escapechar='\\')  # 
 
@@ -61,7 +126,7 @@ def get_jsons(batch):
 
 
 def get_workers(batch):
-	# this function needs an update for batch-2
+	#  This function needs an update for batch-2
 	#  does not read the previous worker files - requires manual merging. 
 	#  check for duplicate workers - requires manual checking. 
 	#  dumps a {worker: key} file.
@@ -96,5 +161,8 @@ def get_workers(batch):
 	return all_workers;
 
 
-# batchs = 'batch-1';
+batchs = 'batch-3';
+data_source = 'ref' #  mturk
+
+# get_jsons(batchs, data_source)
 # get_workers(batchs)

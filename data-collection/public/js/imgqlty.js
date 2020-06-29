@@ -68,7 +68,7 @@ let task_start_time = Math.floor(Date.now() / 1000); //set a start time for the 
 var results_json = [];
 var txtfiles = [];
 var imageName;
-var folder_name = "VOC_grad-cam";
+var folder_name = 'bus' //"VOC_grad-cam";
 // var folder_name = "udacity" 
 var call_once = 0;
 var doc_num = 1;
@@ -90,34 +90,19 @@ function txtfilename(){
 	// mturk_id, dataset_key, tutorial_duration, task_duration
 	results_json.push({i:task_key_id.split(",")[2], r: task_key_id.split(",")[1], t:1, d:0,d1:tutorial_time,d2:-1})
 
-	var folder = "./data/"+ folder_name + "/"; //  +"_exp/";
-	// 	$.ajax({
-	//     url : folder,
-	//     success: function (data) {
-	//         $(data).find("a").attr("href", function (i, val) {
-	//             	this_file = val.split("");
-	//             	if ( (this_file.pop() == "g") | (this_file.pop() == "m") ){  //if (( !isNaN(parseInt(this_file.pop(), 10)) )){
-	//             	// this_file.pop()
-	//             	// if ( (this_file.pop() != "i") & (this_file.pop() !== ".") ){
-	//             		console.log(folder)
-	// 					console.log(val)
-	//             		txtfiles.push(val) // txtfiles.push(folder+val)
-	//             	}
-	//         });
-	//         console.log(txtfiles)
-	//         total_doc = txtfiles.length;
-	// 		nextImage();
-	//     }
-	// });
 
 	// annotated_imgs:       This is the list of main images for user rating
 	// annotated_check_imgs: This is the list of attention check images for rating task
-	if (annotated_imgs.length >= ((parseInt(task_key_id.split(",")[1])+1)*main_images)  ){
+
+	// LIME:      annotated_check_imgs_lime  and annotated_imgs_lime
+	// Grad-Cam:  annotated_imgs_gradcam and annotated_check_imgs_gradcam
+
+	if (annotated_imgs_lime.length >= ((parseInt(task_key_id.split(",")[1])+1)*main_images)  ){
 		for (i=0;i<training_imgs;i++){
-			txtfiles.push(annotated_check_imgs[i])
+			txtfiles.push(annotated_check_imgs_lime[i])
 		}
 		for (i=0;i<main_images;i++){
-			txtfiles.push(annotated_imgs[i+(task_key_id.split(",")[1]*main_images)])
+			txtfiles.push(annotated_imgs_lime[i+(task_key_id.split(",")[1]*main_images)])
 		}
 	}else{
 		
@@ -178,9 +163,6 @@ function nextImage() {
 	}
 
 
-
-
-
 }
 
 
@@ -198,9 +180,13 @@ function lastImage() {
         	doc_num--;
   
 	  		this_article = txtfiles[doc_num-1]
+	  		// console.log('this_article', this_article)
 
+	  		// imageName = this_article.split("/").pop();   // Grad-cam
+	  		imageName = this_article.split("/")[1];      // LIME
+	  		
 	  		showImage(this_article, 0);
-	  		imageName = this_article.split("/").pop();
+
 	  		// d3.selectAll('path.line').remove();
 	  		// highlight_data = []
 			// ct =0;
@@ -275,10 +261,13 @@ function getCookie(cname) {
 
 
 function updateTitle(){
-	imageName = txtfiles[doc_num-1].split("/").pop();
-	// imageName = this_article.split("/").pop();
+	// imageName = txtfiles[doc_num-1].split("/").pop();
+    // obj = imageName.toString().split("-")[0]
 
-    obj = imageName.toString().split("-")[0]
+
+	imageName = txtfiles[doc_num-1].split("/").pop();   // LIME
+	obj = txtfiles[doc_num-1].split("/")[2];   // LIME
+
 	// explanation_title.text("Please rate 'how good' the AI is explaining the \""+obj+"\" in this image: ( "+ doc_num +" / "+study_length+ " )");
 	explanation_title.text("Please select the salient area(s) that explain \"").append("mark").text(obj);
 	explanation_title.append("text").text("\" in this image: ( "+ doc_num+" / "+study_length+ " )");
@@ -286,7 +275,7 @@ function updateTitle(){
 
 function showImage(image_name, update_txt) {
 	var this_img = new Image();  
-
+	console.log('image_name', image_name)
 	this_img.src = image_name;
 	$("#test_img").attr("xlink:href",image_name);
   
@@ -306,35 +295,6 @@ function showImage(image_name, update_txt) {
 	//   $("#test_img_box").attr("margin","0 auto");
 	}
 	  
-  // var this_img = new Image();  
-
-  // this_img.src = image_name;
-  // $(".img_exp1").attr("xlink:href",image_name);
-
-  // this_img.onload = function(){
-
-		// 	  	var img_width = this_img.height;
-		// 		var img_height = this_img.width;
-
-  //           $(".img_box1").attr("height",this_img.height);
-  //           $(".img_box1").attr("width","800px"); //this_img.width);
-  //           $(".img_exp1").attr("margin-left","10%");
-  //           $(".img_box1").attr("margin","100px");
-  //           $(".img_box1").attr("padding-left","200px");
-  //           $(".img_exp1").attr("padding-left","200px");
-  //           $(".img_exp1").attr("display","block");
-  //           $(".img_exp1").attr("width","400px");
-  //           $(".img_exp1").attr("margin-left","10%");
-
-            
-  //           }
-  
-            // var folder = "data/"+ folder_name +"_exp/";
-            // document.getElementById("test_img").src= folder+image_name;
-            // document.getElementById("test_img").src= ".."+image_name;
-            // document.getElementById("test_img").src= image_name;
-
-
 }
 
 
@@ -455,7 +415,8 @@ updateTitle();
 
 function save_json(tot_time){
 	results_json.splice(doc_num,1);
-	if (imageName != null) this_image = imageName.split(".")[0].split("-")[1]
+	
+	if (imageName != null) this_image = imageName; //.split(".")[0].split("-")[1]
 		results_json.push({i: imageName, r: rating})
 	saved = 1;
 	// if (isDrawnOn[doc_num-1]) {
